@@ -69,8 +69,6 @@
                                         </li>
                                         <li><a href="<?php echo base_url('admin/meals/add'); ?>"><?php echo $sidebar_lang['add_meal'] ?></a>
                                         </li>
-                                        <li><a href="<?php echo base_url('admin/meals/tracking'); ?>"><?php echo $sidebar_lang['tracking_meal'] ?></a>
-                                        </li>
                                     </ul>
                                 </li>
                             </ul>

@@ -89,8 +89,8 @@ class Meals extends CI_Controller {
         $data['meal_date'] = $meal_date;
         $data['title'] = 'Daily Lunch Service Report';
         $this->load->model('tracking_users_model');
-        $view = $this->load->view('admin/meals/meal_report', $data);
-        //$this->pdf_report($view, $meal_date);
+        $view = $this->load->view('admin/meals/meal_report', $data, TRUE);
+        $this->pdf_report($view, $meal_date);
     }
 
     public function edit($meal_id)
@@ -114,65 +114,6 @@ class Meals extends CI_Controller {
         {
             $this->load_edit_meal_view($meal_id);
         }
-    }
-
-    public function tracking()
-    {
-        $this->common->authenticate();
-        if (isset($_POST['submit']))
-        {
-            $this->load->helper('security');
-            $this->load->library('form_validation');
-            $this->form_validation->set_rules('shift', 'lang:shift', 'trim|required|numeric|xss_clean');
-            $this->form_validation->set_rules('day', 'lang:day', 'trim|required|numeric|xss_clean');
-            $this->load_tracking_meal_view($this->input->post('shift'), $this->input->post('day'));
-        }
-        else $this->load_tracking_meal_view(NULL, NORMAL_DAY);
-    }
-
-    public function load_tracking_meal_view($shift_id = NULL, $day)
-    {
-        $message = array('title', 'shift', 'search', 'normal_day', 'vegan_day', 'list_tables', 'create_log', 'status', 'attend', 'absent', 'late', 'choose_status', 'note', 'lunch_date', 'actual_meals', 'log', 'for_vegan', 'for_normal', 'yes', 'cancel');
-        $data = $this->common->set_language_and_data('tracking_meal', $message);
-        $this->load->model('shifts_model');
-        $this->load->model('tables_model');
-        $this->load->model('tracking_users_model');
-        $shifts = $this->shifts_model->get_all_shifts();
-        $data['shifts'] = $shifts;
-        $data['status'] = $this->tracking_users_model->get_all_status();
-        $for_vegans = ($day == NORMAL_DAY) ? 0 : NULL;
-        $tables = array();
-        if (!is_null($shift_id))
-        {
-            $tables = $this->tables_model->get_tables_by_shift($shift_id, $for_vegans, $day);
-            $data['shift_id'] = $shift_id;
-            foreach ($shifts as $shift)
-            {
-                if ($shift_id == $shift->id)
-                {
-                    $data['shift_name'] = $shift->name;
-                    $data['start_time'] = $shift->start_time;
-                    $data['end_time'] = $shift->end_time;
-                }
-            }
-        }
-        else
-        {
-            if (!empty($shifts))
-            {
-                $tables = $this->tables_model->get_tables_by_shift($shifts[0]->id, $for_vegans, $day);
-                $data['shift_id'] = $shifts[0]->id;
-                $data['shift_name'] = $shifts[0]->name;
-                $data['start_time'] = $shifts[0]->start_time;
-                $data['end_time'] = $shifts[0]->end_time;
-            }
-        }
-        $data['status'] = $this->tracking_users_model->get_all_status();
-        $data['tables'] = $tables;
-        $this->load->model('users_model');
-        $users = $this->users_model->get_all_users();
-        $data['day'] = $day;
-        $this->common->load_view('admin/meals/tracking_meal', $data);
     }
 
     public function load_new_meal_view()
@@ -259,10 +200,6 @@ class Meals extends CI_Controller {
             $this->form_validation->set_rules('lunch_date', 'lang:lunch_date', 'trim|required|callback_check_date_format|xss_clean');
             $this->form_validation->set_rules('preordered_meal', 'lang:preordered_meal', 'trim|required|numeric|greater_than[1]|xss_clean');
             $this->form_validation->set_rules('menu', 'lang:menu', 'trim|required|numeric|xss_clean');
-        }
-        elseif ($view == 'tracking')
-        {
-            $this->form_validation->set_rules('lunch_date', 'lang:lunch_date', 'trim|required|callback_check_date_format|xss_clean');
         }
         else
         {
