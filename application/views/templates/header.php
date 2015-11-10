@@ -16,7 +16,7 @@
     <link href="<?php echo CSS.'jquery-ui.min.css'; ?>" rel="stylesheet">
     <link href="<?php echo CSS.'style.css'; ?>" rel="stylesheet">
 
-    <link href="<?php echo 'assets/fonts/css/font-awesome.min.css'; ?>" rel="stylesheet">
+    <link href="<?php echo FONTS.'css/font-awesome.min.css'; ?>" rel="stylesheet">
     <link href="<?php echo CSS.'animate.min.css'; ?>" rel="stylesheet">
     <link href="<?php echo CSS.'toastr.min.css'; ?>" rel="stylesheet"/>
     <!-- Custom styling plus plugins -->
