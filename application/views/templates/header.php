@@ -36,7 +36,7 @@
         $this->load->library('common');
         if ($this->common->is_url_exist((JS.($this->router->fetch_class()).'.js')))
         {
-            echo "<script src='".JS.($this->router->fetch_class()).'.js')."'></script>";
+            echo "<script src='"JS.($this->router->fetch_class()).'.js')."'></script>";
         }
     ?>
     <script type="text/javascript">
