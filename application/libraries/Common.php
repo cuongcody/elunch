@@ -109,6 +109,7 @@ class Common {
             'max_size' => '100000');
         $this->CI->load->library('upload', $config);
         if (!$this->CI->upload->do_upload('img')){
+            var_dump($this->CI->upload->display_errors());
             return FALSE;
         }
         $image_data =  $this->CI->upload->data();
@@ -123,7 +124,7 @@ class Common {
             $dim = (intval($image_data["image_width"]) / intval($image_data["image_height"])) - ($image_config['width'] / $image_config['height']);
             $image_config['master_dim'] = ($dim > 0)? "height" : "width";
             $this->CI->load->library("image_lib", $image_config);
-            if (!$this->CI->image_lib->resize()) return FALSE;
+            if (!$this->CI->image_lib->resize()) {var_dump($this->resize->CI->display_errors());return FALSE;}
             else chmod($image_data['full_path'], 0777);
             $this->CI->session->set_userdata('upload', $image_data);
             return TRUE;
