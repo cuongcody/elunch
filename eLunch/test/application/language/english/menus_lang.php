@@ -1,0 +1,16 @@
+<?php
+    $lang['title'] = 'Manage menu page';
+    $lang['menu'] = 'Menu ';
+    $lang['description'] = 'Description ';
+    $lang['dishes_of_menu'] = 'List of dishes';
+    $lang['name_dish'] = 'Name';
+    $lang['create_menu'] = 'Create new menu ';;
+    $lang['search'] = 'Search ';
+    $lang['category'] = 'Category ';
+    $lang['image'] = 'Image ';
+    $lang['edit'] = 'Edit ';
+    $lang['delete'] = 'Delete ';
+    $lang['are_you_sure'] = 'Are you sure? ';
+    $lang['yes'] = 'Yes ';
+    $lang['cancel'] = 'Cancel ';
+?>
