@@ -105,7 +105,7 @@ class Common {
         $upload_dir = APPPATH. $dir;
         $config = array(
             'upload_path' => $upload_dir,
-            'allowed_types' => 'gif|jpg|png',
+            'allowed_types' => 'gif|jpg|png|JPG',
             'max_size' => '100000');
         $this->CI->load->library('upload', $config);
         if (!$this->CI->upload->do_upload('img')){
