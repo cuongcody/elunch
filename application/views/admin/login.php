@@ -10,15 +10,15 @@
         <!-- Bootstrap core CSS -->
         <link href="<?php echo CSS.'bootstrap.min.css'; ?>" rel="stylesheet">
         <link href="<?php echo CSS.'style.css'; ?>" rel="stylesheet">
-        <link href="<?php echo FONTS.'/css/font-awesome.min.css'; ?>" rel="stylesheet">
+        <link href="<?php echo FONTS.'css/font-awesome.min.css'; ?>" rel="stylesheet">
         <link href="<?php echo CSS.'animate.min.css'; ?>" rel="stylesheet">
         <link href="<?php echo CSS.'custom.css'; ?>" rel="stylesheet">
         <link href="<?php echo CSS.'style.css'; ?>" rel="stylesheet">
-        <link href="<?php echo CSS.'toastr.min.css'); ?>" rel="stylesheet"/>
+        <link href="<?php echo CSS.'toastr.min.css'; ?>" rel="stylesheet"/>
         <script src="<?php echo JS.'jquery.min.js'; ?>"></script>
         <script src="<?php echo JS.'bootstrap.min.js'; ?>"></script>
-        <script src="<?php echo JS.'toastr.min.js'); ?>"></script>
-        <script src="<?php echo JS.'moment.js'); ?>"></script>
+        <script src="<?php echo JS.'toastr.min.js'; ?>"></script>
+        <script src="<?php echo JS.'moment.js'; ?>"></script>
         <script src="<?php echo JS.'bootstrap-datetimepicker.min.js'; ?>"></script>
         <script src="<?php echo JS.'js.js'; ?>"></script>
     </head>
