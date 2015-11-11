@@ -89,7 +89,8 @@ class Users_model extends CI_Model{
      */
     function edit_profile($data, $user_id)
     {
-        if (!is_null($data['want_vegan_meal']) || (!is_null($data['what_taste']))){
+        if (!is_null($data['want_vegan_meal']) || (!is_null($data['what_taste'])))
+        {
             if (!is_null($data['want_vegan_meal']))
             {
                 $data['want_vegan_meal'] = ($data['want_vegan_meal'] == 'true') ? 1 : 0;
@@ -100,7 +101,8 @@ class Users_model extends CI_Model{
             if(!is_null($data['what_taste'])) $this->db->set('what_taste', $data['what_taste']);
             $this->db->where('id', $user_id);
             return $this->db->update('users');
-        } else return FALSE;
+        }
+        else return FALSE;
     }
 
     /**
