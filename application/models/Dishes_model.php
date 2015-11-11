@@ -80,7 +80,6 @@ class Dishes_model extends CI_Model {
      */
     function get_dishes_of_meals_from($date, $number_of_days)
     {
-        $meals_grouped_by_date = array();
         $date_from = new DateTime($date);
         $date_to = new DateTime($date);
         $date_to->add(new DateInterval('P'.$number_of_days.'D'));

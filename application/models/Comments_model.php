@@ -54,6 +54,7 @@ class Comments_model extends CI_Model {
                 GROUP BY comments.id
                 ORDER BY created_at DESC', array(COMMENTS, (int)$user_id, $end_time));
         }
+        $result = array();
         $result = $query->result();
         if ($result != NULL)
         {

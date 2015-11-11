@@ -19,38 +19,41 @@ class Announcements_model extends CI_Model {
         $user = $this->users_model->get_user_by('id', $user_id);
         // Get all messages from admin
         $result = $this->get_announcements(NULL, NULL, $start_time, $end_time);
-        foreach ($result as $message)
+        if ($result != NULL)
         {
-            if ($message->user == 'all')
+            foreach ($result as $message)
             {
-                $messages = $this->add_a_annoucement_in_announcements($user, $messages, $message);
-            }
-            elseif($message->user == $user_id)
-            {
-                $messages = $this->add_a_annoucement_in_announcements($user, $messages, $message);
-            }
-            else
-            {
-                $this->load->model('tables_model');
-                // Get shift and table of user
-                $shift_and_tables = $this->tables_model->get_shift_and_tables_of_user($user_id);
-                if ($shift_and_tables != NULL)
+                if ($message->user == 'all')
                 {
-                    $shift_id = $shift_and_tables[0]->shift_id;
-                    if (!is_null($message->shift))
+                    $messages = $this->add_a_annoucement_in_announcements($user, $messages, $message);
+                }
+                elseif($message->user == $user_id)
+                {
+                    $messages = $this->add_a_annoucement_in_announcements($user, $messages, $message);
+                }
+                else
+                {
+                    $this->load->model('tables_model');
+                    // Get shift and table of user
+                    $shift_and_tables = $this->tables_model->get_shift_and_tables_of_user($user_id);
+                    if ($shift_and_tables != NULL)
                     {
-                        if ($message->shift == $shift_id)
+                        $shift_id = $shift_and_tables[0]->shift_id;
+                        if (!is_null($message->shift))
                         {
-                            $messages = $this->add_a_annoucement_in_announcements($user, $messages, $message);
-                        }
-                    }
-                    elseif (!is_null($message->table))
-                    {
-                        foreach ($shift_and_tables as $table)
-                        {
-                            if ($message->table == $table->table_id)
+                            if ($message->shift == $shift_id)
                             {
                                 $messages = $this->add_a_annoucement_in_announcements($user, $messages, $message);
+                            }
+                        }
+                        elseif (!is_null($message->table))
+                        {
+                            foreach ($shift_and_tables as $table)
+                            {
+                                if ($message->table == $table->table_id)
+                                {
+                                    $messages = $this->add_a_annoucement_in_announcements($user, $messages, $message);
+                                }
                             }
                         }
                     }

@@ -11,34 +11,38 @@ class Votes_model extends CI_Model {
      */
     function get_all_dishes_with_votes_number_in_a_week($day = NULL)
     {
+        $dishes = array();
         $first_day_of_week = $this->find_first_date_of_week($day);
         $query = $this->db->get_where('vote_logs', array('first_day_of_week' => $first_day_of_week));
-        $voted_dish_ids_in_week = "";
-        $voted_dish_ids_in_week_arr = array();
-        $dishes = array();
-        $num_votes = 0;
-        foreach ($query->result() as $value)
+        $result = $query->result();
+        if ($result != NULL)
         {
-            $voted_dish_ids_in_week.=$value->votes;
-        }
-        $voted_dish_ids_in_week_arr = (substr_count($voted_dish_ids_in_week, ';') > 0) ? explode(";", $voted_dish_ids_in_week) : array($voted_dish_ids_in_week);
-        $last_day_of_week = $this->find_last_date_of_week($day);
-        $this->load->model('dishes_model');
-        $result = $this->dishes_model->get_all_dishes();
-        $counts_value_in_voted_dish_ids = array_count_values($voted_dish_ids_in_week_arr);
-        foreach ($result as $dish)
-        {
+            $voted_dish_ids_in_week = "";
+            $voted_dish_ids_in_week_arr = array();
             $num_votes = 0;
-            // Count dish_id have in voted dish ids in week or not
-            if (in_array($dish->id, $voted_dish_ids_in_week_arr))
+            foreach ($result as $value)
             {
-                $num_votes = $counts_value_in_voted_dish_ids[$dish->id];
+                $voted_dish_ids_in_week.=$value->votes;
             }
-            $dish->num_votes = $num_votes;
-            // Push object dish in array $vote
-            array_push($dishes, $dish);
+            $voted_dish_ids_in_week_arr = (substr_count($voted_dish_ids_in_week, ';') > 0) ? explode(";", $voted_dish_ids_in_week) : array($voted_dish_ids_in_week);
+            $last_day_of_week = $this->find_last_date_of_week($day);
+            $this->load->model('dishes_model');
+            $result = $this->dishes_model->get_all_dishes();
+            $counts_value_in_voted_dish_ids = array_count_values($voted_dish_ids_in_week_arr);
+            foreach ($result as $dish)
+            {
+                $num_votes = 0;
+                // Count dish_id have in voted dish ids in week or not
+                if (in_array($dish->id, $voted_dish_ids_in_week_arr))
+                {
+                    $num_votes = $counts_value_in_voted_dish_ids[$dish->id];
+                }
+                $dish->num_votes = $num_votes;
+                // Push object dish in array $vote
+                array_push($dishes, $dish);
+            }
+            usort($dishes, array($this,"compared_by_num_votes"));
         }
-        usort($dishes, array($this,"compared_by_num_votes"));
         return $dishes;
     }
 
@@ -50,23 +54,25 @@ class Votes_model extends CI_Model {
      */
     function get_all_favorite_dishes_with_votes_number_of_user($user_id)
     {
+        $dishes = array();
         $first_day_of_week = $this->find_first_date_of_week();
         $voted_dish_ids_in_week_arr = array();
-        $query = $this->db->get_where('vote_logs', array('first_day_of_week' => $first_day_of_week));
         $voted_dish_ids_in_week = $this->get_votes_of_user_in_week($user_id, $first_day_of_week)->votes;
-        $voted_dish_ids_in_week_arr = (substr_count($voted_dish_ids_in_week, ';') > 0) ? explode(";", $voted_dish_ids_in_week) : array($voted_dish_ids_in_week);
-        $dishes = array();
-        $this->load->model('dishes_model');
-        $result = $this->dishes_model->get_all_dishes();
-        foreach ($result as $dish)
+        if ($voted_dish_ids_in_week != NULL)
         {
-            // Count dish_id have in voted dish ids in week or not
-            $num_votes = (in_array($dish->id, $voted_dish_ids_in_week_arr)) ? 1 : 0;
-            $dish->num_votes = $num_votes;
-            // Push object dish in array $vote
-            array_push($dishes, $dish);
+            $voted_dish_ids_in_week_arr = (substr_count($voted_dish_ids_in_week, ';') > 0) ? explode(";", $voted_dish_ids_in_week) : array($voted_dish_ids_in_week);
+            $this->load->model('dishes_model');
+            $result = $this->dishes_model->get_all_dishes();
+            foreach ($result as $dish)
+            {
+                // Count dish_id have in voted dish ids in week or not
+                $num_votes = (in_array($dish->id, $voted_dish_ids_in_week_arr)) ? 1 : 0;
+                $dish->num_votes = $num_votes;
+                // Push object dish in array $vote
+                array_push($dishes, $dish);
+            }
+            usort($dishes, array($this,"compared_by_num_votes"));
         }
-        usort($dishes, array($this,"compared_by_num_votes"));
         return $dishes;
     }
 
