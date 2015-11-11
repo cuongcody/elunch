@@ -93,16 +93,20 @@ class Dishes_model extends CI_Model {
         $this->db->where('meal_date >=', $date_from->format('Y-m-d'));
         $this->db->where('meal_date <=', $date_to->format('Y-m-d'));
         $this->db->order_by('meal_date', 'asc');
+        $dishes_grouped_by_date = array();
         $dishes = $this->db->get()->result();
-        foreach ($dishes as $key1 => $dish1)
+        if ($dishes != NULL)
         {
-            $date = $dish1->meal_date;
-            $dishes_grouped_by_date[$date] = array();
-            foreach ($dishes as $key2 => $dish2)
+            foreach ($dishes as $key1 => $dish1)
             {
-                if ($dish2->meal_date == $date)
+                $date = $dish1->meal_date;
+                $dishes_grouped_by_date[$date] = array();
+                foreach ($dishes as $key2 => $dish2)
                 {
-                    array_push($dishes_grouped_by_date[$date], $dish2);
+                    if ($dish2->meal_date == $date)
+                    {
+                        array_push($dishes_grouped_by_date[$date], $dish2);
+                    }
                 }
             }
         }
