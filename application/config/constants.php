@@ -85,11 +85,6 @@ define('EXIT_DATABASE', 8); // database error
 define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
-//Assets
-define('FONTS', 'http://192.168.11.176/elunch/assets/fonts/');
-define('JS', 'http://192.168.11.176/elunch/assets/js/');
-define('CSS', 'http://192.168.11.176/elunch/assets/css/');
-define('IMG', 'http://192.168.11.176/elunch/assets/images/');
 // ELunch constants
 define('USER_CREATED_SUCCESSFULLY', 0);
 define('USER_CREATE_FAILED', 1);

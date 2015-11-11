@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | environments.
 |
 */
-$config['base_url'] = 'http://192.168.11.176/elunch/';
+$config['base_url'] = 'http://113.160.225.76:8989/elunch/';
 
 /*
 |--------------------------------------------------------------------------
