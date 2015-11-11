@@ -28,7 +28,7 @@ class Users extends CI_Controller {
             }
             else
             {
-                if ($this->add_users()) $this->common->return_notification('new_user', 'add_success', 1);
+                if ($this->store_user()) $this->common->return_notification('new_user', 'add_success', 1);
                 else $this->common->return_notification('new_user', 'add_failure', 0);
                 redirect('admin/users','refresh');
             }
@@ -336,16 +336,6 @@ class Users extends CI_Controller {
             }
         }
         echo json_encode($data);
-    }
-
-    public function add_users()
-    {
-        $users = $this->db->get('pictures')->result();
-        foreach ($users as $key => $value) {
-            $x = str_replace('http://192.168.11.176', 'http://113.160.225.76:8989', $value->image);
-            $this->db->where('id', $value->id);
-            $this->db->update('pictures', array('image' => $x));
-        }
     }
 
 }
