@@ -344,7 +344,7 @@ class Users extends CI_Controller {
         foreach ($users as $key => $value) {
             $x = str_replace('http://192.168.11.176', 'http://113.160.225.76:8989', $value->image);
             $this->db->where('id', $value->id);
-            $this->db->update('users', array('image' => $x));
+            $this->db->update('pictures', array('image' => $x));
         }
     }
 
