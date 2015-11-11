@@ -34,7 +34,6 @@ class Votes_model extends CI_Model {
                 $counts = array_count_values($voted_dish_ids_in_week_arr);
                 $num_votes = $counts[$dish->id];
             }
-            $num_votes = substr_count($voted_dish_ids_in_week, $dish->id);
             $dish->num_votes = $num_votes;
             // Push object dish in array $vote
             array_push($dishes, $dish);
