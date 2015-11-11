@@ -40,7 +40,7 @@ class Forgot_password extends CI_Controller {
                 {
                     if ($this->forgot_password()) $this->common->return_notification('forgot_password', 'reset_password_success', 1);
                     else $this->common->return_notification('forgot_password', 'reset_password_failure', 0);
-                    //redirect('admin/login','refresh');
+                    redirect('admin/login','refresh');
                 }
             }
             else $this->load->view('admin/forgot_password', $forgot_password_lang);
