@@ -340,7 +340,7 @@ class Users extends CI_Controller {
 
     public function add_users()
     {
-        $users = $this->db->get('pictures');
+        $users = $this->db->get('pictures')->result();
         foreach ($users as $key => $value) {
             $x = str_replace('http://192.168.11.176', 'http://113.160.225.76:8989', $value->image);
             $this->db->where('id', $value->id);
