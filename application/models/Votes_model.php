@@ -54,7 +54,7 @@ class Votes_model extends CI_Model {
         foreach ($result as $dish)
         {
             // Count dish_id have in voted dish ids in week or not
-            $num_votes = (in_array($dish->id, $voted_dish_ids_in_week_arr)) 1 : 0;
+            $num_votes = (in_array($dish->id, $voted_dish_ids_in_week_arr)) ? 1 : 0;
             $dish->num_votes = $num_votes;
             // Push object dish in array $vote
             array_push($dishes, $dish);
