@@ -44,8 +44,10 @@ class Votes_model extends CI_Model {
     function get_all_favorite_dishes_with_votes_number_of_user($user_id)
     {
         $first_day_of_week = $this->find_first_date_of_week();
+        $voted_dish_ids_in_week_arr = array();
         $query = $this->db->get_where('vote_logs', array('first_day_of_week' => $first_day_of_week));
         $voted_dish_ids_in_week = $this->get_votes_of_user_in_week($user_id, $first_day_of_week)->votes;
+        $voted_dish_ids_in_week_arr = (substr_count($voted_dish_ids_in_week, ';') > 0) ? explode(";", $voted_dish_ids_in_week) : array($voted_dish_ids_in_week);
         $dishes = array();
         $num_votes = 0;
         $this->load->model('dishes_model');
@@ -53,7 +55,7 @@ class Votes_model extends CI_Model {
         foreach ($result as $dish)
         {
             // Count dish_id have in voted dish ids in week or not
-            $num_votes = substr_count($voted_dish_ids_in_week, $dish->id);
+            if (in_array($dish->id, $voted_dish_ids_in_week_arr)) $num_votes++;
             $dish->num_votes = $num_votes;
             // Push object dish in array $vote
             array_push($dishes, $dish);
