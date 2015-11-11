@@ -98,10 +98,10 @@ class Forgot_password extends CI_Controller {
         $this->load->helper('security');
         $this->load->library('form_validation');
         //validation rules
-        $this->form_validation->set_rules('email', 'lang:email', 'trim|required|valid_email|xss_clean|callback_exist_email');
+        $this->form_validation->set_rules('email', 'lang:email', 'trim|required|valid_email|xss_clean|callback_not_exist_email');
     }
 
-    public function exist_email($email)
+    public function not_exist_email($email)
     {
         if (!$this->users_model->is_user_exists($email))
         {
