@@ -14,18 +14,26 @@ class Votes_model extends CI_Model {
         $first_day_of_week = $this->find_first_date_of_week($day);
         $query = $this->db->get_where('vote_logs', array('first_day_of_week' => $first_day_of_week));
         $voted_dish_ids_in_week = "";
+        $voted_dish_ids_in_week_arr = array();
         $dishes = array();
         $num_votes = 0;
         foreach ($query->result() as $value)
         {
             $voted_dish_ids_in_week.=$value->votes;
         }
+        $voted_dish_ids_in_week_arr = (substr_count($voted_dish_ids_in_week, ';') > 0) ? explode(";", $voted_dish_ids_in_week) : array($voted_dish_ids_in_week);
         $last_day_of_week = $this->find_last_date_of_week($day);
         $this->load->model('dishes_model');
         $result = $this->dishes_model->get_all_dishes();
         foreach ($result as $dish)
         {
+            $num_votes = 0;
             // Count dish_id have in voted dish ids in week or not
+            if (in_array($dish->id, $voted_dish_ids_in_week_arr))
+            {
+                $counts = array_count_values($voted_dish_ids_in_week_arr);
+                $num_votes = $counts[$dish->id];
+            }
             $num_votes = substr_count($voted_dish_ids_in_week, $dish->id);
             $dish->num_votes = $num_votes;
             // Push object dish in array $vote
