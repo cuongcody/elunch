@@ -68,6 +68,16 @@ class Home extends CI_Controller {
         }
     }
 
+    public function check_date_format($date) {
+        if (!$this->common->date_format($date))
+        {
+            $this->lang->load('validation', $this->session->userdata('site_lang'));
+            $this->form_validation->set_message('check_date_format', $this->lang->line('date_format'));
+            return FALSE;
+        }
+        return TRUE;
+    }
+
     public function tracking_meal_log()
     {
         $this->common->authenticate();
