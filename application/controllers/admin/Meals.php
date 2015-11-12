@@ -292,7 +292,7 @@ class Meals extends CI_Controller {
      */
     public function pdf_report($html, $meal_date)
     {
-        ini_set('memory_limit','32M');
+        ini_set('memory_limit','-1');
         $pdfFilePath = "meal_report_".$meal_date.".pdf";
         $this->load->library('m_pdf');
         $pdf = $this->m_pdf->load();
