@@ -43,6 +43,7 @@ $(function() {
     $('.btn-meal-report').click(function() {
         meal_date = $(this).data('date');
         base_url = $(this).data('path');
+        window.location.replace(base_url + '/' + meal_date);
     });
 
     $('#gen_log_file_meal_modal').on('show.bs.modal', function(e) {
