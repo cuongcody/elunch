@@ -137,6 +137,3 @@ class Home extends CI_Controller {
     }
 
 }
-
-/* End of file Login.php */
-/* Location: ./application/controllers/admin/Login.php */

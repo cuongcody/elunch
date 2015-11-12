@@ -11,7 +11,7 @@
                             <h1 class="page-header"><?php echo $home_lang['live_attendant_status'] ?></h1>
                             <div class="choose_day">
                                 <?php if (!empty($_SESSION['message'])) echo "<script type='text/javascript'>announcementMessage('".$_SESSION['message']."')</script>"; ?>
-                                <?php echo form_open_multipart( 'admin/meals/tracking'); ?>
+                                <?php echo form_open_multipart( 'admin/home/tracking'); ?>
                                     <div class="form-group col-xs-6">
                                         <?php
                                             $options=array();
@@ -138,7 +138,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $home_lang['cancel'] ?></button>
-                <button type="button" id='tracking_meal_log' data-path="<?php echo base_url().'admin/meals/tracking_meal_log/'; ?>" class="btn btn-primary"><?php echo $home_lang['yes'] ?></button>
+                <button type="button" id='tracking_meal_log' data-path="<?php echo base_url().'admin/home/tracking_meal_log/'; ?>" class="btn btn-primary"><?php echo $home_lang['yes'] ?></button>
             </div>
         </div>
     </div>
@@ -154,7 +154,7 @@
             </div>
             <div class="modal-body">
                 <input type='hidden' name="table_id" value=""/>
-                <input type='hidden' name="user_id" value="" data-path="<?php echo base_url('admin/meals/update_status_of_user_from_table') ?>"/>
+                <input type='hidden' name="user_id" value="" data-path="<?php echo base_url('admin/home/update_status_of_user_from_table') ?>"/>
                 <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                         <div class="alert alert-success alert-dismissible fade in choose-status" role="alert" data-dismiss="modal">
