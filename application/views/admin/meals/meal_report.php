@@ -19,7 +19,7 @@
             background: url(<?php echo base_url().'/assets/images/logo.png' ?>);
             background-repeat: no-repeat;
             background-position: top left;
-    /*        background-size: 380px 90px;*/
+            background-size: 380px 90px;
             padding-left: 100px;
         }
         .shifts td{
