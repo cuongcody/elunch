@@ -95,6 +95,7 @@ class Home extends CI_Controller {
         }
         else
         {
+            $this->load->model('meals_model');
             $message = $this->common->get_message('gen_log_file_meal', array('gen_log_file_success', 'gen_log_file_failure'));
             if ($this->meals_model->update_meal_log($shift, $tables, $meal_date, $note, $actual_meals))
             {
