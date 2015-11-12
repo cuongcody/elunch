@@ -27,7 +27,7 @@
                                 foreach ($users as $key => $user)
                                 {
                                     echo "<tr id='user_".$user->id."'>";
-                                    echo "<td class='active'>".($key+1)."</td>";
+                                    echo "<td class='active'>".($page*10 + $key + 1)."</td>";
                                     echo "<td class='active'>".$user->email."</td>";
                                     echo "<td class='active'>".$user->first_name."</td>";
                                     echo "<td class='active'>".$user->last_name."</td>";

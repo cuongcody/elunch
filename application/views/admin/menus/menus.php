@@ -25,7 +25,7 @@
                             foreach ($menus as $key => $menu)
                             {
                                 echo "<tr id='menu_".$menu->id."'>";
-                                echo "<td class='active'>".($key+1)."</td>";
+                                echo "<td class='active'>".($page*10 + $key + 1)."</td>";
                                 echo "<td class='active'>".$menu->name."</td>";
                                 echo "<td class='active'><a href='#detail_text_modal' data-toggle='modal' data-target='#detail_text_modal' data-content='{$menu->description}' data-title='{$menus_lang['title']}' onclick='false;'><p class='detail-text'>".substr($menu->description,0,30)."...</a></td>";
                                 echo "<td class='active'>";

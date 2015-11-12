@@ -27,7 +27,7 @@
                             foreach ($tables as $key => $table)
                             {
                                 echo "<tr id='table_".$table->id."'>";
-                                echo "<td class='active'>".($key+1)."</td>";
+                                echo "<td class='active'>".($page*10 + $key + 1)."</td>";
                                 echo "<td class='active'>".$table->name."</td>";
                                 echo "<td class='active'><a href='#detail_text_modal' data-toggle='modal' data-target='#detail_text_modal' data-content='{$table->description}' data-title='{$tables_lang['title']}' onclick='false;'><p class='detail-text'>".substr($table->description,0,10)."...</a></td>";
                                 echo "<td class='active'><input type='checkbox' disabled class='text-center' ".(($table->for_vegans == 1) ? 'checked' : '')."></td>";

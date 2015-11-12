@@ -58,39 +58,52 @@ class Meals extends CI_Controller {
         $meal_log = $this->meals_model->get_meal_log($meal_date);
         if ($meal_log != NULL)
         {
-            $tracking_log = json_decode($meal_log->tracking_log);
-            usort($tracking_log, array($this, "compared_by_shift_id"));
-            $data['meal_log'] = $tracking_log;
-            $data['preordered_meals'] = $meal_log->preordered_meals;
-            $data['actual_meals'] = $meal_log->actual_meals;
-            $data['note'] = $meal_log->note;
-            foreach ($data['meal_log'] as $key => $value)
+            if ($meal_log->tracking_log != NULL)
             {
-                if (isset($value->shift))
+                $tracking_log = json_decode($meal_log->tracking_log);
+                usort($tracking_log, array($this, "compared_by_shift_id"));
+                $data['meal_log'] = $tracking_log;
+                $data['preordered_meals'] = $meal_log->preordered_meals;
+                $data['actual_meals'] = $meal_log->actual_meals;
+                $data['note'] = $meal_log->note;
+                foreach ($data['meal_log'] as $key => $value)
                 {
-                    if (isset($value->tables))
+                    if (isset($value->shift))
                     {
-                        foreach ($value->tables as $key2 => $value2)
+                        if (isset($value->tables))
                         {
-                            $number_users_have_attend = 0;
-                            if (isset($value2->users))
+                            foreach ($value->tables as $key2 => $value2)
                             {
-                                foreach ($value2->users as $key3 => $value3)
+                                $number_users_have_attend = 0;
+                                if (isset($value2->users))
                                 {
-                                    if ($value3->status_user == 1) $number_users_have_attend++;
+                                    foreach ($value2->users as $key3 => $value3)
+                                    {
+                                        if ($value3->status_user == 1) $number_users_have_attend++;
+                                    }
                                 }
+                                $value2->number_users_have_attend = $number_users_have_attend;
                             }
-                            $value2->number_users_have_attend = $number_users_have_attend;
                         }
                     }
                 }
+                $data['meal_date'] = $meal_date;
+                $data['title'] = 'Daily Lunch Service Report';
+                $this->load->model('tracking_users_model');
+                $view = $this->load->view('admin/meals/meal_report', $data, TRUE);
+                $this->pdf_report($view, $meal_date);
+            }
+            else
+            {
+                $this->common->return_notification('gen_log_file_meal', 'no_data_in_log_file', 0);
+                redirect('admin/meals','refresh');
             }
         }
-        $data['meal_date'] = $meal_date;
-        $data['title'] = 'Daily Lunch Service Report';
-        $this->load->model('tracking_users_model');
-        $view = $this->load->view('admin/meals/meal_report', $data, TRUE);
-        $this->pdf_report($view, $meal_date);
+        else
+        {
+            $this->common->return_notification('gen_log_file_meal', 'cannot_find_log_file', 0);
+            redirect('admin/meals','refresh');
+        }
     }
 
     public function edit($meal_id)
