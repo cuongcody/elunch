@@ -62,25 +62,9 @@ class Home extends CI_Controller {
         $this->load->helper('security');
         $this->load->library('form_validation');
         // Validation rules
-        if ($view == 'index')
-        {
-            $this->form_validation->set_rules('from', 'lang:from', 'trim|required|callback_check_date_format|xss_clean');
-            $this->form_validation->set_rules('to', 'lang:to', 'trim|required|callback_check_date_format|xss_clean');
-        }
-        elseif ($view == 'add')
+        if ($view == 'tracking')
         {
             $this->form_validation->set_rules('lunch_date', 'lang:lunch_date', 'trim|required|callback_check_date_format|xss_clean');
-            $this->form_validation->set_rules('preordered_meal', 'lang:preordered_meal', 'trim|required|numeric|greater_than[1]|xss_clean');
-            $this->form_validation->set_rules('menu', 'lang:menu', 'trim|required|numeric|xss_clean');
-        }
-        elseif ($view == 'tracking')
-        {
-            $this->form_validation->set_rules('lunch_date', 'lang:lunch_date', 'trim|required|callback_check_date_format|xss_clean');
-        }
-        else
-        {
-            $this->form_validation->set_rules('preordered_meal', 'lang:preordered_meal', 'trim|required|numeric|greater_than[1]|xss_clean');
-            $this->form_validation->set_rules('menu', 'lang:menu', 'trim|required|numeric|xss_clean');
         }
     }
 
