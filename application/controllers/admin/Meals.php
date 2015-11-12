@@ -102,7 +102,7 @@ class Meals extends CI_Controller {
         {
             $this->common->return_notification('gen_log_file_meal', 'cannot_find_log_file', 0);
         }
-        redirect('admin/meals','refresh');
+        
     }
 
     public function edit($meal_id)
