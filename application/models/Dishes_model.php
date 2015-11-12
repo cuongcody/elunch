@@ -17,7 +17,7 @@ class Dishes_model extends CI_Model {
         $this->db->join('pictures', 'dishes.id = pictures.dish_id');
         if (!is_null($perpage) && !is_null($offset))
         {
-            $this->db->limit($perpage, $offset)->order_by('categories.name', 'ASC');
+            $this->db->limit($perpage, $offset)->order_by('categories.name', 'ASC')->order_by('dishes.name', 'ASC');
         }
         $query = $this->db->get();
         return $query->result();

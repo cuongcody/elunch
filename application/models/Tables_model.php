@@ -35,7 +35,7 @@ class Tables_model extends CI_Model{
             shifts.name AS shift , shifts.start_time, shifts.end_time');
         $this->db->from('tables');
         $this->db->join('shifts', 'tables.shift_id = shifts.id', 'left');
-        $this->db->limit($perpage, $offset)->order_by('tables.shift_id', 'ASC');
+        $this->db->limit($perpage, $offset)->order_by('tables.shift_id', 'ASC')->order_by('tables.name', 'ASC');
         return $this->db->get()->result();
     }
 
