@@ -16,7 +16,7 @@
     <link href="<?php echo base_url('assets/css/style.css'); ?>" rel="stylesheet">
     <style type="text/css">
         .header {
-            background: url(<?php echo base_url().'../assets/images/logo.png' ?>);
+            background: url(<?php echo base_url().'/assets/images/logo.png' ?>);
             background-repeat: no-repeat;
             background-position: top left;
     /*        background-size: 380px 90px;*/

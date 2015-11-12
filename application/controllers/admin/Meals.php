@@ -90,8 +90,8 @@ class Meals extends CI_Controller {
                 $data['meal_date'] = $meal_date;
                 $data['title'] = 'Daily Lunch Service Report';
                 $this->load->model('tracking_users_model');
-                $view = $this->load->view('admin/meals/meal_report', $data);
-                //$this->pdf_report($view, $meal_date);
+                $view = $this->load->view('admin/meals/meal_report', $data, TRUE);
+                $this->pdf_report($view, $meal_date);
             }
             else
             {
@@ -102,7 +102,7 @@ class Meals extends CI_Controller {
         {
             $this->common->return_notification('gen_log_file_meal', 'cannot_find_log_file', 0);
         }
-        
+        redirect('admin/meals','refresh');
     }
 
     public function edit($meal_id)
