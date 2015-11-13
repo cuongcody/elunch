@@ -253,7 +253,7 @@ class Votes_model extends CI_Model {
         // // Thursday is end of voting time
         // $end_day_of_voting = $date->add(new DateInterval('P3D'))->format('Y-m-d');
         // return ($end_day_of_voting < $current_date) ? TRUE: FALSE;
-        return TRUE;
+        return FALSE;
     }
 
     /**
