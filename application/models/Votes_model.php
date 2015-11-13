@@ -38,7 +38,7 @@ class Votes_model extends CI_Model {
                     $num_votes = $counts_value_in_voted_dish_ids[$dish->id];
                 }
                 $dish->num_votes = $num_votes;
-                // Push object dish in array $vote
+                // Push dish in array $dishes
                 array_push($dishes, $dish);
             }
             usort($dishes, array($this,"compared_by_num_votes"));
