@@ -110,7 +110,7 @@ class Shifts extends CI_Controller {
         if ($to > $from) return TRUE;
         else
         {
-            $this->lang->load('validation', $this->session->userdata('site_lang'));
+            $this->lang->load('web_portal/validation', $this->session->userdata('site_lang'));
             $this->form_validation->set_message('check_time', $this->lang->line('time_format'));
             return FALSE;
         }
