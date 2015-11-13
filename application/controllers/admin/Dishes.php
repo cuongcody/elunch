@@ -160,7 +160,7 @@ class Dishes extends CI_Controller {
         if ($this->dishes_model->delete_dish($dish_id))
         {
         $image_file_name = $this->input->post('image_file_name');
-        $this->common->image_delete('../assets/images/dishes/'.$image_file_name);
+        $this->common->image_delete(SAVE_IMAGE_OF_DISHES.'/'.$image_file_name);
         $data = array(
             'status' => 'success',
             'message' => $message['delete_success']);

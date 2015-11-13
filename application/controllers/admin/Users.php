@@ -116,7 +116,7 @@ class Users extends CI_Controller {
         if ($this->users_model->delete_user($user_id))
         {
             $avatar_file_name = $this->input->post('avatar_file_name');
-            $this->common->image_delete(SAVE_IMAGE_OF_USERS. $avatar_file_name);
+            $this->common->image_delete(SAVE_IMAGE_OF_USERS.'/'.$avatar_file_name);
             $data = array(
                 'status' => 'success',
                 'message' => $message['delete_success']);
@@ -258,7 +258,7 @@ class Users extends CI_Controller {
             }
             else
             {
-                $this->common->image_delete(SAVE_IMAGE_OF_USERS. $old_image);
+                $this->common->image_delete(SAVE_IMAGE_OF_USERS.'/'. $old_image);
                 return TRUE;
             }
         }
