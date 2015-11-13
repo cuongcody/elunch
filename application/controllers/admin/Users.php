@@ -76,7 +76,7 @@ class Users extends CI_Controller {
             'what_taste' => $this->input->post('what_taste'),
             'role' => $this->input->post('role'),
             'avatar_file_name' => $image_data['file_name'],
-            'avatar_content_file' => base_url('assets/images/users/'.$image_data['file_name']),
+            'avatar_content_file' => base_url(LINK_TO_IMAGE_OF_USERS.$image_data['file_name']),
             'want_vegan_meal' => $want_vegan_meal,
             'floor' => $this->input->post('floor'),
             'shift' => $this->input->post('shift')
@@ -102,7 +102,7 @@ class Users extends CI_Controller {
             'what_taste' => $this->input->post('what_taste'),
             'role' => $this->input->post('role'),
             'avatar_file_name' => $image_data['file_name'],
-            'avatar_content_file' => base_url('assets/images/users/'.$image_data['file_name']),
+            'avatar_content_file' => base_url(LINK_TO_IMAGE_OF_USERS.$image_data['file_name']),
             'want_vegan_meal' => $want_vegan_meal,
             'floor' => $this->input->post('floor')
             ));

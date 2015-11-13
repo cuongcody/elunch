@@ -193,7 +193,7 @@ class Dishes extends CI_Controller {
         $name = $this->input->post('name');
         $description = $this->input->post('description');
         $category = $this->input->post('category');
-        $image = base_url('assets/images/dishes/'.$image_data['file_name']);
+        $image = base_url(LINK_TO_IMAGE_OF_DISHES.$image_data['file_name']);
         $dish = array(
             'name' => $name,
             'description' => $description,
@@ -214,7 +214,7 @@ class Dishes extends CI_Controller {
             'name' => $name,
             'description' => $description,
             'category' => $category,
-            'image' => base_url('assets/images/dishes/'.$image_data['file_name']),
+            'image' => base_url(LINK_TO_IMAGE_OF_DISHES.$image_data['file_name']),
             'image_file_name' => $image_data['file_name']);
         $result = $this->dishes_model->update_dish($dish_id, $dish);
         return $result;
@@ -257,7 +257,7 @@ class Dishes extends CI_Controller {
             }
             else
             {
-                $this->common->image_delete(SAVE_IMAGE_OF_DISHES.$old_image);
+                $this->common->image_delete(SAVE_IMAGE_OF_DISHES.'/'.$old_image);
                 return TRUE;
             }
         }

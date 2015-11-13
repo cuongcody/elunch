@@ -122,5 +122,7 @@ define('LATE', 3);
 define('NO_SELECT', 0);
 define('SELECTED', 1);
 // Save image
-define('SAVE_IMAGE_OF_USERS', 'assets/images/users');
-define('SAVE_IMAGE_OF_DISHES', 'assets/images/dishes');
+define('LINK_TO_IMAGE_OF_USERS', 'assets/images/users/');
+define('SAVE_IMAGE_OF_USERS', '../assets/images/users');
+define('LINK_TO_IMAGE_OF_DISHES', 'assets/images/dishes/');
+define('SAVE_IMAGE_OF_DISHES', '../assets/images/dishes');
