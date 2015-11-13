@@ -247,13 +247,12 @@ class Votes_model extends CI_Model {
      */
     function is_end_of_voting_time()
     {
-        // $date = new DateTime(date('Y-m-d'));
-        // $current_date = $date->format('Y-m-d');
-        // $first_day_of_week = $date->modify(('Sunday' == $date->format('l')) ? 'Monday last week' : 'Monday this week')->format('Y-m-d');
-        // // Thursday is end of voting time
-        // $end_day_of_voting = $date->add(new DateInterval('P3D'))->format('Y-m-d');
-        // return ($end_day_of_voting < $current_date) ? TRUE: FALSE;
-        return FALSE;
+        $date = new DateTime(date('Y-m-d'));
+        $current_date = $date->format('Y-m-d');
+        $first_day_of_week = $date->modify(('Sunday' == $date->format('l')) ? 'Monday last week' : 'Monday this week')->format('Y-m-d');
+        // Thursday is end of voting time
+        $end_day_of_voting = $date->add(new DateInterval('P3D'))->format('Y-m-d');
+        return ($end_day_of_voting < $current_date) ? TRUE : FALSE;
     }
 
     /**
