@@ -55,7 +55,7 @@ class Access_point_model extends CI_Model {
             'selected' => $selected);
         if ($this->db->insert('access_point', $data))
         {
-            if ($selected == 1)
+            if ($selected == SELECTED)
             {
                 $this->push_notification_change_access_point();
             }
@@ -83,7 +83,7 @@ class Access_point_model extends CI_Model {
         $this->db->where('id', $access_point_id);
         if ($this->db->update('access_point', $data))
         {
-            if ($selected == 1)
+            if ($selected == SELECTED)
             {
                 $this->push_notification_change_access_point();
             }
@@ -117,7 +117,7 @@ class Access_point_model extends CI_Model {
     function push_notification_change_access_point()
     {
         // Get all access point have selected
-        $access_point = $this->get_all_access_point(1);
+        $access_point = $this->get_all_access_point(SELECTED);
         if ($access_point != NULL)
         {
             $this->load->model('users_model');

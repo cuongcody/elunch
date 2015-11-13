@@ -11,8 +11,10 @@ class Dishes_api extends Base_api {
     }
 
     /**
-     * Get dishes
+     * Get all dishes
      * url: http://localhost/dishes
+     * Method: GET
+     * @return      json
      */
     function dishes_get()
     {
@@ -45,11 +47,15 @@ class Dishes_api extends Base_api {
         }
         $this->response($response, 200);
     }
+
     /**
-    * Listing all dishes of a meal in a day
-    * method GET
-    * url: http://localhost/meals?from=yyyy-mm-dd&days=<number>
-    */
+     * Listing all dishes of a meal in a day
+     * url: http://localhost/meals?from=yyyy-mm-dd&days=<number>
+     * Method: GET
+     * @param       date(y-m-d)  $from
+     * @param       int  $days
+     * @return      json
+     */
     function meals_get()
     {
         $this->authenticate();

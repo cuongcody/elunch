@@ -9,9 +9,15 @@ class Announcements_api extends Base_api {
         $this->load->library('common');
         $this->load->model('announcements_model');
     }
+
     /**
      * Get all announcements
      * url: http://localhost/user/<user_id>/announcements?to=yyyy-mm-dd&days=duration
+     * Method: GET
+     * @param       int  $user_id
+     * @param       date(Y-m-d)  $to
+     * @param       int  $days
+     * @return      json
      */
     function announcements_get($user_id)
     {
@@ -72,9 +78,13 @@ class Announcements_api extends Base_api {
         $this->response($response, 200);
     }
 
-     /**
+    /**
      * Get detail message from admin
      * url: http://localhost/user/<user_id>/announcement/<announcement_id>
+     * Method: GET
+     * @param       int  $user_id
+     * @param       int  $announcement_id
+     * @return      json
      */
     function announcement_get($user_id, $announcement_id)
     {
@@ -116,6 +126,11 @@ class Announcements_api extends Base_api {
     /**
      * Reply message from admin
      * url: http://localhost/announcement
+     * Method: POST
+     * @param       int  $user_id
+     * @param       int  $announcement_id
+     * @param       string  $content
+     * @return      json
      */
     function announcement_post()
     {
@@ -148,8 +163,12 @@ class Announcements_api extends Base_api {
     }
 
     /**
-     * Update all  replies of announcement of user have read
-     * url: http://localhost/read_replies_announcement
+     * Update all announcement of user have read
+     * url: http://localhost/read_announcement
+     * Method: PUT
+     * @param       int  $user_id
+     * @param       int  $announcement_id
+     * @return      json
      */
     function read_announcement_put()
     {
@@ -175,8 +194,13 @@ class Announcements_api extends Base_api {
     }
 
     /**
-     * Update all  replies of announcement of user have read
+     * Update all replies of announcement of user have read
      * url: http://localhost/read_replies_announcement
+     * Method: PUT
+     * @param       int  $user_id
+     * @param       int  $announcement_id
+     * @param       array  $reply_ids
+     * @return      json
      */
     function read_replies_announcement_put()
     {

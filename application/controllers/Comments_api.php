@@ -9,9 +9,15 @@ class Comments_api extends Base_api {
         $this->load->library('common');
         $this->load->model('comments_model');
     }
+
     /**
      * Get comments from user for dish
      * url: http://localhost/user/<number_of_user>/comments?to=yyyy-mm-dd&days=duration
+     * Method: GET
+     * @param       int  $user_id
+     * @param       date('y-m-d')  $to
+     * @param       int  $days
+     * @return      json
      */
     function comments_of_user_get($user_id)
     {
@@ -77,6 +83,10 @@ class Comments_api extends Base_api {
     /**
      * Get detail comment from user
      * url: http://localhost/user/<user_id>/comment/<number_of_comment_id>
+     * Method: GET
+     * @param       int  $user_id
+     * @param       int  $comment_id
+     * @return      json
      */
     function comment_get($user_id, $comment_id)
     {
@@ -122,6 +132,12 @@ class Comments_api extends Base_api {
     /**
      * Add comment from user for meal date
      * url: http://localhost/comment
+     * Method: POST
+     * @param       int  $user_id
+     * @param       string  $title
+     * @param       string  $content
+     * @param       date(y-m-d)  $meal_date
+     * @return      json
      */
     function comment_post()
     {
@@ -165,6 +181,11 @@ class Comments_api extends Base_api {
     /**
      * Reply comment from user
      * url: http://localhost/reply
+     * Method: POST
+     * @param       int  $user_id
+     * @param       int  $comment_id
+     * @param       string  $content
+     * @return      json
      */
     function reply_post()
     {
@@ -199,6 +220,10 @@ class Comments_api extends Base_api {
     /**
      * Update all comments of user have read
      * url: http://localhost/read_comments
+     * Method: PUT
+     * @param       int  $user_id
+     * @param       int  $comment_id
+     * @return      json
      */
     function read_comment_put()
     {
@@ -226,6 +251,11 @@ class Comments_api extends Base_api {
     /**
      * Update all replies of comment from user have read
      * url: http://localhost/read_replies_comments
+     * Method: PUT
+     * @param       int  $user_id
+     * @param       int  $comment_id
+     * @param       int  $reply_ids
+     * @return      json
      */
     function read_replies_comment_put()
     {

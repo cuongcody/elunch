@@ -9,11 +9,15 @@ class Tracking_users_api extends Base_api {
         $this->load->library('common');
         $this->load->model('tracking_users_model');
     }
-    /*
-        Update status of user
-        Method POST
-        url: http://localhost/user/<user_id>/tracking
-    */
+
+    /**
+     * Update status of user
+     * url: http://localhost/user/<user_id>/tracking
+     * Method: POST
+     * @param       int  $user_id
+     * @param       string  $is_available
+     * @return      json
+     */
     function tracking_user_put($user_id)
     {
         $this->authenticate();

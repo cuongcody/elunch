@@ -118,3 +118,9 @@ define('TIMEOUT', 1);
 define('ATTEND', 1);
 define('ABSENT', 2);
 define('LATE', 3);
+// Access point
+define('NO_SELECT', 0);
+define('SELECTED', 1);
+// Save image
+define('SAVE_IMAGE_OF_USERS', 'assets/images/users');
+define('SAVE_IMAGE_OF_DISHES', 'assets/images/dishes');

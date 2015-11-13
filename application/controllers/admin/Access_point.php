@@ -137,7 +137,7 @@ class access_point extends CI_Controller {
 
     public function store_access_point()
     {
-        $selected = (!empty($this->input->post('selected'))) ? 1 : 0;
+        $selected = (!empty($this->input->post('selected'))) ? SELECTED : NO_SELECT;
         $ssid = $this->input->post('ssid');
         $bssid = $this->input->post('bssid');
         return $this->access_point_model->insert_access_point($ssid, $bssid, $selected);
@@ -145,7 +145,7 @@ class access_point extends CI_Controller {
 
     public function edit_access_point($access_point_id)
     {
-        $selected = (!empty($this->input->post('selected'))) ? 1 : 0;
+        $selected = (!empty($this->input->post('selected'))) ? SELECTED : NO_SELECT;
         $bssid = $this->input->post('bssid');
         $ssid = $this->input->post('ssid');
         return $this->access_point_model->update_access_point($access_point_id, $ssid, $bssid, $selected);

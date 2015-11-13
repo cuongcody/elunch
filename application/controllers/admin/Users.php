@@ -116,7 +116,7 @@ class Users extends CI_Controller {
         if ($this->users_model->delete_user($user_id))
         {
             $avatar_file_name = $this->input->post('avatar_file_name');
-            $this->common->image_delete('../assets/images/users/'. $avatar_file_name);
+            $this->common->image_delete(SAVE_IMAGE_OF_USERS. $avatar_file_name);
             $data = array(
                 'status' => 'success',
                 'message' => $message['delete_success']);
@@ -216,7 +216,7 @@ class Users extends CI_Controller {
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
         $data['page'] = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-        $users = $this->users_model->get_all_users($config['per_page'],  ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page']);
+        $users = $this->users_model->get_all_users($config['per_page'], ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page']);
         $data['users'] = $users;
         $this->common->load_view('admin/users/users', $data);
     }
@@ -227,7 +227,7 @@ class Users extends CI_Controller {
         {
             if ($_FILES['img']['size'] != 0)
             {
-                if (!$this->common->image_upload('../assets/images/users'))
+                if (!$this->common->image_upload(SAVE_IMAGE_OF_USERS))
                 {
                     $this->lang->load('web_portal/validation', $this->session->userdata('site_lang'));
                     $this->form_validation->set_message('check_image_upload', $this->lang->line('error_upload'));
@@ -250,7 +250,7 @@ class Users extends CI_Controller {
         if ($_FILES['img']['size'] != 0)
         {
             $old_image = $this->session->userdata('upload')['file_name'];
-            if (!$this->common->image_upload('../assets/images/users'))
+            if (!$this->common->image_upload(SAVE_IMAGE_OF_USERS))
             {
                 $this->lang->load('web_portal/validation', $this->session->userdata('site_lang'));
                 $this->form_validation->set_message('check_image_upload', $this->lang->line('error_upload'));
@@ -258,7 +258,7 @@ class Users extends CI_Controller {
             }
             else
             {
-                $this->common->image_delete('../assets/images/users/'.$old_image);
+                $this->common->image_delete(SAVE_IMAGE_OF_USERS. $old_image);
                 return TRUE;
             }
         }

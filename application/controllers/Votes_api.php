@@ -9,11 +9,14 @@ class Votes_api extends Base_api {
         $this->load->library('common');
         $this->load->model('votes_model');
     }
+
     /**
-    * Listing all vote of dishes in a week
-    * method GET
-    * url: http://localhost/votes[?date=yyyy-mm-dd]
-    */
+     * Listing all vote of dishes in a week
+     * url: http://localhost/votes[?date=yyyy-mm-dd]
+     * Method: GET
+     * @param       date(y-m-d)  $date
+     * @return      json
+     */
     function votes_get()
     {
         $this->authenticate();
@@ -49,11 +52,15 @@ class Votes_api extends Base_api {
         }
         $this->response($response, 200);
     }
+
     /**
-    * Add vote for a dish in a week
-    * method POST
-    * url: http://localhost/vote
-    */
+     * Add vote for a dish in a week
+     * url: http://localhost/vote
+     * Method: POST
+     * @param       int  $user_id
+     * @param       array  $dishes_id
+     * @return      json
+     */
     function vote_post()
     {
         $this->authenticate();
@@ -64,7 +71,8 @@ class Votes_api extends Base_api {
         $this->verify_required_params(array('user_id','dishes_id'));
         $response = array();
         $res = $this->votes_model->vote_for_dish_of_week($user_id, $dishes_id);
-        switch ($res) {
+        switch ($res)
+        {
             case ADD_VOTE_SUCCESSFULLY:
                 $result = $this->votes_model->get_all_dishes_with_votes_number_in_a_week();
                 $dishes = array();
@@ -102,10 +110,12 @@ class Votes_api extends Base_api {
     }
 
     /**
-    * Count number of votes remainning of user for all dishes in a week
-    * method GET
-    * url: http://localhost/user/<user_id>/votes
-    */
+     * Count number of votes remainning of user for all dishes in a week
+     * url: http://localhost/user/<user_id>/votes
+     * Method: GET
+     * @param       int  $user_id
+     * @return      json
+     */
     function count_vote_get($user_id)
     {
         $this->authenticate();
@@ -127,11 +137,14 @@ class Votes_api extends Base_api {
         }
         $this->response($response, 200);
     }
+
     /**
-    * Count number of vote from user for a dish in a week
-    * method GET
-    * url: http://localhost/user/<user_id>/vote_dishes
-    */
+     * Count number of vote from user for a dish in a week
+     * url: http://localhost/user/<user_id>/vote_dishes
+     * Method: GET
+     * @param       int  $user_id
+     * @return      json
+     */
     function vote_dish_of_user_get($user_id)
     {
         $this->authenticate();

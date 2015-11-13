@@ -11,17 +11,19 @@ class Users_api extends Base_api {
     }
 
     /**
-    * Get infomation user by id
-    * method GET
-    * url: http://localhost/user/<number_of_user_id>
-    */
-    function user_get($id)
+     * Get infomation user by id
+     * url: http://localhost/user/<number_of_user_id>
+     * Method: GET
+     * @param       int  $user_id
+     * @return      json
+     */
+    function user_get($user_id)
     {
         $this->authenticate();
         $messages_lang = $this->common->set_language_for_server_api('users_api',
             array('get_user_profile_success', 'get_user_profile_failure'));
         $response = array();
-        $result = $this->users_model->get_user_by('id', $id);
+        $result = $this->users_model->get_user_by('id', $user_id);
         if ($result != NULL)
         {
             $user['id'] = (int)$result->id;
@@ -51,10 +53,14 @@ class Users_api extends Base_api {
     }
 
     /**
-    * Update infomation user by id
-    * method PUT
-    * url: http://localhost/user/<number_of_user_id>
-    */
+     * Update infomation user by id
+     * url: http://localhost/user/<number_of_user_id>
+     * Method: PUT
+     * @param       int  $id
+     * @param       int  $want_vegan_meal
+     * @param       string  $what_taste
+     * @return      json
+     */
     function user_put($user_id)
     {
         $this->authenticate();
@@ -78,10 +84,14 @@ class Users_api extends Base_api {
     }
 
     /**
-    * Update registion_id to use google cloud message API user by id
-    * method PUT
-    * url: http://localhost/user/<user_id>/gcm_regid
-    */
+     * Update registion_id to use google cloud message API user by id
+     * url: http://localhost/user/<user_id>/gcm_regid
+     * Method: PUT
+     * @param       int  $user_id
+     * @param       int  $want_vegan_meal
+     * @param       string  $what_taste
+     * @return      json
+     */
     function gcm_regid_put($user_id)
     {
         $this->authenticate();
@@ -103,11 +113,13 @@ class Users_api extends Base_api {
     }
 
     /**
-    * User Login
-    * url: http://localhost/login
-    * method - POST
-    * params - email, password
-    */
+     * User Login
+     * url: http://localhost/login
+     * Method: POST
+     * @param       string  $email
+     * @param       string  $password
+     * @return      json
+     */
     function login_post()
     {
         // Check for required params
@@ -160,21 +172,26 @@ class Users_api extends Base_api {
     }
 
     /**
-    * User Logout
-    * url: http://localhost/logout
-    * method - POST
-    */
+     * User Logout
+     * url: http://localhost/logout
+     * Method: POST
+     * @return      json
+     */
     function logout_post()
     {
         $this->destroy();
     }
 
     /**
-    * Change password of user
-    * url: http://localhost/change_password
-    * method - POST
-    * params - name, email, password
-    */
+     * Change password of user
+     * url: http://localhost/change_password
+     * Method: PUT
+     * @param       int  $int
+     * @param       string  $current_password
+     * @param       string  $new_password
+     * @param       string  $confirm_new_password
+     * @return      json
+     */
     function change_password_put()
     {
         $this->authenticate();
@@ -221,6 +238,8 @@ class Users_api extends Base_api {
 
     /**
     * Validating email address
+    * @param  string  $email
+    * @return json
     */
     function validate_email($email)
     {

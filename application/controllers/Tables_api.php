@@ -11,10 +11,13 @@ class Tables_api extends Base_api {
     }
 
     /**
-    * Listing all tables of shift
-    * method GET
-    * url: http://localhost/shift/<number_of_shift>/tables?[for_vegans=]
-    */
+     * Listing all tables of shift
+     * url: http://localhost/shift/<number_of_shift>/tables?[for_vegans=]
+     * Method: GET
+     * @param       int  $shift_id
+     * @param       int  $for_vegans
+     * @return      json
+     */
     function tables_of_shift_get($shift_id)
     {
         $this->authenticate();
@@ -84,10 +87,13 @@ class Tables_api extends Base_api {
     }
 
     /**
-    * Join table
-    * method POST
-    * url: http://localhost/seat
-    */
+     * Join in table
+     * url: http://localhost/seat
+     * Method: POST
+     * @param       int  $user_id
+     * @param       int  $table_id
+     * @return      json
+     */
     function seat_post()
     {
         $this->authenticate();
@@ -100,7 +106,8 @@ class Tables_api extends Base_api {
         if (is_numeric($user_id) AND is_numeric($table_id))
         {
             $result = $this->tables_model->set_table_for_user($user_id, $table_id);
-            switch ($result) {
+            switch ($result)
+            {
                 case JOIN_TABLE_SUCCESSFULLY:
                     $response['status'] = $messages_lang['success'];
                     $response['message'] = $messages_lang['join_table_success'];
@@ -124,10 +131,13 @@ class Tables_api extends Base_api {
     }
 
     /**
-    * Leave table
-    * method DELETE
-    * url: http://localhost/seat?user_id=<number_of_user_id>&table_id=<number_of_table_id>
-    */
+     * Leave table
+     * url: http://localhost/seat?user_id=<number_of_user_id>&table_id=<number_of_table_id>
+     * Method: DELETE
+     * @param       int  $user_id
+     * @param       int  $table_id
+     * @return      json
+     */
     function seat_delete()
     {
         $this->authenticate();
@@ -139,7 +149,8 @@ class Tables_api extends Base_api {
         if (is_numeric($user_id) AND is_numeric($table_id))
         {
             $result = $this->tables_model->user_leave_table($user_id, $table_id, NULL);
-            switch ($result) {
+            switch ($result)
+            {
                 case LEAVE_TABLE_SUCCESSFULLY:
                     $response['status'] = $messages_lang['success'];
                     $response['message'] = $messages_lang['leave_table_success'];

@@ -24,6 +24,7 @@
         <script src="<?php echo (base_url('assets/js/js.js')); ?>"></script>
     </head>
     <body>
+        <?php echo APPPATH; ?>
         <div class="container">
             <div class="row" >
                 <div class="col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-xs-offset-1 col-xs-10">

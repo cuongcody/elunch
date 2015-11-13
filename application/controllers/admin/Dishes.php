@@ -226,7 +226,7 @@ class Dishes extends CI_Controller {
         {
             if ($_FILES['img']['size'] != 0)
             {
-                if (!$this->common->image_upload('../assets/images/dishes'))
+                if (!$this->common->image_upload(SAVE_IMAGE_OF_DISHES))
                 {
                     $this->lang->load('web_portal/validation', $this->session->userdata('site_lang'));
                     $this->form_validation->set_message('check_image_upload', $this->lang->line('error_upload'));
@@ -249,7 +249,7 @@ class Dishes extends CI_Controller {
         if ($_FILES['img']['size'] != 0)
         {
             $old_image = $this->session->userdata('upload')['file_name'];
-            if (!$this->common->image_upload('../assets/images/dishes'))
+            if (!$this->common->image_upload(SAVE_IMAGE_OF_DISHES))
             {
                 $this->lang->load('web_portal/validation', $this->session->userdata('site_lang'));
                 $this->form_validation->set_message('check_image_upload', $this->lang->line('error_upload'));
@@ -257,7 +257,7 @@ class Dishes extends CI_Controller {
             }
             else
             {
-                $this->common->image_delete('../assets/images/dishes/'.$old_image);
+                $this->common->image_delete(SAVE_IMAGE_OF_DISHES.$old_image);
                 return TRUE;
             }
         }
