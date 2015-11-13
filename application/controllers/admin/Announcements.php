@@ -162,6 +162,9 @@ class Announcements extends CI_Controller {
                         $send_notification['data'] = array(
                             'type' => 'reply_announcement',
                             'announcement' => array(
+                                'user_id' => $announcement->user_id,
+                                'email' => $announcement->email,
+                                'avatar_content_file' => $announcement->avatar_content_file,
                                 'id' => (int)$announcement->id,
                                 'meal_date' => $announcement->meal_date,
                                 'title' => $announcement->title,

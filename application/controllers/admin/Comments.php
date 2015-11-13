@@ -117,6 +117,9 @@ class Comments extends CI_Controller {
                         $send_notification['data'] = array(
                             'type' => 'reply_comment',
                             'comment' => array(
+                                'user_id' => $comment->user_id,
+                                'email' => $comment->email,
+                                'avatar_content_file' => $comment->avatar_content_file,
                                 'id' => (int)$comment->id,
                                 'meal_date' => $comment->meal_date,
                                 'dish_id' => $comment->dish_id,
