@@ -17,8 +17,9 @@ class Users_model extends CI_Model{
         $this->db->join('shifts', 'users.shift_id = shifts.id');
         if (!is_null($perpage) && !is_null($offset))
         {
-            $this->db->limit($perpage, $offset)->order_by('users.admin', 'DESC')->order_by('users.email', 'ASC');
+            $this->db->limit($perpage, $offset)->order_by('users.admin', 'DESC');
         }
+        $this->db->order_by('users.email', 'ASC');
         $query = $this->db->get();
         return $query->result();
     }
