@@ -421,6 +421,7 @@ class Tables_model extends CI_Model{
             $this->db->where('vegan_day', VEGAN_DAY);
         }
         elseif(!is_null($day) && $day == NORMAL_DAY) $this->db->where('vegan_day', NORMAL_DAY);
+        $this->db->order_by('users.first_name', 'ASC');
         $query = $this->db->get();
         return $query->result();
     }
