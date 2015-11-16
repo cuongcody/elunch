@@ -51,6 +51,7 @@ class Shifts_model extends CI_Model {
         $this->db->join('floors', 'users.floor_id = floors.id');
         $this->db->join('shifts', 'users.shift_id = shifts.id');
         $this->db->where('shift_id', $shift_id);
+        $this->db->order_by('users.first_name');
         $query = $this->db->get();
         return $query->result();
     }
