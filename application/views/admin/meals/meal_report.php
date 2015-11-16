@@ -22,9 +22,6 @@
             background-size: 380px 90px;
             padding-left: 100px;
         }
-        .shifts td{
-          padding: 5px;
-        }
         .green {
             color: #1ABB9C;
         }
@@ -38,9 +35,52 @@
           font-style: italic;
           color: #003366;
         }
-
-        table.print-friendly tr td, table.print-friendly tr th {
-        page-break-inside: avoid;
+        .table-header{
+            background-color: #024700; color: #fff;
+        }
+        .border-left{
+            border-left: 1px solid #d7d7d7;
+        }
+        .border-right{
+            border-right: 1px solid #d7d7d7;
+        }
+        .border-bottom{
+            border-bottom: 1px solid #d7d7d7;
+        }
+        .background-green {
+            background-color: #f0e7e7;
+        }
+        .background-pink{
+            background-color: #d7e6fa;
+        }
+        .background-blue{
+            background-color: #c1f5ba;
+        }
+        .background-grey{
+            background-color: #f8f9fb;
+        }
+        .col-3-a {
+            width: 164px;
+        }
+        .col-1-a {
+            width: 198px;
+        }
+        .col-2-a {
+            width: 138px;
+        }
+        .margin {
+            margin: 5px;
+        }
+        .col-3-b:last-child{
+            border: 0px;
+        }
+        .tables, .users{
+            padding: 0px;
+        }
+        .col-1-a,.col-2-a,.col-2-b, .col-1-b, .col-3-a, .col-3-b{
+            float: left;
+            position: relative;
+            padding: 5px;
         }
     </style>
 </head>
@@ -62,11 +102,10 @@
                             <div>Actual meals: <?php echo $actual_meals ?></div>
                         </strong>
                     </div>
-                    <table style='' class='table print-friendly shifts'>
-                        <tr style=''>
-                            <td style='background-color: #024700; color: #fff;width:180px;'> <strong>Shifts</strong> </td>
-                            <td style='background-color: #024700;color: #fff;'> <strong>Tables</strong></td>
-                        </tr>
+                    <div class='table-header'>
+                        <div class='col-1-a border-right'>Shift</div>
+                        <div class='col-1-b'>Tables</div>
+                    </div>
                         <?php
                         if (isset($meal_log))
                         {
@@ -74,38 +113,43 @@
                             {
                                 if (isset($value->shift))
                                 {
-                                    if ($key % 3 == 0) $background = "background-color: #f0e7e7;";
-                                    else if($key % 3 == 1) $background = "background-color: #d7e6fa;";
-                                    else $background = "background-color: #c1f5ba;";
-                                    echo "<tr style='".$background."border:1px'><td style='".$background."width:180px'><div><strong>NAME: </strong> ".$value->shift->name."</div><div><strong>START TIME: </strong>".date('g:i A', strtotime($value->shift->start_time))."</div><div><strong>END TIME: </strong>".date('g:i A', strtotime($value->shift->end_time))."</div> <div><strong>TOTAL TABLES: </strong> ".(isset($value->tables) ? sizeof($value->tables) : 0)."</div></td>";
-                                    echo "<td style='".$background."'><table style='margin:-5px;' class='table print-friendly'>";
-                                    if (isset($value->tables))
+                                    if ($key % 3 == 0) $background = "background-green";
+                                    else if($key % 3 == 1) $background = "background-pink";
+                                    else $background = "background-blue";
+                                    echo "<div class='".$background."'><div class='col-1-a'>";
+                                    echo "<div><strong>NAME: </strong>".$value->shift->name."</div>";
+                                    echo "<div><strong>START TIME: </strong>".date('g:i A', strtotime($value->shift->start_time))."</div>";
+                                    echo "<div><strong>END TIME: </strong>".date('g:i A', strtotime($value->shift->end_time))."</div>";
+                                    echo "</div>";
+                                    echo "<div class='col-1-b border-left tables'>";
+                                    foreach ($value->tables as $key2 => $value2)
                                     {
-                                        foreach ($value->tables as $key2 => $value2)
+                                        echo "<div class='border-bottom'><div class='col-2-a'>";
+                                        echo "<div><strong>NAME: </strong>".$value2->name."</div>";
+                                        echo "<div><strong>ATTENDANCE: </strong>".$value2->number_users_have_attend."</div>";
+                                        echo "<div><strong>TOTAL USERS: </strong>".(isset($value2->users) ? sizeof($value2->users) : 0)."</div>";
+                                        echo "</div>";
+                                        if (isset($value2->users))
                                         {
-                                            echo "<tr style=''><td style='".$background."width:180px;border-left: 0px;border-top: 0px'><div><strong>NAME:</strong> ".$value2->name."</div><div><strong>ATTENDANCE :</strong> ".$value2->number_users_have_attend."</div><div><strong>TOTAL USERS:</strong> ".(isset($value2->users) ? sizeof($value2->users) : 0)."</div></td>";
-                                            echo "<td style='".$background."border:0px'><table style='margin:-1px' class='table print-friendly'>";
-                                            if (isset($value2->users))
+                                            echo "<div class='col-2-b background-grey margin users'>";
+                                            foreach ($value2->users as $key3 => $value3)
                                             {
-                                                foreach ($value2->users as $key3 => $value3)
-                                                {
-                                                    echo "<tr style=''><td style='background-color: #f8f9fb;width:200px'><img class='img-thumbnail' width='30' height='30' src='".$value3->avatar_content_file."'> ".($value3->first_name)."</td>";
-                                                    echo "<td style='background-color: #f8f9fb;'>";
-                                                    if ($value3->status_user == 1) echo "<strong class='green'>ATTEND</strong>";
-                                                    elseif ($value3->status_user == 2) echo "<strong class='red'>ABSENT</strong>";
-                                                    else echo "<strong class='orange'>LATE</strong>";
-                                                    echo "</td></tr>";
-                                                }
+                                                echo "<div class='border-bottom'><div class='col-3-a'><img class='img-thumbnail' width='30' height='30' src='".$value3->avatar_content_file."'> ".$value3->first_name."</div>";
+                                                echo "<div class='col-3-b'>";
+                                                if ($value3->status_user == 1) echo "<strong class='green'>ATTEND</strong>";
+                                                elseif ($value3->status_user == 2) echo "<strong class='red'>ABSENT</strong>";
+                                                else echo "<strong class='orange'>LATE</strong>";
+                                                echo "</div></div>";
                                             }
-                                            echo "</table></td></tr>";
+                                            echo "</div>";
                                         }
+                                        echo "</div>";
                                     }
-                                    echo "</table></td></tr>";
+                                    echo "</div></div>";
                                 }
                             }
                         }
                         ?>
-                    </table>
                     <div class='italic'>
                         <?php echo ($note != NULL) ? '*Note: <p>'.$note.'</p>' : ''; ?>
                     </div>
