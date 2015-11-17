@@ -226,7 +226,7 @@ class Tables extends CI_Controller {
         $this->load->library('pagination');
         $config['base_url'] = base_url().'/admin/tables';
         $config['total_rows'] = $this->tables_model->get_num_of_tables($search);
-        $config['per_page'] = 10;
+        $config['per_page'] = (($search != '') ? $config['total_rows'] : 10);
         $config['use_page_numbers'] = TRUE;
         $config['uri_segment'] = 3;
         $config['num_links'] = 3;

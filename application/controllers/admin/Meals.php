@@ -160,7 +160,7 @@ class Meals extends CI_Controller {
         $this->load->library('pagination');
         $config['base_url'] = base_url('admin/meals');
         $config['total_rows'] = $this->meals_model->get_num_of_meals($from, $to);
-        $config['per_page'] = 10;
+        $config['per_page'] = (($from != '' || $to != '') ? $config['total_rows'] : 10);
         $config['use_page_numbers'] = TRUE;
         $config['uri_segment'] = 3;
         $config['num_links'] = 3;
