@@ -31,7 +31,7 @@ class Tables_model extends CI_Model{
      */
     function get_tables($perpage, $offset, $search = NULL)
     {
-        $this->db->select('tables.id, tables., tables.description, tables.for_vegans, tables.seats,
+        $this->db->select('tables.id, tables.name, tables.description, tables.for_vegans, tables.seats,
             shifts.name AS shift , shifts.start_time, shifts.end_time');
         $this->db->from('tables');
         $this->db->join('shifts', 'tables.shift_id = shifts.id', 'left');
