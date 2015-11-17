@@ -57,7 +57,7 @@
                             foreach ($meals as $key => $meal)
                             {
                                 echo "<tr id='meal_".$meal->id."'>";
-                                echo "<td class='active'>".($page*10 + $key + 1)."</td>";
+                                echo "<td class='active'>".(($page == 0 ? $page : ($page - 1))*10 + $key + 1)."</td>";
                                 echo "<td class='active'>".$meal->meal_date."</td>";
                                 echo "<td class='active'>".$meal->preordered_meals."</td>";
                                 echo "<td class='active'>".$meal->menu_name."</td>";
