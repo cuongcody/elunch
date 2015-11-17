@@ -13,8 +13,7 @@ class Users extends CI_Controller {
     public function index()
     {
         $this->common->authenticate();
-        $search = $this->input->post('search');
-        $this->load_users_view($search);
+        $this->load_users_view();
     }
 
     public function add()
@@ -187,10 +186,11 @@ class Users extends CI_Controller {
         $this->common->load_view('admin/users/edit_user', $data);
     }
 
-    public function load_users_view($search)
+    public function load_users_view()
     {
         $message = array('title', 'search', 'search_name', 'email', 'first_name', 'last_name', 'what_taste', 'want_vegan_meal', 'floor', 'role', 'user', 'admin', 'create_user', 'edit', 'delete', 'are_you_sure', 'yes', 'cancel');
         $data = $this->common->set_language_and_data('users', $message);
+        $search = $this->input->post('search');
         $this->load->library('pagination');
         $config['base_url'] = base_url().'/admin/users';
         $config['total_rows'] = $this->users_model->get_num_of_users($search);
@@ -200,8 +200,8 @@ class Users extends CI_Controller {
         $config['num_links'] = 3;
         $config['full_tag_open'] = "<ul class='pagination'>";
         $config['full_tag_close'] ="</ul>";
-        $config['first_link'] = false;
-        $config['last_link'] = false;
+        $config['first_link'] = FALSE;
+        $config['last_link'] = FALSE;
         $config['num_tag_open'] = '<li>';
         $config['num_tag_close'] = '</li>';
         $config['cur_tag_open'] = "<li class='disabled'><li class='active'><a href='#'>";

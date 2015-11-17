@@ -8,7 +8,7 @@
                     <?php echo anchor('admin/users/add', $users_lang['create_user'], "class='btn btn-primary'"); ?>
                 </div>
                 <div class= "col-xs-12 col-md-offset-2 col-md-5">
-                    <?php echo form_open_multipart( 'admin/users/'); ?>
+                    <?php echo form_open_multipart('admin/users/'); ?>
                         <div class="col-xs-12">
                             <div class="input-group">
                                 <?php
