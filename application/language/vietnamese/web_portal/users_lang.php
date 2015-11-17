@@ -7,6 +7,8 @@
     $lang["floor"] = "Tầng";
     $lang["shift"] = "Suất";
     $lang["want_vegan_meal"] = "Ăn chay";
+    $lang["search"] = "Tìm kiếm";
+    $lang["search_name"] = "Tìm tên";
     $lang["admin"] = "Quản trị hệ thống";
     $lang["user"] = "Người dùng";
     $lang["avatar"] = "Ảnh đại diện";

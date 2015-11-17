@@ -9,7 +9,7 @@ class Users_model extends CI_Model{
      * @param       int  $offset
      * @return      array
      */
-    function get_all_users($perpage = NULL, $offset = NULL)
+    function get_all_users($perpage = NULL, $offset = NULL, $search = NULL)
     {
         $this->db->select('users.*, floors.name AS floor, shifts.name AS shift, shifts.id AS shift_id, shifts.start_time, shifts.end_time');
         $this->db->from('users');
@@ -19,6 +19,7 @@ class Users_model extends CI_Model{
         {
             $this->db->limit($perpage, $offset)->order_by('users.admin', 'DESC');
         }
+           $this->db->like('users.first_name', $search);
         $this->db->order_by('users.email', 'ASC');
         $query = $this->db->get();
         return $query->result();
@@ -29,9 +30,9 @@ class Users_model extends CI_Model{
      *
      * @return      int
      */
-    function get_num_of_users()
+    function get_num_of_users($search = NULL)
     {
-        return $this->db->get('users')->num_rows();
+        return (!is_null($search)) ? $this->db->like('users.first_name', $search)->get('users')->num_rows() : $this->db->get('users')->num_rows();
     }
 
     /**

@@ -13,7 +13,8 @@ class Users extends CI_Controller {
     public function index()
     {
         $this->common->authenticate();
-        $this->load_users_view();
+        $search = $this->input->post('search');
+        $this->load_users_view($search);
     }
 
     public function add()
@@ -186,13 +187,13 @@ class Users extends CI_Controller {
         $this->common->load_view('admin/users/edit_user', $data);
     }
 
-    public function load_users_view()
+    public function load_users_view($search)
     {
-        $message = array('title', 'email', 'first_name', 'last_name', 'what_taste', 'want_vegan_meal', 'floor', 'role', 'user', 'admin', 'create_user', 'edit', 'delete', 'are_you_sure', 'yes', 'cancel');
+        $message = array('title', 'search', 'search_name', 'email', 'first_name', 'last_name', 'what_taste', 'want_vegan_meal', 'floor', 'role', 'user', 'admin', 'create_user', 'edit', 'delete', 'are_you_sure', 'yes', 'cancel');
         $data = $this->common->set_language_and_data('users', $message);
         $this->load->library('pagination');
         $config['base_url'] = base_url().'/admin/users';
-        $config['total_rows'] = $this->users_model->get_num_of_users();
+        $config['total_rows'] = $this->users_model->get_num_of_users($search);
         $config['per_page'] = 10;
         $config['use_page_numbers'] = TRUE;
         $config['uri_segment'] = 3;
@@ -216,7 +217,7 @@ class Users extends CI_Controller {
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
         $data['page'] = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-        $users = $this->users_model->get_all_users($config['per_page'], ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page']);
+        $users = $this->users_model->get_all_users($config['per_page'], ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page'], $search);
         $data['users'] = $users;
         $this->common->load_view('admin/users/users', $data);
     }

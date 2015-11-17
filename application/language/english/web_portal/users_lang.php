@@ -7,6 +7,8 @@
     $lang["floor"] = "Floor";
     $lang["shift"] = "Shift";
     $lang["want_vegan_meal"] = "Vegetarian";
+    $lang["search"] = "Search";
+    $lang["search_name"] = "Search name";
     $lang["admin"] = "Admin";
     $lang["user"] = "User";
     $lang["avatar"] = "Avatar";
