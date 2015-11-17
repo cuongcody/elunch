@@ -31,32 +31,32 @@
         .red {
             color: #E74C3C;
         }
-        .italic{
+        .italic {
           font-style: italic;
           color: #003366;
         }
-        .table-header{
+        .table-header {
             background-color: #024700; color: #fff;
         }
-        .border-left{
+        .border-left {
             border-left: 1px solid #d7d7d7;
         }
-        .border-right{
+        .border-right {
             border-right: 1px solid #d7d7d7;
         }
-        .border-bottom{
+        .border-bottom {
             border-bottom: 1px solid #d7d7d7;
         }
         .background-green {
             background-color: #f0e7e7;
         }
-        .background-pink{
+        .background-pink {
             background-color: #d7e6fa;
         }
-        .background-blue{
+        .background-blue {
             background-color: #c1f5ba;
         }
-        .background-grey{
+        .background-grey {
             background-color: #f8f9fb;
         }
         .col-3-a {
@@ -74,14 +74,13 @@
         .col-3-b:last-child{
             border: 0px;
         }
-        .tables, .users{
+        .tables, .users {
             padding: 0px;
         }
-        .user
-        {
-            padding: 4px;
+        .user {
+            padding-top: 15px;
         }
-        .col-1-a,.col-2-a,.col-2-b, .col-1-b, .col-3-a, .col-3-b{
+        .col-1-a,.col-2-a,.col-2-b, .col-1-b, .col-3-a, .col-3-b {
             float: left;
             position: relative;
             padding: 5px;
