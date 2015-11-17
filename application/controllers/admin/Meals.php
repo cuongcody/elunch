@@ -61,7 +61,7 @@ class Meals extends CI_Controller {
             if ($meal_log->tracking_log != NULL)
             {
                 $tracking_log = json_decode($meal_log->tracking_log);
-                usort($tracking_log, array($this, "compared_by_shift_id"));
+                usort($tracking_log, array($this, "compared_by_shift_name"));
                 $data['meal_log'] = $tracking_log;
                 $data['preordered_meals'] = $meal_log->preordered_meals;
                 $data['actual_meals'] = $meal_log->actual_meals;
@@ -308,8 +308,8 @@ class Meals extends CI_Controller {
      * @param       object  $log2
      * @return      bool
      */
-    function compared_by_shift_id($log1, $log2)
+    function compared_by_shift_name($log1, $log2)
     {
-        return $log1->shift->id - $log2->shift->id;
+        return $log1->shift->name - $log2->shift->name;
     }
 }
