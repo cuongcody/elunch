@@ -36,23 +36,27 @@
                                     {
                                         $type_message = $announcements_lang['table'];
                                     }
-
-                                    echo "<div onclick='false;' id='announcement_item_".$announcement_item->id."' class='announcement_item well profile_view' data-path='".base_url('admin/announcements/get_detail_announcement/'.$announcement_item->id)."'>";
-                                    echo "<div class='col-sm-12'>";
-                                    echo "<h4 class='brief'><i>".$announcements_lang['to'].": ".$type_message."</i></h4>";
-                                    echo "<div class='left col-xs-9'>";
-                                    echo "<h2 class='title-announcement' data-title='{$announcement_item->title}'>".substr($announcement_item->title, 0,30)."</h2>";
-                                    echo "<input type='hidden' class='announcement_id' value='".$announcement_item->id."'>";
-                                    echo "<p class='content-announcement' data-content='{$announcement_item->content}'>".substr($announcement_item->content, 0,50)."</p>";
-                                    echo "<ul class='list-unstyled'>";
-                                    echo "<li><strong>".$announcements_lang['lunch_date'].":</strong> ".$announcement_item->meal_date." </li>";
-                                    echo "<li><strong>".$announcements_lang['reply'].":</strong> <span class='num_replies'>".(($announcement_item->number_of_replies > 0 ) ? $announcement_item->number_of_replies : 0)."</span></li>";
-                                    echo "</ul></div>";
-                                    echo "<div class='right col-xs-3 text-center'>";
-                                    //echo "<img src='".$announcement_item->avatar_content_file."' width='80' height='80' alt='' class='img-circle img-responsive'>";
-                                    echo "</div></div></div>";
-                                }
-                            ?>
+                                    ?>
+                                    <div onclick="false;" id="announcement_item_<?php echo $announcement_item->id ?>" class="announcement_item well profile_view" data-path="<?php echo base_url('admin/announcements/get_detail_announcement/'.$announcement_item->id) ?>">
+                                        <div class="col-sm-12">
+                                            <h4 class="brief"><i><?php echo $announcements_lang['to'].": ".$type_message ?></i></h4>
+                                            <div class="left col-xs-9">
+                                                <h2 class="title-announcement" data-title="<?php echo htmlentities($announcement_item->title) ?>"> <?php echo substr($announcement_item->title, 0,30) ?></h2>
+                                                 <input type="hidden" class="announcement_id" value="<?php echo $announcement_item->id ?>">
+                                                <p class="content-announcement" data-content="<?php echo htmlentities($announcement_item->content) ?>"><?php echo substr($announcement_item->content, 0,50) ?></p>
+                                                <ul class="list-unstyled">
+                                                    <li>
+                                                        <strong><?php echo $announcements_lang['lunch_date'] ?> :</strong><?php echo $announcement_item->meal_date ?>
+                                                    </li>
+                                                    <li>
+                                                        <strong><?php echo $announcements_lang['reply'] ?></strong> <span class="num_replies"><?php echo (($announcement_item->number_of_replies > 0 ) ? $announcement_item->number_of_replies : 0) ?></span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="right col-xs-3 text-center"></div>
+                                        </div>
+                                    </div>
+                            <?php } ?>
                             <div class="row">
                                 <div class="col-xs-12 text-center"><?php echo $pagination; ?></div>
                             </div>
