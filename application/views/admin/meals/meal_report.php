@@ -138,8 +138,8 @@
                                             echo "<div class='col-2-b background-grey margin users'>";
                                             foreach ($value2->users as $key3 => $value3)
                                             {
-                                                echo "<div class='border-bottom'><div class='col-3-a user'><img class='img-thumbnail' width='30' height='30' src='".$value3->avatar_content_file."'> ".$value3->first_name."</div>";
-                                                echo "<div class='col-3-b'>";
+                                                echo "<div class='border-bottom'><div class='col-3-a'><img class='img-thumbnail' width='30' height='30' src='".$value3->avatar_content_file."'> ".$value3->first_name."</div>";
+                                                echo "<div class='col-3-b user'>";
                                                 if ($value3->status_user == 1) echo "<strong class='green'>ATTEND</strong>";
                                                 elseif ($value3->status_user == 2) echo "<strong class='red'>ABSENT</strong>";
                                                 else echo "<strong class='orange'>LATE</strong>";
