@@ -468,10 +468,10 @@ class Tables_model extends CI_Model{
                 $have_vegan_table = $this->db->get_where('tables_users', array('user_id' => $user_id, 'vegan_day' => VEGAN_DAY))->num_rows();
                 if ($have_vegan_table > 0)
                 {
-                // Replace table normal meal for table vegan meal
-                $this->db->where('user_id', $user_id);
-                $this->db->where('vegan_day', VEGAN_DAY);
-                return ($this->is_exist_seat_in_table($table_in_normal_day->table_id, VEGAN_DAY)) ? $this->db->update('tables_users', array('table_id' => $table_in_normal_day->table_id)) : FALSE;
+                    // Replace table normal meal for table vegan meal
+                    $this->db->where('user_id', $user_id);
+                    $this->db->where('vegan_day', VEGAN_DAY);
+                    return ($this->is_exist_seat_in_table($table_in_normal_day->table_id, VEGAN_DAY)) ? $this->db->update('tables_users', array('table_id' => $table_in_normal_day->table_id)) : FALSE;
                 }
                 else
                 {

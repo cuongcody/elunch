@@ -101,7 +101,7 @@
                 <div class='col-xs-12'>
                     <div class='text-right italic'>
                         <strong>
-                            <div>On date: <?php echo date('d M Y', $meal_date); ?></div>
+                            <div>On date: <?php echo date('d M Y', strtotime($meal_date)); ?></div>
                             <div>Pre-ordered meals: <?php echo $preordered_meals ?></div>
                             <div>Actual meals: <?php echo $actual_meals ?></div>
                         </strong>
