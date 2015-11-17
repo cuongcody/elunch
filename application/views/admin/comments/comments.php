@@ -18,24 +18,30 @@
                             <div class="col-xs-12 col-sm-5 mail_list_column">
                                 <?php
                                     foreach ($comments as $key => $comment_item)
-                                    {
-                                        echo "<div onclick='false;' id='comment_item_".$comment_item->id."' class='comment_item well profile_view' data-path='".base_url('admin/comments/get_detail_comment/'.$comment_item->id)."'>";
-                                        echo "<div class='col-sm-12'>";
-                                        echo "<h4 class='brief'><i>".$comments_lang['from'].": ".$comment_item->email."</i></h4>";
-                                        echo "<div class='left col-xs-9'>";
-                                        echo "<h2 class='title-comment' data-title='".html_entity_decode($comment_item->title)."'>".substr($comment_item->title, 0, 30)."</h2>";
-                                        echo "<input type='hidden' class='comment_id' value='".$comment_item->id."'>";
-                                        echo "<input type='hidden' class='comment_dish_img' value='".$comment_item->image."'>";
-                                        echo "<p class='content-comment' data-content=\'$comment_item->content}\'>".substr($comment_item->content, 0,50)."</p>";
-                                        echo "<ul class='list-unstyled'>";
-                                        echo "<li><strong>".$comments_lang['lunch_date'].":</strong> ".$comment_item->meal_date." </li>";
-                                        echo "<li><strong>".$comments_lang['reply'].":</strong> <span class='num_replies'>".(($comment_item->number_of_replies > 0 ) ? $comment_item->number_of_replies : 0)."</span></li>";
-                                        echo "</ul></div>";
-                                        echo "<div class='right col-xs-3 text-center'>";
-                                        echo "<img src='".$comment_item->avatar_content_file."' width='80' height='80' alt='' class='img-circle img-responsive'>";
-                                        echo "</div></div></div>";
-                                    }
-                                ?>
+                                    {?>
+                                        <div onclick="false;" id="comment_item_<?php echo $comment_item->id ?>" class="comment_item well profile_view" data-path="<?php echo base_url('admin/comments/get_detail_comment/'.$comment_item->id) ?>">
+                                            <div class="col-sm-12">
+                                                <h4 class="brief"><i><?php echo $comments_lang['from'].": ".$comment_item->email ?></i></h4>
+                                                <div class="left col-xs-9">
+                                                    <h2 class="title-comment" data-title="<?php echo $comment_item->title ?>"> <?php echo substr($comment_item->title, 0,30) ?></h2>
+                                                    <input type="hidden" class="comment_id" value="<?php echo $comment_item->id ?>">
+                                                    <input type="hidden" class="comment_dish_img" value="<?php echo $comment_item->image ?>">
+                                                    <p class="content-comment" data-content="<?php echo $comment_item->content ?>"><?php echo substr($comment_item->content, 0,50) ?></p>
+                                                    <ul class="list-unstyled">
+                                                        <li>
+                                                            <strong><?php echo $comments_lang['lunch_date'] ?> :</strong><?php echo $comment_item->meal_date ?>
+                                                        </li>
+                                                        <li>
+                                                            <strong><?php echo $comments_lang['reply'] ?></strong> <span class="num_replies"><?php echo (($comment_item->number_of_replies > 0 ) ? $comment_item->number_of_replies : 0) ?></span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="right col-xs-3 text-center">
+                                                    <img src="<?php echo $comment_item->avatar_content_file ?>" width="80" height="80" alt="" class="img-circle img-responsive">
+                                                </div>
+                                            </div>
+                                        </div>
+                                <?php } ?>
                                 <div class="row">
                                     <div class="col-xs-12 text-center"><?php echo $pagination; ?></div>
                                 </div>
