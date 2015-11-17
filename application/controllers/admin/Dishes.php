@@ -14,7 +14,8 @@ class Dishes extends CI_Controller {
     public function index()
     {
         $this->common->authenticate();
-        $this->load_dishes_view();
+        $search = $this->input->post('search');
+        $this->load_dishes_view($search);
     }
 
     public function favourite_dishes()
@@ -117,13 +118,13 @@ class Dishes extends CI_Controller {
         $this->common->load_view('admin/dishes/edit_dish', $data);
     }
 
-    public function load_dishes_view()
+    public function load_dishes_view($search)
     {
-        $message = array('title', 'description', 'name', 'category', 'image', 'create_dish', 'edit', 'delete', 'are_you_sure', 'yes', 'cancel');
+        $message = array('title', 'search_name', 'search', 'description', 'name', 'category', 'image', 'create_dish', 'edit', 'delete', 'are_you_sure', 'yes', 'cancel');
         $data = $this->common->set_language_and_data('dishes', $message);
         $this->load->library('pagination');
         $config['base_url'] = base_url().'/admin/dishes';
-        $config['total_rows'] = $this->dishes_model->get_num_of_dishes();
+        $config['total_rows'] = $this->dishes_model->get_num_of_dishes($search);
         $config['per_page'] = 10;
         $config['use_page_numbers'] = TRUE;
         $config['uri_segment'] = 3;
@@ -148,7 +149,7 @@ class Dishes extends CI_Controller {
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
         $data['page'] = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-        $dishes = $this->dishes_model->get_all_dishes($config['per_page'], ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page']);
+        $dishes = $this->dishes_model->get_all_dishes($config['per_page'], ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page'], $search);
         $data['dishes'] = $dishes;
         $this->common->load_view('admin/dishes/dishes', $data);
     }

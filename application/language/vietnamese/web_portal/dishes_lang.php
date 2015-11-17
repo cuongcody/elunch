@@ -1,6 +1,8 @@
 <?php
     $lang["title"] = "Quản lý món ăn";
     $lang["name"] = "Tên món ăn";
+    $lang["search"] = "Tìm kiếm";
+    $lang["search_name"] = "Tìm tên";
     $lang["description"] = "Mô tả";
     $lang["category"] = "Danh mục";
     $lang["image"] = "Hình ảnh";

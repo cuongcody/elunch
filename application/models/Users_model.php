@@ -19,7 +19,7 @@ class Users_model extends CI_Model{
         {
             $this->db->limit($perpage, $offset)->order_by('users.admin', 'DESC');
         }
-           $this->db->like('users.first_name', $search);
+        $this->db->like('users.first_name', $search);
         $this->db->order_by('users.email', 'ASC');
         $query = $this->db->get();
         return $query->result();

@@ -9,7 +9,7 @@ class Dishes_model extends CI_Model {
      * @param       int  $offset
      * @return      array
      */
-    function get_all_dishes($perpage = NULL, $offset = NULL)
+    function get_all_dishes($perpage = NULL, $offset = NULL, $search = NULL)
     {
         $this->db->select('dishes.id, dishes.name, dishes.description, categories.name AS category, pictures.image, pictures.image_file_name');
         $this->db->from('dishes');
@@ -19,6 +19,7 @@ class Dishes_model extends CI_Model {
         {
             $this->db->limit($perpage, $offset)->order_by('categories.name', 'ASC')->order_by('dishes.name', 'ASC');
         }
+        $this->db->like('dishes.name', $search);
         $query = $this->db->get();
         return $query->result();
     }
@@ -177,9 +178,9 @@ class Dishes_model extends CI_Model {
      *
      * @return      int
      */
-    function get_num_of_dishes()
+    function get_num_of_dishes($search = NULL)
     {
-        return $this->db->get('dishes')->num_rows();
+        return (!is_null($search)) ? $this->db->like('dishes.name', $search)->get('dishes')->num_rows() : $this->db->get('dishes')->num_rows();
     }
 
     /**

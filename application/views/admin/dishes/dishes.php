@@ -3,7 +3,29 @@
     <div class="row">
         <div class= 'col-xs-12 col-md-offset-1 col-md-10'>
             <div id="elevator_item"><a id="elevator" onclick="return false;" title="Back To Top"></a></div>
-            <?php echo anchor('admin/dishes/add', $dishes_lang['create_dish'], "class='btn btn-primary'"); ?>
+            <div class='row'>
+                <div class= "col-xs-12 col-md-5">
+                    <?php echo anchor('admin/dishes/add', $dishes_lang['create_dish'], "class='btn btn-primary'"); ?>
+                </div>
+                <div class= "col-xs-12 col-md-offset-2 col-md-5">
+                    <?php echo form_open_multipart('admin/dishes/'); ?>
+                        <div class="col-xs-12">
+                            <div class="input-group">
+                                <?php
+                                    $data = array(
+                                        'name' => 'search',
+                                        'class' => 'form-control',
+                                        'placeholder' => $dishes_lang['search_name']);
+                                    echo form_input($data, set_value('search', ''));
+                                ?>
+                                <span class="input-group-btn">
+                                    <?php echo form_submit( 'submit', $dishes_lang['search'], 'class = "btn btn-primary"'); ?>
+                                </span>
+                            </div>
+                        </div>
+                    <?php echo form_close(); ?>
+                </div>
+            </div>
             <?php if (!empty($_SESSION['message'])) echo "<script type='text/javascript'>announcementMessage('".$_SESSION['message']."')</script>"; ?>
             <div class='table-responsive'>
                 <table class="table table-striped responsive-utilities jambo_table bulk_action">

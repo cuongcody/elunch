@@ -1,6 +1,8 @@
 <?php
     $lang["title"] = "Manage dishes";
     $lang["name"] = "Name";
+    $lang["search"] = "Search";
+    $lang["search_name"] = "Search name";
     $lang["description"] = "Description";
     $lang["category"] = "Category";
     $lang["image"] = "Image";
