@@ -23,7 +23,7 @@
                                         echo "<div class='col-sm-12'>";
                                         echo "<h4 class='brief'><i>".$comments_lang['from'].": ".$comment_item->email."</i></h4>";
                                         echo "<div class='left col-xs-9'>";
-                                        echo "<h2 class='title-comment' data-title='{$comment_item->title}'>".substr($comment_item->title, 0,30)."</h2>";
+                                        echo "<h2 class='title-comment' data-title='{html_entity_encode($comment_item->title})'>".substr($comment_item->title, 0, 30)."</h2>";
                                         echo "<input type='hidden' class='comment_id' value='".$comment_item->id."'>";
                                         echo "<input type='hidden' class='comment_dish_img' value='".$comment_item->image."'>";
                                         echo "<p class='content-comment' data-content='{$comment_item->content}'>".substr($comment_item->content, 0,50)."</p>";
