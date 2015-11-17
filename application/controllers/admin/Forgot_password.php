@@ -64,18 +64,19 @@ class Forgot_password extends CI_Controller {
         $message = $this->common->get_message('forgot_password', array('reset_password', 'send_mail_success'));
         $config = Array(
             'protocol' => 'smtp',
-            'smtp_host' => 'ssl://email.enclave.vn',
+            'smtp_host' => 'ssl://smtp.gmail.com',
             'smtp_port' => 465,
-            'smtp_user' => 'cody@enclave.vn',
-            'smtp_pass' => 'cuong254812912',
+            'smtp_user' => 'elunch.enclaveit@gmail.com',
+            'smtp_pass' => 'enclaveit@123',
             'mailtype'  => 'html',
+            'auth' => true,
             'charset'   => 'iso-8859-1'
         );
         date_default_timezone_set('GMT');
         $this->load->library('email');
         $this->email->initialize($config);
         $this->email->set_newline("\r\n");
-        $this->email->from('cody@enclave.vn', 'Elunch');
+        $this->email->from('elunch.enclaveit@gmail.com', 'Elunch');
         $this->email->to($email);
         $this->email->subject($message['reset_password']);
         $this->email->message($message['send_mail_success']. $password);
