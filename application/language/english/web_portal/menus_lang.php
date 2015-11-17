@@ -6,6 +6,7 @@
     $lang["name_dish"] = "Name";
     $lang["create_menu"] = "Create new menu";;
     $lang["search"] = "Search";
+    $lang["search_name"] = "Search name";
     $lang["category"] = "Category";
     $lang["image"] = "Image";
     $lang["edit"] = "Edit";

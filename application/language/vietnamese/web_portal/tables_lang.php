@@ -7,6 +7,8 @@
     $lang["for_vegans"] = "Ăn chay";
     $lang["shift"] = "Suất ăn";
     $lang["list_of_users"] = "Danh sách người ăn";
+    $lang["search"] = "Tìm kiếm";
+    $lang["search_name"] = "Tìm tên";
     $lang["image"] = "Ảnh";
     $lang["name"] = "Tên";
     $lang["floor"] = "Tầng";

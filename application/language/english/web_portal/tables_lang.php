@@ -7,6 +7,8 @@
     $lang["for_vegans"] = "Vegetarian";
     $lang["shift"] = "Shift";
     $lang["list_of_users"] = "List of users";
+    $lang["search"] = "Search";
+    $lang["search_name"] = "Search name";
     $lang["image"] = "Image";
     $lang["name"] = "Name";
     $lang["floor"] = "Floor";

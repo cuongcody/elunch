@@ -180,7 +180,7 @@ class Dishes_model extends CI_Model {
      */
     function get_num_of_dishes($search = NULL)
     {
-        return (!is_null($search)) ? $this->db->like('dishes.name', $search)->get('dishes')->num_rows() : $this->db->get('dishes')->num_rows();
+        return $this->db->like('dishes.name', $search)->get('dishes')->num_rows();
     }
 
     /**

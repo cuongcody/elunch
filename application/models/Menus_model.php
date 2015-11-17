@@ -10,7 +10,7 @@ class Menus_model extends CI_Model {
      * @param       int  $offset
      * @return      object
      */
-    function get_all_menus($perpage = NULL, $offset = NULL)
+    function get_all_menus($perpage = NULL, $offset = NULL, $search = NULL)
     {
         $this->db->select('menus.id, menus.name, menus.description');
         $this->db->from('menus');
@@ -19,6 +19,7 @@ class Menus_model extends CI_Model {
         {
             $this->db->limit($perpage, $offset)->group_by('menus.id');
         }
+        $this->db->like('menus.name', $search);
         $query = $this->db->order_by('menus.name', 'ASC');
         return (array)$query->get()->result();
     }
@@ -57,11 +58,12 @@ class Menus_model extends CI_Model {
      *
      * @return      int
      */
-    function get_num_of_menus()
+    function get_num_of_menus($search = NULL)
     {
         $this->db->select('menus.id, menus.name, menus.description');
         $this->db->from('menus');
         $this->db->join('dishes_menus','menus.id = dishes_menus.menu_id')->group_by('menus.id')->order_by('menus.id', 'DESC');
+        $this->db->like('menus.name', $search);
         $query = $this->db->get();
         return $query->num_rows();
     }

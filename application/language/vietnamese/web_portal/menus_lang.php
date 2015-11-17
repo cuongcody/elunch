@@ -7,7 +7,8 @@
     $lang["dishes_of_menu"] = "Món ăn của thực đơn";
     $lang["name_dish"] = "Tên";
     $lang["create_menu"] = "Tạo mới thực đơn";
-    $lang["search"] = "Tìm";
+    $lang["search"] = "Tìm kiếm";
+    $lang["search_name"] = "Tìm tên";
     $lang["from"] = "Từ";
     $lang["to"] = "Đến";
     $lang["edit"] = "Chỉnh sửa";

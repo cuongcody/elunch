@@ -32,7 +32,7 @@ class Users_model extends CI_Model{
      */
     function get_num_of_users($search = NULL)
     {
-        return (!is_null($search)) ? $this->db->like('users.first_name', $search)->get('users')->num_rows() : $this->db->get('users')->num_rows();
+        return $this->db->like('users.first_name', $search)->get('users')->num_rows();
     }
 
     /**

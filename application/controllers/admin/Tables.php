@@ -14,7 +14,8 @@ class Tables extends CI_Controller {
     public function index()
     {
         $this->common->authenticate();
-        $this->load_tables_view();
+        $search = $this->input->post('search');
+        $this->load_tables_view($search);
     }
 
     public function add()
@@ -218,13 +219,13 @@ class Tables extends CI_Controller {
         $this->common->load_view('admin/tables/edit_table', $data);
     }
 
-    public function load_tables_view()
+    public function load_tables_view($search)
     {
-        $message = array('title', 'table_name', 'seats', 'available_seats', 'for_vegans', 'shift', 'description', 'image', 'list_of_users', 'name', 'floor', 'create_table', 'edit', 'delete', 'are_you_sure', 'yes', 'cancel');
+        $message = array('title', 'search_name', 'search', 'table_name', 'seats', 'available_seats', 'for_vegans', 'shift', 'description', 'image', 'list_of_users', 'name', 'floor', 'create_table', 'edit', 'delete', 'are_you_sure', 'yes', 'cancel');
         $data = $this->common->set_language_and_data('tables', $message);
         $this->load->library('pagination');
         $config['base_url'] = base_url().'/admin/tables';
-        $config['total_rows'] = $this->tables_model->get_num_of_tables();
+        $config['total_rows'] = $this->tables_model->get_num_of_tables($search);
         $config['per_page'] = 10;
         $config['use_page_numbers'] = TRUE;
         $config['uri_segment'] = 3;
@@ -249,7 +250,7 @@ class Tables extends CI_Controller {
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
         $data['page'] = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-        $tables = $this->tables_model->get_tables($config['per_page'],  ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page']);
+        $tables = $this->tables_model->get_tables($config['per_page'],  ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page'], $search);
         $data['tables'] = $tables;
         $this->common->load_view('admin/tables/tables', $data);
     }

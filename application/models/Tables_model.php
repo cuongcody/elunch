@@ -29,12 +29,13 @@ class Tables_model extends CI_Model{
      * @param       int  $offset
      * @return      array
      */
-    function get_tables($perpage, $offset)
+    function get_tables($perpage, $offset, $search = NULL)
     {
-        $this->db->select('tables.id, tables.name, tables.description, tables.for_vegans, tables.seats,
+        $this->db->select('tables.id, tables., tables.description, tables.for_vegans, tables.seats,
             shifts.name AS shift , shifts.start_time, shifts.end_time');
         $this->db->from('tables');
         $this->db->join('shifts', 'tables.shift_id = shifts.id', 'left');
+        $this->db->like('tables.name', $search);
         $this->db->limit($perpage, $offset)->order_by('tables.shift_id', 'ASC')->order_by('tables.name', 'ASC');
         return $this->db->get()->result();
     }
@@ -62,7 +63,7 @@ class Tables_model extends CI_Model{
      */
     function get_num_of_tables()
     {
-        return $this->db->get('tables')->num_rows();
+        return $this->db->like('tables.name', $search)->get('tables')->num_rows();
     }
 
     /**

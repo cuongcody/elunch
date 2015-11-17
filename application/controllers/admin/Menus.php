@@ -14,7 +14,8 @@ class Menus extends CI_Controller {
     public function index()
     {
         $this->common->authenticate();
-        $this->load_menus_view();
+        $search = $this->input->post('search');
+        $this->load_menus_view($search);
     }
 
     public function add()
@@ -114,13 +115,13 @@ class Menus extends CI_Controller {
         $this->common->load_view('admin/menus/edit_menu', $data);
     }
 
-    public function load_menus_view()
+    public function load_menus_view($search)
     {
-        $message = array('title', 'menu', 'description', 'image', 'category', 'dishes_of_menu', 'name_dish', 'create_menu', 'edit', 'delete', 'search', 'are_you_sure', 'yes', 'cancel');
+        $message = array('title', 'search', 'search_name', 'menu', 'description', 'image', 'category', 'dishes_of_menu', 'name_dish', 'create_menu', 'edit', 'delete', 'search', 'are_you_sure', 'yes', 'cancel');
         $data = $this->common->set_language_and_data('menus', $message);
         $this->load->library('pagination');
         $config['base_url'] = base_url().'/admin/menus';
-        $config['total_rows'] = $this->menus_model->get_num_of_menus();
+        $config['total_rows'] = $this->menus_model->get_num_of_menus($search);
         $config['per_page'] = 10;
         $config['use_page_numbers'] = TRUE;
         $config['uri_segment'] = 3;
@@ -145,7 +146,7 @@ class Menus extends CI_Controller {
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
         $data['page'] = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-        $menus = $this->menus_model->get_all_menus($config['per_page'],  ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page']);
+        $menus = $this->menus_model->get_all_menus($config['per_page'],  ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page'], $search);
         $data['menus'] = $menus;
         $this->common->load_view('admin/menus/menus', $data);
     }
