@@ -26,7 +26,7 @@
                                         echo "<h2 class='title-comment' data-title='".html_entity_decode($comment_item->title)."'>".substr($comment_item->title, 0, 30)."</h2>";
                                         echo "<input type='hidden' class='comment_id' value='".$comment_item->id."'>";
                                         echo "<input type='hidden' class='comment_dish_img' value='".$comment_item->image."'>";
-                                        echo "<p class='content-comment' data-content='{$comment_item->content}'>".substr($comment_item->content, 0,50)."</p>";
+                                        echo "<p class='content-comment' data-content='".html_entity_decode($comment_item->content)."'>".substr($comment_item->content, 0,50)."</p>";
                                         echo "<ul class='list-unstyled'>";
                                         echo "<li><strong>".$comments_lang['lunch_date'].":</strong> ".$comment_item->meal_date." </li>";
                                         echo "<li><strong>".$comments_lang['reply'].":</strong> <span class='num_replies'>".(($comment_item->number_of_replies > 0 ) ? $comment_item->number_of_replies : 0)."</span></li>";
