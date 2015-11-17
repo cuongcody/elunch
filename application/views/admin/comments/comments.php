@@ -23,10 +23,10 @@
                                             <div class="col-sm-12">
                                                 <h4 class="brief"><i><?php echo $comments_lang['from'].": ".$comment_item->email ?></i></h4>
                                                 <div class="left col-xs-9">
-                                                    <h2 class="title-comment" data-title="<?php echo $comment_item->title ?>"> <?php echo substr($comment_item->title, 0,30) ?></h2>
+                                                    <h2 class="title-comment" data-title="<?php echo htmlentities($comment_item->title) ?>"> <?php echo substr($comment_item->title, 0,30) ?></h2>
                                                     <input type="hidden" class="comment_id" value="<?php echo $comment_item->id ?>">
                                                     <input type="hidden" class="comment_dish_img" value="<?php echo $comment_item->image ?>">
-                                                    <p class="content-comment" data-content="<?php echo $comment_item->content ?>"><?php echo substr($comment_item->content, 0,50) ?></p>
+                                                    <p class="content-comment" data-content="<?php echo htmlentities($comment_item->content) ?>"><?php echo substr($comment_item->content, 0,50) ?></p>
                                                     <ul class="list-unstyled">
                                                         <li>
                                                             <strong><?php echo $comments_lang['lunch_date'] ?> :</strong><?php echo $comment_item->meal_date ?>
