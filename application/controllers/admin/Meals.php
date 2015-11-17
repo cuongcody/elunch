@@ -296,7 +296,7 @@ class Meals extends CI_Controller {
         $pdfFilePath = "meal_report_".$meal_date.".pdf";
         $this->load->library('m_pdf');
         $pdf = $this->m_pdf->load();
-        $pdf->SetFooter('Elunch'.'|{PAGENO}|'.date('D, d M Y H:i:s'));
+        $pdf->SetFooter('Elunch'.'|{PAGENO}|'.date('D, d M Y', $meal_date));
         $pdf->WriteHTML($html);
         $pdf->Output($pdfFilePath, "D");
     }
