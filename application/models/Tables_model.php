@@ -61,7 +61,7 @@ class Tables_model extends CI_Model{
      *
      * @return      int
      */
-    function get_num_of_tables()
+    function get_num_of_tables($search)
     {
         return $this->db->like('tables.name', $search)->get('tables')->num_rows();
     }
