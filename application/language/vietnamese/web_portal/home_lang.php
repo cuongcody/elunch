@@ -21,6 +21,7 @@
     $lang["actual_meals"] = "Số bữa ăn thực tế";
     $lang["choose_status"] = "Chọn trạng thái";
     $lang["note"] = "Ghi chú";
+    $lang["private_note"] = "Ghi chú riêng";
     $lang["lunch_date"] = "Ngày ăn";
     $lang["log"] = "Log";
     $lang["for_vegan"] = "Bàn ăn chay";

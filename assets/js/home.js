@@ -87,13 +87,13 @@ function getUsersByTablesAjax() {
     });
 }
 
-function trackingMealLog(base_url, shift, tables, lunch_date, note, actual_meals)
+function trackingMealLog(base_url, shift, tables, lunch_date, note, private_note, actual_meals)
 {
     $.ajax({
         type:"POST",
         url: base_url,
         dataType: 'json',
-        data: {shift:shift, tables:tables, lunch_date:lunch_date, note:note, actual_meals:actual_meals},
+        data: {shift:shift, tables:tables, lunch_date:lunch_date, note:note, private_note:private_note, actual_meals:actual_meals},
         success: function(res){
             $('.error').remove();
             if (res.status == 'failure')
@@ -132,6 +132,7 @@ $(function() {
         base_url = $(this).data("path");
         lunch_date  = $('input[name="lunch_date"]').val();
         note = $('#note').val();
+        private_note = $('#private_note').val();
         actual_meals = $('input[name=actual_meals]').val();
         shift = {
             id : $('input[name="shift"]').val(),
@@ -161,7 +162,7 @@ $(function() {
             }
             tables.push(table);
         });
-        trackingMealLog(base_url, shift, tables, lunch_date, note, actual_meals);
+        trackingMealLog(base_url, shift, tables, lunch_date, note, private_note, actual_meals);
     });
 
 });

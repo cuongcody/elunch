@@ -46,6 +46,15 @@
                             <h2 class="page-header">
                                 <?php echo $home_lang['list_tables'] ?>
                                 <a class="btn btn-info btn-tracking" href="#tracking_meal_log_modal" data-toggle="modal" data-target="#tracking_meal_log_modal"><?php echo $home_lang['create_log'] ?></a>
+                                <div class='form-group'>
+                                    <textarea class='form-control' id='note' cols='1' rows='3' placeholder='<?php echo $home_lang['note'] ?>'></textarea>
+                                </div>
+                                <div class='form-group'>
+                                    <textarea class='form-control' id='private_note' cols='1' rows='3' placeholder='<?php echo $home_lang['private_note'] ?>'></textarea>
+                                </div>
+                                <div class='form-group'>
+                                    <input type='number' class='form-control' name='actual_meals' min="1" placeholder="<?php echo $home_lang['actual_meals'] ?>">
+                                </div>
                                 <div id="elevator_item"><a id="elevator" onclick="return false;" title="Back To Top"></a></div>
                             </h2>
                             <div class='row'>
@@ -128,12 +137,6 @@
                 <div class="input-group date datetimepicker">
                     <input type="text" class='form-control' name='lunch_date' value="" placeholder="<?php echo $home_lang['lunch_date'] ?>">
                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                </div>
-                <div class='form-group'>
-                    <textarea class='form-control' id='note' cols=10 rows=5 placeholder='<?php echo $home_lang['note'] ?>'></textarea>
-                </div>
-                <div class='form-group'>
-                    <input type='number' class='form-control' name='actual_meals' min="1" placeholder="<?php echo $home_lang['actual_meals'] ?>">
                 </div>
             </div>
             <div class="modal-footer">

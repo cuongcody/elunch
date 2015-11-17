@@ -20,6 +20,7 @@
     $lang["late"] = "Late";
     $lang["choose_status"] = "Choose status";
     $lang["note"] = "Note";
+    $lang["private_note"] = "Private note";
     $lang["lunch_date"] = "Lunch date";
     $lang["actual_meals"] = "Actual meals";
     $lang["log"] = "Log";

@@ -24,7 +24,7 @@ class Home extends CI_Controller {
 
     public function load_home_view()
     {
-        $message = array('title', 'total_users', 'total_categories', 'lastest_comments', 'live_attendant_status', 'total_shifts', 'total_tables', 'total_dishes', 'total_floors', 'total_menus', 'shift', 'search', 'normal_day', 'vegan_day', 'list_tables', 'create_log', 'status', 'attend', 'absent', 'late', 'choose_status', 'note', 'lunch_date', 'actual_meals', 'log', 'for_vegan', 'for_normal', 'yes', 'cancel');
+        $message = array('title', 'total_users', 'total_categories', 'lastest_comments', 'live_attendant_status', 'total_shifts', 'total_tables', 'total_dishes', 'total_floors', 'total_menus', 'shift', 'search', 'normal_day', 'vegan_day', 'list_tables', 'create_log', 'status', 'attend', 'absent', 'late', 'choose_status', 'note', 'private_note', 'lunch_date', 'actual_meals', 'log', 'for_vegan', 'for_normal', 'yes', 'cancel');
         $data = $this->common->set_language_and_data('home', $message);
         $this->load->model('shifts_model');
         $this->load->model('tables_model');
@@ -84,6 +84,7 @@ class Home extends CI_Controller {
         $tables = $this->input->post('tables');
         $meal_date = $this->input->post('lunch_date');
         $note = $this->input->post('note');
+        $private_note = $this->input->post('private_note');
         $actual_meals = $this->input->post('actual_meals');
         $shift = $this->input->post('shift');
         $this->validation('tracking');
@@ -97,7 +98,7 @@ class Home extends CI_Controller {
         {
             $this->load->model('meals_model');
             $message = $this->common->get_message('gen_log_file_meal', array('gen_log_file_success', 'gen_log_file_failure'));
-            if ($this->meals_model->update_meal_log($shift, $tables, $meal_date, $note, $actual_meals))
+            if ($this->meals_model->update_meal_log($shift, $tables, $meal_date, $note, $private_note, $actual_meals))
             {
                 $data = array(
                     'status' => 'success',
