@@ -38,6 +38,7 @@ class Menus_model extends CI_Model {
         $this->db->join('dishes_menus', 'dishes_menus.dish_id = dishes.id');
         $this->db->join('categories', 'dishes.category_id = categories.id');
         $this->db->where('menus.id', $menu_id);
+        $this->db->order_by('menus.id');
         return $this->db->get()->result();
     }
 

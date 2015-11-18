@@ -69,7 +69,7 @@ class Forgot_password extends CI_Controller {
             'smtp_user' => 'elunch.enclaveit@gmail.com',
             'smtp_pass' => 'enclaveit@123',
             'mailtype'  => 'html',
-            'auth' => true,
+            'auth' => TRUE,
             'charset'   => 'iso-8859-1'
         );
         date_default_timezone_set('GMT');
