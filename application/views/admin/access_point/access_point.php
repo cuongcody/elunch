@@ -24,40 +24,23 @@
                         <?php
                             if ($access_point != NULL)
                             {
-                                foreach ($access_point as $key => $access_point)
-                                {
-                                    echo "<tr id='access_point_".$access_point->id."'>";
-                                    echo "<td class='active'>".($key+1)."</td>";
-                                    echo "<td class='active'>".$access_point->ssid."</td>";
-                                    echo "<td class='active'><a href='#detail_text_modal' data-toggle='modal' data-target='#detail_text_modal' data-content='{$access_point->bssid}' data-title='{$access_point_lang['title']}' onclick='false;'><p class='detail-text'>".substr($access_point->bssid,0,100)."...</a></td>";
-                                    echo "<td class='active'><input type='checkbox' disabled class='text-center' value='".$access_point->id."' name='selected_access_point' ".(($access_point->selected == 1) ? 'checked' : '')."></td>";
-                                    echo "<td class='active'>".anchor('admin/access_point/edit/'.$access_point->id, $access_point_lang['edit'], "class='label label-info'")."</td>";
-                                    echo "<td class='active'>";
-                                    echo "<a href='#delete_access_point_modal' class='label label-warning' data-toggle='modal' data-target='#delete_access_point_modal' data-access_point-id={$access_point->id} onclick='false;'>".$access_point_lang["delete"]."</a></td>";
-                                    echo "</tr>";
-                                }
-                            }
-                        ?>
-                        <?php
-                            if ($access_point != NULL)
-                            {
-                                foreach ($access_point as $key => $access_point)
+                                foreach ($access_point as $key => $access_point_item)
                                 {
                         ?>
-                                    <tr id="access_point_<?php echo $access_point->id ?>">
+                                    <tr id="access_point_<?php echo $access_point_item->id ?>">
                                         <td class="active"><?php echo ($key+1) ?></td>
-                                        <td class="active"><?php echo $access_point->ssid ?></td>
+                                        <td class="active"><?php echo $access_point_item->ssid ?></td>
                                         <td class="active">
-                                            <a href="#detail_text_modal" data-toggle="modal" data-target="#detail_text_modal" data-content="<?php echo $access_point->bssid ?>" data-title="<?php echo $access_point_lang['title'] ?>" onclick="false;">
-                                                <p class="detail-text"><?php echo (strlen($access_point->bssid) > 20) ? substr($access_point->bssid, 0, 20).'...' : $access_point->bssid ?>
+                                            <a href="#detail_text_modal" data-toggle="modal" data-target="#detail_text_modal" data-content="<?php echo $access_point_item->bssid ?>" data-title="<?php echo $access_point_item_lang['title'] ?>" onclick="false;">
+                                                <p class="detail-text"><?php echo (strlen($access_point_item->bssid) > 20) ? substr($access_point_item->bssid, 0, 20).'...' : $access_point_item->bssid ?>
                                             </a>
                                         </td>
-                                        <td class="active"><input type="checkbox" disabled class="text-center" value="<?php echo $access_point->id ?>" name="selected_access_point" <?php echo (($access_point->selected == 1) ? "checked" : "") ?> ></td>
+                                        <td class="active"><input type="checkbox" disabled class="text-center" value="<?php echo $access_point_item->id ?>" name="selected_access_point" <?php echo (($access_point_item->selected == 1) ? "checked" : "") ?> ></td>
                                         <td class="active">
-                                            <?php echo anchor('admin/access_point/edit/'.$access_point->id, $access_point_lang['edit'], "class='label label-info'") ?>
+                                            <?php echo anchor('admin/access_point/edit/'.$access_point_item->id, $access_point_lang['edit'], "class='label label-info'") ?>
                                         </td>
                                         <td class="active">
-                                            <a href="#delete_access_point_modal" class="label label-warning" data-toggle="modal" data-target="#delete_access_point_modal" data-access-point-id=<?php echo $access_point->id ?> onclick="false;"><?php echo $access_point_lang["delete"] ?></a>
+                                            <a href="#delete_access_point_modal" class="label label-warning" data-toggle="modal" data-target="#delete_access_point_modal" data-access-point-id=<?php echo $access_point_item->id ?> onclick="false;"><?php echo $access_point_lang["delete"] ?></a>
                                         </td>
                                     </tr>
                         <?php
