@@ -35,6 +35,8 @@
                                                 <p class="detail-text"><?php echo (strlen($shift->description) > 30) ? substr($shift->description, 0, 30)."..." : $shift->description ?></p>
                                             </a>
                                         </td>
+                                        <td class="active"><?php echo date("g:i A", strtotime($shift->start_time)) ?></td>
+                                        <td class="active"><?php echo date("g:i A", strtotime($shift->end_time)) ?></td>
                                         <td class="active"><?php echo anchor('admin/shifts/edit/'.$shift->id, $shifts_lang['edit'], "class='label label-info'") ?></td>
                                         <td class="active">
                                             <a href="#delete_shift_modal" class="label label-warning" data-toggle="modal" data-target="#delete_shift_modal" data-shift-id="<?php echo $shift->id ?>" onclick="false;"><?php echo $shifts_lang["delete"] ?></a>
