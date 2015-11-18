@@ -32,7 +32,7 @@
                                         <td class="active"><?php echo $access_point_item->ssid ?></td>
                                         <td class="active">
                                             <a href="#detail_text_modal" data-toggle="modal" data-target="#detail_text_modal" data-content="<?php echo $access_point_item->bssid ?>" data-title="<?php echo $access_point_lang['title'] ?>" onclick="false;">
-                                                <p class="detail-text"><?php echo (strlen($access_point_item->bssid) > 20) ? substr($access_point_item->bssid, 0, 20).'...' : $access_point_item->bssid ?>
+                                                <p class="detail-text"><?php echo (strlen($access_point_item->bssid) > 20) ? substr($access_point_item->bssid, 0, 20).'...' : $access_point_item->bssid ?></p>
                                             </a>
                                         </td>
                                         <td class="active"><input type="checkbox" disabled class="text-center" value="<?php echo $access_point_item->id ?>" name="selected_access_point" <?php echo (($access_point_item->selected == 1) ? "checked" : "") ?> ></td>

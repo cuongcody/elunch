@@ -44,18 +44,30 @@
                     </thead>
                     <tbody>
                         <?php
-                            foreach ($dishes as $key => $dish)
+                            if ($dishes != NULL)
                             {
-                                echo "<tr id='dish_".$dish->id."'>";
-                                echo "<td class='active'>".(($page == 0 ? $page : ($page - 1))*10 + $key + 1)."</td>";
-                                echo "<td class='active'><img class='img-thumbnail' width='200' height='200' src='".$dish->image."' alt=''></td>";
-                                echo "<td class='active'>".$dish->name."</td>";
-                                echo "<td class='active'><a href='#detail_text_modal' data-toggle='modal' data-target='#detail_text_modal' data-content='{$dish->description}' data-title='{$dishes_lang['title']}' onclick='false;'><p class='detail-text'>".substr($dish->description,0,100)."...</a></td>";
-                                echo "<td class='active'>".$dish->category."</td>";
-                                echo "<td class='active'>".anchor('admin/dishes/edit/'.$dish->id, $dishes_lang['edit'], "class='label label-info'")."</td>";
-                                echo "<td class='active'>";
-                                echo "<a href='#delete_dish_modal' class='label label-warning' data-toggle='modal' data-target='#delete_dish_modal' data-dish-image-file-name='{$dish->image_file_name}' data-dish-id={$dish->id} onclick='false;'>".$dishes_lang["delete"]."</a></td>";
-                                echo "</tr>";
+                                foreach ($dishes as $key => $dish)
+                                {
+                        ?>
+                                    <tr id="dish_<?php echo $dish->id ?>">
+                                        <td class="active"><?php echo (($page == 0 ? $page : ($page - 1)) * 10 + $key + 1) ?></td>
+                                        <td class="active">
+                                            <img class="img-thumbnail" width="200" height="200" src="<?php echo $dish->image ?>" alt="">
+                                        </td>
+                                        <td class="active"><?php echo $dish->name ?></td>
+                                        <td class="active">
+                                            <a href="#detail_text_modal" data-toggle="modal" data-target="#detail_text_modal" data-content="<?php echo $dish->description ?>" data-title="<?php echo $dishes_lang['title'] ?>" onclick="false;">
+                                                <p class="detail-text"><?php echo (strlen($dish->description) > 30) ? substr($dish->description, 0, 30)."..." : $dish->description ?></p>
+                                            </a>
+                                        </td>
+                                        <td class="active"><?php echo $dish->category ?></td>
+                                        <td class="active"><?php echo anchor('admin/dishes/edit/'.$dish->id, $dishes_lang['edit'], "class='label label-info'") ?></td>
+                                        <td class="active">
+                                            <a href="#delete_dish_modal" class="label label-warning" data-toggle="modal" data-target="#delete_dish_modal" data-dish-image-file-name="<?php echo $dish->image_file_name ?>" data-dish-id="<?php echo $dish->id ?>" onclick="false;"><?php echo $dishes_lang["delete"] ?></a>
+                                        </td>
+                                    </tr>
+                        <?php
+                                }
                             }
                         ?>
                     <tbody>
