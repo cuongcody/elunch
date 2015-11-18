@@ -1,7 +1,7 @@
 $(function() {
     $('#delete_access_point_modal').on('show.bs.modal', function(e) {
             //get data-id attribute of the clicked element
-            var access_point_id = $(e.relatedTarget).data('access_point-id');
+            var access_point_id = $(e.relatedTarget).data('access-point-id');
             $(e.currentTarget).find('input[name="access_point_id"]').val(access_point_id);
         });
 

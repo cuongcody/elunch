@@ -38,6 +38,32 @@
                                 }
                             }
                         ?>
+                        <?php
+                            if ($access_point != NULL)
+                            {
+                                foreach ($access_point as $key => $access_point)
+                                {
+                        ?>
+                                    <tr id="access_point_<?php echo $access_point->id ?>">
+                                        <td class="active"><?php echo ($key+1) ?></td>
+                                        <td class="active"><?php echo $access_point->ssid ?></td>
+                                        <td class="active">
+                                            <a href="#detail_text_modal" data-toggle="modal" data-target="#detail_text_modal" data-content="<?php echo $access_point->bssid ?>" data-title="<?php echo $access_point_lang['title'] ?>" onclick="false;">
+                                                <p class="detail-text"><?php echo (strlen($access_point->bssid) > 20) ? substr($access_point->bssid, 0, 20).'...' : $access_point->bssid ?>
+                                            </a>
+                                        </td>
+                                        <td class="active"><input type="checkbox" disabled class="text-center" value="<?php echo $access_point->id ?>" name="selected_access_point" <?php echo (($access_point->selected == 1) ? "checked" : "") ?> ></td>
+                                        <td class="active">
+                                            <?php echo anchor('admin/access_point/edit/'.$access_point->id, $access_point_lang['edit'], "class='label label-info'") ?>
+                                        </td>
+                                        <td class="active">
+                                            <a href="#delete_access_point_modal" class="label label-warning" data-toggle="modal" data-target="#delete_access_point_modal" data-access-point-id=<?php echo $access_point->id ?> onclick="false;"><?php echo $access_point_lang["delete"] ?></a>
+                                        </td>
+                                    </tr>
+                        <?php
+                                }
+                            }
+                        ?>
                     </tbody>
                 </table>
             </div>
