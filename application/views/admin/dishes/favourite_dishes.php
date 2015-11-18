@@ -45,7 +45,7 @@
                                     <img class="img-responsive img-thumbnail" width="150" height="150" src="<?php echo $dish->image ?>" alt="">
                                 </a>
                                 <h3>
-                                    <a href="#">"<?php echo $dish->name ?></a>
+                                    <a href="#"><?php echo $dish->name ?></a>
                                 </h3>
                                 <p>
                                     <strong>
