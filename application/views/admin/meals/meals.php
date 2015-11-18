@@ -83,7 +83,7 @@
                                             <span class="label label-default btn-meal-report" data-date="<?php echo $meal->meal_date ?>" data-path="<?php echo base_url('admin/meals/report')?>">
                                                 <i class="fa fa-file-pdf-o"></i>
                                             </span>
-                                        </td>";
+                                        </td>
                                     </tr>
                         <?php
                                 }

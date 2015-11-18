@@ -38,7 +38,7 @@
                                 echo "<th class='column'>".$tables_lang['description']."</th>";
                                 echo "<th class='column'>".$tables_lang['for_vegans']."</th>";
                                 echo "<th class='column'>".$tables_lang['seats']."</th>";
-                                echo "<th class='column'>".$tables_lang['table']."</th>";
+                                echo "<th class='column'>".$tables_lang['shift']."</th>";
                                 echo "<th class='column'></th>";
                                 echo "<th class='column'></th></thead>";
                             ?>
@@ -63,7 +63,7 @@
                                             <input type="checkbox" disabled class="text-center" <?php echo (($table->for_vegans == 1) ? "checked" : "") ?> >
                                         </td>
                                         <td class="active"><?php echo $table->seats ?></td>
-                                        <td class="active"><?php echo $table->table ?></td>
+                                        <td class="active"><?php echo $table->shift ?></td>
                                         <td class="active"><?php echo anchor('admin/tables/edit/'.$table->id, $tables_lang['edit'], "class='label label-info'") ?></td>
                                         <td class="active">
                                             <a href="#delete_table_modal" class="label label-warning" data-toggle="modal" data-target="#delete_table_modal" data-table-id="<?php echo $table->id ?>" onclick="false;"><?php echo $tables_lang["delete"] ?></a>

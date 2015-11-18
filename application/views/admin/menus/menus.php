@@ -54,7 +54,7 @@
                                         <td class="active"><?php echo $menu->name?></td>
                                         <td class="active">
                                             <a href="#detail_text_modal" data-toggle="modal" data-target="#detail_text_modal" data-content="<?php echo $menu->description ?>" data-title="<?php echo $menus_lang['title'] ?>" onclick="false;">
-                                                <p class="detail-text">"<?php echo (strlen($menu->description) > 30) ? substr($menu->description, 0, 30)."..." : $menu->description ?></p>
+                                                <p class="detail-text"><?php echo (strlen($menu->description) > 30) ? substr($menu->description, 0, 30)."..." : $menu->description ?></p>
                                             </a>
                                         </td>
                                         <td class="active">
