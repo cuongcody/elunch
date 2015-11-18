@@ -20,16 +20,26 @@
                     </thead>
                     <tbody>
                         <?php
-                            foreach ($floors as $key => $floor)
+                            if ($floors != NULL)
                             {
-                                echo "<tr id='floor_".$floor->id."'>";
-                                echo "<td class='active'>".($key+1)."</td>";
-                                echo "<td class='active'>".$floor->name."</td>";
-                                echo "<td class='active'><a href='#detail_text_modal' data-toggle='modal' data-target='#detail_text_modal' data-content='{$floor->description}' data-title='{$floors_lang['title']}' onclick='false;'><p class='detail-text'>".substr($floor->description,0,100)."...</a></td>";
-                                echo "<td class='active'>".anchor('admin/floors/edit/'.$floor->id, $floors_lang['edit'], "class='label label-info'")."</td>";
-                                echo "<td class='active'>";
-                                echo "<a href='#delete_floor_modal' class='label label-warning' data-toggle='modal' data-target='#delete_floor_modal' data-floor-id={$floor->id} onclick='false;'>".$floors_lang["delete"]."</a></td>";
-                                echo "</tr>";
+                                foreach ($floors as $key => $floor)
+                                {
+                        ?>
+                                    <tr id="floor_<?php echo $floor->id ?>">
+                                        <td class="active"><?php echo ($key + 1) ?></td>
+                                        <td class="active"><?php echo $floor->name ?></td>
+                                        <td class="active">
+                                            <a href="#detail_text_modal" data-toggle="modal" data-target="#detail_text_modal" data-content="<?php echo $floor->description ?>" data-title="<?php echo $floors_lang['title'] ?>" onclick="false;">
+                                                <p class="detail-text"><?php echo (strlen($floor->description) > 30) ? substr($floor->description, 0, 30)."..." : $floor->description ?></p>
+                                            </a>
+                                        </td>
+                                        <td class="active"><?php echo anchor('admin/floors/edit/'.$floor->id, $floors_lang['edit'], "class='label label-info'") ?></td>
+                                        <td class="active">
+                                            <a href="#delete_floor_modal" class="label label-warning" data-toggle="modal" data-target="#delete_floor_modal" data-floor-id="<?php echo $floor->id ?>" onclick="false;"><?php echo $floors_lang["delete"] ?></a>
+                                        </td>
+                                    </tr>
+                        <?php
+                                }
                             }
                         ?>
                     </tbody>

@@ -46,20 +46,32 @@
                         </thead>
                         <tbody>
                             <?php
+                            if ($users != NULL)
+                            {
                                 foreach ($users as $key => $user)
                                 {
-                                    echo "<tr id='user_".$user->id."'>";
-                                    echo "<td class='active'>".(($page == 0 ? $page : ($page - 1))*10 + $key + 1)."</td>";
-                                    echo "<td class='active'>".$user->email."</td>";
-                                    echo "<td class='active'>".$user->first_name."</td>";
-                                    echo "<td class='active'>".$user->last_name."</td>";
-                                    echo "<td class='active'><a href='#detail_text_modal' data-toggle='modal' data-target='#detail_text_modal' data-content='{$user->what_taste}' data-title='{$users_lang['title']}' onclick='false;'><p class='detail-text'>".substr($user->what_taste,0,10)."...</a></td>";
-                                    echo "<td class='active'><input type='checkbox' disabled class='text-center' name='vehicle' ".(($user->want_vegan_meal == 1) ? 'checked' : '')."></td>";
-                                    echo "<td class='active'>".(($user->admin == 0) ? $users_lang['user']:$users_lang['admin'])."</td>";
-                                    echo "<td class='active'>".anchor('admin/users/edit/'.$user->id, $users_lang['edit'], "class='label label-info'")."</td>";
-                                    echo "<td class='active'>";
-                                    echo "<a href='#delete_user_modal' class='label label-warning' data-toggle='modal' data-target='#delete_user_modal' data-user-avatar-file-name='{$user->avatar_file_name}' data-user-id={$user->id} onclick='false;'>".$users_lang["delete"]."</a></td>";
-                                    echo "</tr>";
+                            ?>
+                                    <tr id="user_<?php echo $user->id ?>">
+                                        <td class="active"><?php echo (($page == 0 ? $page : ($page - 1))*10 + $key + 1) ?></td>
+                                        <td class="active"><?php echo $user->email ?></td>
+                                        <td class="active"><?php echo $user->first_name ?></td>
+                                        <td class="active"><?php echo $user->last_name ?></td>
+                                        <td class="active">
+                                            <a href="#detail_text_modal" data-toggle="modal" data-target="#detail_text_modal" data-content="<?php echo $user->what_taste ?>" data-title="<?php echo $users_lang['title'] ?>" onclick="false;">
+                                                <p class="detail-text"><?php echo (strlen($user->what_taste) > 10) ? substr($user->what_taste, 0, 10)."..." : $user->what_taste ?></p>
+                                            </a>
+                                        </td>
+                                        <td class="active">
+                                            <input type="checkbox" disabled class="text-center" <?php echo (($user->want_vegan_meal == 1) ? "checked" : "") ?> >
+                                        </td>
+                                        <td class="active"><?php echo (($user->admin == 0) ? $users_lang['user'] : $users_lang['admin']) ?></td>
+                                        <td class="active"><?php echo anchor('admin/users/edit/'.$user->id, $users_lang['edit'], "class='label label-info'") ?></td>
+                                        <td class="active">
+                                            <a href="#delete_user_modal" class="label label-warning" data-toggle="modal" data-target="#delete_user_modal" data-user-avatar-file-name="<?php echo $user->avatar_file_name ?>" data-user-id="<?php echo $user->id ?>" onclick="false;"><?php echo $users_lang["delete"] ?></a>
+                                        </td>
+                                    </tr>
+                            <?php
+                                    }
                                 }
                             ?>
                         </tbody>

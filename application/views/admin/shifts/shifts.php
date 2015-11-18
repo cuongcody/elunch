@@ -22,18 +22,26 @@
                     </thead>
                     <tbody>
                         <?php
-                            foreach ($shifts as $key => $shift)
+                            if ($shifts != NULL)
                             {
-                                echo "<tr id='shift_".$shift->id."'>";
-                                echo "<td class='active'>".($key+1)."</td>";
-                                echo "<td class='active'>".$shift->name."</td>";
-                                echo "<td class='active'><a href='#detail_text_modal' data-toggle='modal' data-target='#detail_text_modal' data-content='{$shift->description}' data-title='{$shifts_lang['title']}' onclick='false;'><p class='detail-text'>".substr($shift->description,0,100)."...</a></td>";
-                                echo "<td class='active'>".date("g:i A", strtotime($shift->start_time))."</td>";
-                                echo "<td class='active'>".date("g:i A", strtotime($shift->end_time))."</td>";
-                                echo "<td class='active'>".anchor('admin/shifts/edit/'.$shift->id, $shifts_lang['edit'], "class='label label-info'")."</td>";
-                                echo "<td class='active'>";
-                                echo "<a href='#delete_shift_modal' class='label label-warning' data-toggle='modal' data-target='#delete_shift_modal' data-shift-id={$shift->id} onclick='false;'>".$shifts_lang["delete"]."</a></td>";
-                                echo "</tr>";
+                                foreach ($shifts as $key => $shift)
+                                {
+                        ?>
+                                    <tr id="shift_<?php echo $shift->id ?>">
+                                        <td class="active"><?php echo ($key + 1) ?></td>
+                                        <td class="active"><?php echo $shift->name ?></td>
+                                        <td class="active">
+                                            <a href="#detail_text_modal" data-toggle="modal" data-target="#detail_text_modal" data-content="<?php echo $shift->description ?>" data-title="<?php echo $shifts_lang['title'] ?>" onclick="false;">
+                                                <p class="detail-text"><?php echo (strlen($shift->description) > 30) ? substr($shift->description, 0, 30)."..." : $shift->description ?></p>
+                                            </a>
+                                        </td>
+                                        <td class="active"><?php echo anchor('admin/shifts/edit/'.$shift->id, $shifts_lang['edit'], "class='label label-info'") ?></td>
+                                        <td class="active">
+                                            <a href="#delete_shift_modal" class="label label-warning" data-toggle="modal" data-target="#delete_shift_modal" data-shift-id="<?php echo $shift->id ?>" onclick="false;"><?php echo $shifts_lang["delete"] ?></a>
+                                        </td>
+                                    </tr>
+                        <?php
+                                }
                             }
                         ?>
                     </tbody>

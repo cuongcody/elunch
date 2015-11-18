@@ -44,18 +44,28 @@
                     </thead>
                     <tbody>
                         <?php
-                            foreach ($menus as $key => $menu)
+                            if ($menus != NULL)
                             {
-                                echo "<tr id='menu_".$menu->id."'>";
-                                echo "<td class='active'>".(($page == 0 ? $page : ($page - 1))*10 + $key + 1)."</td>";
-                                echo "<td class='active'>".$menu->name."</td>";
-                                echo "<td class='active'><a href='#detail_text_modal' data-toggle='modal' data-target='#detail_text_modal' data-content='{$menu->description}' data-title='{$menus_lang['title']}' onclick='false;'><p class='detail-text'>".substr($menu->description,0,30)."...</a></td>";
-                                echo "<td class='active'>";
-                                echo "<a href='#list_dishes_modal' class='label label-success' data-toggle='modal' data-target='#list_dishes_modal' data-path='".base_url()."admin/menus/list_dishes_from_menu/".$menu->id."' onclick='false;'>".$menus_lang["dishes_of_menu"]."</a></td>";
-                                echo "<td class='active'>".anchor('admin/menus/edit/'.$menu->id, $menus_lang['edit'], "class='label label-info'")."</td>";
-                                echo "<td class='active'>";
-                                echo "<a href='#delete_menu_modal' class='label label-warning' data-toggle='modal' data-target='#delete_menu_modal' data-menu-id={$menu->id} onclick='false;'>".$menus_lang["delete"]."</a></td>";
-                                echo "</tr>";
+                                foreach ($menus as $key => $menu)
+                                {
+                        ?>
+                                    <tr id="menu_<?php echo $menu->id ?>">
+                                        <td class="active"><?php echo (($page == 0 ? $page : ($page - 1)) * 10 + $key + 1) ?></td>
+                                        <td class="active"><?php echo $menu->name?></td>
+                                        <td class="active">
+                                            <a href="#detail_text_modal" data-toggle="modal" data-target="#detail_text_modal" data-content="<?php echo $menu->description ?>" data-title="<?php echo $menus_lang['title'] ?>" onclick="false;">
+                                                <p class="detail-text">"<?php echo (strlen($menu->description) > 30) ? substr($menu->description, 0, 30)."..." : $menu->description ?></p>
+                                            </a>
+                                        </td>
+                                        <td class="active">
+                                            <a href="#list_dishes_modal" class="label label-success" data-toggle="modal" data-target="#list_dishes_modal" data-path="<?php echo base_url()."admin/menus/list_dishes_from_menu/".$menu->id ?>" onclick="false;"><?php echo $menus_lang["dishes_of_menu"] ?></a>
+                                        </td>
+                                        <td class="active"><?php echo anchor('admin/menus/edit/'.$menu->id, $menus_lang['edit'], "class='label label-info'") ?></td>
+                                        <td class="active">
+                                            <a href="#delete_menu_modal" class="label label-warning" data-toggle="modal" data-target="#delete_menu_modal" data-menu-id="<?php echo $menu->id?>" onclick="false;"><?php echo $menus_lang["delete"] ?></a></td>
+                                    </tr>
+                        <?php
+                                }
                             }
                         ?>
                     </tbody>

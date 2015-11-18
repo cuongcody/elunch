@@ -54,21 +54,39 @@
                     </thead>
                     <tbody>
                         <?php
-                            foreach ($meals as $key => $meal)
+                            if ($meals != NULL)
                             {
-                                echo "<tr id='meal_".$meal->id."'>";
-                                echo "<td class='active'>".(($page == 0 ? $page : ($page - 1))*10 + $key + 1)."</td>";
-                                echo "<td class='active'>".$meal->meal_date."</td>";
-                                echo "<td class='active'>".$meal->preordered_meals."</td>";
-                                echo "<td class='active'>".$meal->menu_name."</td>";
-                                echo "<td class='active'>";
-                                echo "<a href='#list_dishes_modal' class='label label-success' data-toggle='modal' data-target='#list_dishes_modal' data-path='".base_url()."admin/menus/list_dishes_from_menu/".$meal->menu_id."' onclick='false;'>".$meals_lang["dishes_of_menu"]."</a></td>";
-                                echo "<td class='active'>".anchor('admin/meals/edit/'.$meal->id, $meals_lang['edit'], "class='label label-info'")."</td>";
-                                echo "<td class='active'>";
-                                echo "<a href='#delete_meal_modal' class='label label-warning' data-toggle='modal' data-target='#delete_meal_modal' data-meal-id={$meal->id} onclick='false;'>".$meals_lang["delete"]."</a></td>";
-                                echo "<td class='active'>".(($meal->check_log == 0) ? "<a href='#gen_log_file_meal_modal' class='label label-danger log_file' data-toggle='modal' data-target='#gen_log_file_meal_modal' data-meal-id={$meal->id} data-meal-date={$meal->meal_date} onclick='false;'>".$meals_lang["generate_log_file"]."</a>" : "")."</td>";
-                                echo "<td class='active'><span class='label label-default btn-meal-report' data-date='{$meal->meal_date}' data-path='".base_url('admin/meals/report')."'><i class='fa fa-file-pdf-o'></i></span></td>";
-                                echo "</tr>";
+                                foreach ($meals as $key => $meal)
+                                {
+                        ?>
+                                    <tr id="meal_<?php echo $meal->id ?>">
+                                        <td class="active"><?php echo (($page == 0 ? $page : ($page - 1)) * 10 + $key + 1) ?></td>
+                                        <td class="active"><?php echo $meal->meal_date ?></td>
+                                        <td class="active"><?php echo $meal->preordered_meals ?></td>
+                                        <td class="active"><?php echo $meal->menu_name ?></td>
+                                        <td class="active">
+                                            <a href="#list_dishes_modal" class="label label-success" data-toggle="modal" data-target="#list_dishes_modal" data-path="<?php echo base_url()."admin/menus/list_dishes_from_menu/".$meal->menu_id ?>" onclick="false;">
+                                                <?php echo $meals_lang["dishes_of_menu"] ?>
+                                            </a>
+                                        </td>
+                                        <td class="active"><?php echo anchor('admin/meals/edit/'.$meal->id, $meals_lang['edit'], "class='label label-info'") ?></td>
+                                        <td class="active">
+                                            <a href="#delete_meal_modal" class="label label-warning" data-toggle="modal" data-target="#delete_meal_modal" data-meal-id="<?php echo $meal->id ?>" onclick="false;"><?php echo $meals_lang["delete"] ?></a>
+                                        </td>
+                                        <td class="active">
+                                        <?php if ($meal->check_log == 0){
+                                        ?>
+                                            <a href="#gen_log_file_meal_modal" class="label label-danger log_file" data-toggle="modal" data-target="#gen_log_file_meal_modal" data-meal-id="<?php echo $meal->id ?>" data-meal-date="<?php echo $meal->meal_date ?>" onclick="false;"><?php echo $meals_lang["generate_log_file"] ?></a>
+                                        <?php } ?>
+                                        </td>
+                                        <td class="active">
+                                            <span class="label label-default btn-meal-report" data-date="<?php echo $meal->meal_date ?>" data-path="<?php echo base_url('admin/meals/report')?>">
+                                                <i class="fa fa-file-pdf-o"></i>
+                                            </span>
+                                        </td>";
+                                    </tr>
+                        <?php
+                                }
                             }
                         ?>
                     </tbody>

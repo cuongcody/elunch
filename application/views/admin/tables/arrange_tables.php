@@ -43,14 +43,21 @@
                          <!-- Nav tabs -->
                         <ul class="nav nav-tabs tabs-left">
                             <?php
-                                if (!empty($tables))
+                                if ($tables != NULL)
                                 {
                                     foreach ($tables as $key => $table)
                                     {
-                                       echo "<li id='table-tab_".$table->id."' class='".(($key == 0) ? 'active' : '')."'>";
-                                       echo "<a href='#list_of_users' data-path='".base_url('admin/tables/list_users_from_table/')."' data-table-id={$table->id} data-toggle='tab' aria-expanded='false'>".$table->name." ";
-                                       echo "<span class='badge badge-info'><span class='occupied_seats'>".((is_null($table->occupied_seats)) ? 0 : $table->occupied_seats)."</span> / ".$table->seats."</span>";
-                                       echo "</a></li>";
+                            ?>
+                                        <li id="table-tab_<?php echo $table->id ?>" class="<?php echo (($key == 0) ? 'active' : '') ?>">
+                                            <a href="#list_of_users" data-path="<?php echo base_url('admin/tables/list_users_from_table/') ?>" data-table-id="<?php echo $table->id ?>" data-toggle="tab" aria-expanded="false">
+                                                <?php echo $table->name ?>
+                                                 <span class="badge badge-info">
+                                                    <span class="occupied_seats"><?php echo ((is_null($table->occupied_seats)) ? 0 : $table->occupied_seats) ?></span>
+                                                     / <?php echo $table->seats ?>
+                                                </span>
+                                            </a>
+                                        </li>"
+                            <?php
                                     }
                                 }
                             ?>
@@ -75,11 +82,11 @@
                                     <table class="table table-striped responsive-utilities jambo_table bulk_action">
                                         <thead>
                                             <tr class="heading">
-                                                <th class="column-title"><?php echo $arrange_tables_lang['avatar'] ?></th>
-                                                <th class="column-title"><?php echo $arrange_tables_lang['name'] ?></th>
-                                                <th class="column-title"><?php echo $arrange_tables_lang['vegan'] ?></th>
-                                                <th class="column-title"><?php echo $arrange_tables_lang['floor'] ?></th>
-                                                <th class="column-title"><?php echo $arrange_tables_lang['leave'] ?></th>
+                                                <th class="active"><?php echo $arrange_tables_lang['avatar'] ?></th>
+                                                <th class="active"><?php echo $arrange_tables_lang['name'] ?></th>
+                                                <th class="active"><?php echo $arrange_tables_lang['vegan'] ?></th>
+                                                <th class="active"><?php echo $arrange_tables_lang['floor'] ?></th>
+                                                <th class="active"><?php echo $arrange_tables_lang['leave'] ?></th>
                                             </tr>
                                         </thead>
                                         <tbody class="users_item">
@@ -90,12 +97,23 @@
                                                     $users_in_tables = $this->tables_model->get_users_in_table($tables[0]->id, $day);
                                                     foreach ($users_in_tables as $user)
                                                     {
-                                                        echo "<tr id='user_".$user->id."' class='heading'>";
-                                                        echo "<td class='column-title'><img class='img-thumbnail' width='50' height='50' src='" . $user->avatar_content_file . "'alt=''></td>";
-                                                        echo "<td class='column-title'>".$user->first_name."</td>";
-                                                        echo "<td class='column-title'><input type='checkbox' disabled class='text-center' name='vehicle' ".(($user->want_vegan_meal == 1) ? 'checked' : '')."></td>";
-                                                        echo "<td class='column-title'>".$user->floor."</td>";
-                                                        echo "<td class='column-title'><a href='#leave_table_modal' class='label label-warning' data-toggle='modal' data-target='#leave_table_modal' data-table-id='" . $tables[0]->id . "' data-user-id='" . $user->id . "' onclick='false;'><i class='fa fa-times'></i></a></td></tr>";
+                                            ?>
+                                                        <tr id="user_<?php echo $user->id ?>" class="heading">
+                                                            <td class="active">
+                                                                <img class="img-thumbnail" width="50" height="50" src="<?php echo $user->avatar_content_file ?>"alt="">
+                                                            </td>
+                                                            <td class="active"><?php echo $user->first_name ?></td>
+                                                            <td class="active">
+                                                                <input type="checkbox" disabled class="text-center" <?php echo (($user->want_vegan_meal == 1) ? "checked" : "") ?> >
+                                                            </td>
+                                                            <td class="active"><?php echo $user->floor ?></td>
+                                                            <td class="active">
+                                                                <a href="#leave_table_modal" class="label label-warning" data-toggle="modal" data-target="#leave_table_modal" data-table-id="<?php echo $tables[0]->id ?>" data-user-id="<?php echo $user->id ?>" onclick="false;">
+                                                                    <i class='fa fa-times'></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                            <?php
                                                     }
                                                 }
                                             ?>

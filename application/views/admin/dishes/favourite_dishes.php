@@ -16,7 +16,7 @@
                         {
                         ?>
                             <div class="col-xs-12 col-sm-4 dish-favourite-item">
-                                <?php if ($key < 3){ ?><span class="top-5 badge bg-green">"<?php echo ($key + 1) ?></span><?php } ?>
+                                <?php if ($key < 3){ ?><span class="top-5 badge bg-green"><?php echo ($key + 1) ?></span><?php } ?>
                                 <a href="#">
                                     <img class="img-responsive img-thumbnail" width="300" height="300" src="<?php echo $dish->image ?>" alt="">
                                 </a>
@@ -30,7 +30,7 @@
                                     </strong>
                                 </p>
                                 <a href="#detail_text_modal" data-toggle="modal" data-target="#detail_text_modal" data-content="<?php echo $dish->description ?>" data-title="<?php echo $favourite_dishes_lang['title'] ?>" onclick="false;">
-                                    <p class="detail-text"><?php echo (strlen($dish->description) > 30) ? substr($dish->description,0,30)."..." : $dish->description ?></p>
+                                    <p class="detail-text"><?php echo (strlen($dish->description) > 30) ? substr($dish->description, 0, 30)."..." : $dish->description ?></p>
                                 </a>
                             </div>
                             <?php

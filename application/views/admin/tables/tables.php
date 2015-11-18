@@ -38,7 +38,7 @@
                                 echo "<th class='column'>".$tables_lang['description']."</th>";
                                 echo "<th class='column'>".$tables_lang['for_vegans']."</th>";
                                 echo "<th class='column'>".$tables_lang['seats']."</th>";
-                                echo "<th class='column'>".$tables_lang['shift']."</th>";
+                                echo "<th class='column'>".$tables_lang['table']."</th>";
                                 echo "<th class='column'></th>";
                                 echo "<th class='column'></th></thead>";
                             ?>
@@ -46,19 +46,31 @@
                     </thead>
                     <tbody>
                         <?php
-                            foreach ($tables as $key => $table)
+                            if ($tables != NULL)
                             {
-                                echo "<tr id='table_".$table->id."'>";
-                                echo "<td class='active'>".(($page == 0 ? $page : ($page - 1))*10 + $key + 1)."</td>";
-                                echo "<td class='active'>".$table->name."</td>";
-                                echo "<td class='active'><a href='#detail_text_modal' data-toggle='modal' data-target='#detail_text_modal' data-content='{$table->description}' data-title='{$tables_lang['title']}' onclick='false;'><p class='detail-text'>".substr($table->description,0,10)."...</a></td>";
-                                echo "<td class='active'><input type='checkbox' disabled class='text-center' ".(($table->for_vegans == 1) ? 'checked' : '')."></td>";
-                                echo "<td class='active'>".$table->seats."</td>";
-                                echo "<td class='active'>".$table->shift."</td>";
-                                echo "<td class='active'>".anchor('admin/tables/edit/'.$table->id, $tables_lang['edit'], "class='label label-info'")."</td>";
-                                echo "<td class='active'>";
-                                echo "<a href='#delete_table_modal' class='label label-warning' data-toggle='modal' data-target='#delete_table_modal' data-table-id={$table->id} onclick='false;'>".$tables_lang["delete"]."</a></td>";
-                                echo "</tr>";
+                                foreach ($tables as $key => $table)
+                                {
+                        ?>
+                                    <tr id="table_<?php echo $table->id ?>">
+                                        <td class="active"><?php echo (($page == 0 ? $page : ($page - 1))*10 + $key + 1) ?></td>
+                                        <td class="active"><?php echo $table->name ?></td>
+                                        <td class="active">
+                                            <a href="#detail_text_modal" data-toggle="modal" data-target="#detail_text_modal" data-content="<?php echo $table->description ?>" data-title="<?php echo $tables_lang['title'] ?>" onclick="false;">
+                                                <p class="detail-text"><?php echo (strlen($table->description) > 30) ? substr($table->description, 0, 30)."..." : $table->description ?></p>
+                                            </a>
+                                        </td>
+                                        <td class="active">
+                                            <input type="checkbox" disabled class="text-center" <?php echo (($table->for_vegans == 1) ? "checked" : "") ?> >
+                                        </td>
+                                        <td class="active"><?php echo $table->seats ?></td>
+                                        <td class="active"><?php echo $table->table ?></td>
+                                        <td class="active"><?php echo anchor('admin/tables/edit/'.$table->id, $tables_lang['edit'], "class='label label-info'") ?></td>
+                                        <td class="active">
+                                            <a href="#delete_table_modal" class="label label-warning" data-toggle="modal" data-target="#delete_table_modal" data-table-id="<?php echo $table->id ?>" onclick="false;"><?php echo $tables_lang["delete"] ?></a>
+                                        </td>
+                                    </tr>
+                        <?php
+                                }
                             }
                         ?>
                     </tbody>
