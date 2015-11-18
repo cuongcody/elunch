@@ -36,7 +36,7 @@
                                     {
                                         $type_message = $announcements_lang['table'];
                                     }
-                                    ?>
+                            ?>
                                     <div onclick="false;" id="announcement_item_<?php echo $announcement_item->id ?>" class="announcement_item well profile_view" data-path="<?php echo base_url('admin/announcements/get_detail_announcement/'.$announcement_item->id) ?>">
                                         <div class="col-sm-12">
                                             <h4 class="brief"><i><?php echo $announcements_lang['to'].": ".$type_message ?></i></h4>

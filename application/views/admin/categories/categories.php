@@ -32,6 +32,29 @@
                                 echo "</tr>";
                             }
                         ?>
+                        <?php
+                            if ($categories != NULL)
+                            {
+                                foreach ($categories as $key => $category)
+                                {
+                        ?>
+                                    <tr id="category_<?php echo $category->id ?>">
+                                        <td class="active"><?php echo ($key + 1) ?></td>
+                                        <td class="active"><?php echo $category->name ?></td>
+                                        <td class="active">
+                                            <a href="#detail_text_modal" data-toggle="modal" data-target="#detail_text_modal" data-content="<?php echo $category->description ?>" data-title="<?php echo $categories_lang['title']?> " onclick="false;">
+                                                <p class="detail-text"><?php echo (strlen($category->description) > 30) ? substr($category->description,0,30)."..." : $category->description ?>
+                                            </a>
+                                        </td>
+                                        <td class="active"><?php echo anchor('admin/categories/edit/'.$category->id, $categories_lang['edit'], "class='label label-info'") ?></td>
+                                        <td class="active">
+                                            <a href="#delete_category_modal" class="label label-warning" data-toggle="modal" data-target="#delete_category_modal" data-category-id="<?php echo $category->id ?>" onclick="false;"><?php echo $categories_lang["delete"] ?></a>
+                                        </td>
+                                    </tr>
+                        <?php
+                                }
+                            }
+                        ?>
                     </tbody>
                 </table>
             </div>

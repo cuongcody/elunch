@@ -28,7 +28,7 @@
                                 {
                         ?>
                                     <tr id="access_point_<?php echo $access_point_item->id ?>">
-                                        <td class="active"><?php echo ($key+1) ?></td>
+                                        <td class="active"><?php echo ($key + 1) ?></td>
                                         <td class="active"><?php echo $access_point_item->ssid ?></td>
                                         <td class="active">
                                             <a href="#detail_text_modal" data-toggle="modal" data-target="#detail_text_modal" data-content="<?php echo $access_point_item->bssid ?>" data-title="<?php echo $access_point_lang['title'] ?>" onclick="false;">
