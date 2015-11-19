@@ -56,7 +56,7 @@
                                                      / <?php echo $table->seats ?>
                                                 </span>
                                             </a>
-                                        </li>"
+                                        </li>
                             <?php
                                     }
                                 }
@@ -82,11 +82,11 @@
                                     <table class="table table-striped responsive-utilities jambo_table bulk_action">
                                         <thead>
                                             <tr class="heading">
-                                                <th class="active"><?php echo $arrange_tables_lang['avatar'] ?></th>
-                                                <th class="active"><?php echo $arrange_tables_lang['name'] ?></th>
-                                                <th class="active"><?php echo $arrange_tables_lang['vegan'] ?></th>
-                                                <th class="active"><?php echo $arrange_tables_lang['floor'] ?></th>
-                                                <th class="active"><?php echo $arrange_tables_lang['leave'] ?></th>
+                                                <th class="column-title"><?php echo $arrange_tables_lang['avatar'] ?></th>
+                                                <th class="column-title"><?php echo $arrange_tables_lang['name'] ?></th>
+                                                <th class="column-title"><?php echo $arrange_tables_lang['vegan'] ?></th>
+                                                <th class="column-title"><?php echo $arrange_tables_lang['floor'] ?></th>
+                                                <th class="column-title"><?php echo $arrange_tables_lang['leave'] ?></th>
                                             </tr>
                                         </thead>
                                         <tbody class="users_item">
@@ -99,15 +99,15 @@
                                                     {
                                             ?>
                                                         <tr id="user_<?php echo $user->id ?>" class="heading">
-                                                            <td class="active">
+                                                            <td class="column-title">
                                                                 <img class="img-thumbnail" width="50" height="50" src="<?php echo $user->avatar_content_file ?>"alt="">
                                                             </td>
-                                                            <td class="active"><?php echo $user->first_name ?></td>
-                                                            <td class="active">
+                                                            <td class="column-title"><?php echo $user->first_name ?></td>
+                                                            <td class="column-title">
                                                                 <input type="checkbox" disabled class="text-center" <?php echo (($user->want_vegan_meal == 1) ? "checked" : "") ?> >
                                                             </td>
-                                                            <td class="active"><?php echo $user->floor ?></td>
-                                                            <td class="active">
+                                                            <td class="column-title"><?php echo $user->floor ?></td>
+                                                            <td class="column-title">
                                                                 <a href="#leave_table_modal" class="label label-warning" data-toggle="modal" data-target="#leave_table_modal" data-table-id="<?php echo $tables[0]->id ?>" data-user-id="<?php echo $user->id ?>" onclick="false;">
                                                                     <i class='fa fa-times'></i>
                                                                 </a>
