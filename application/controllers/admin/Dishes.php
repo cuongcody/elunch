@@ -253,7 +253,7 @@ class Dishes extends CI_Controller {
             if (!$this->common->image_upload(SAVE_IMAGE_OF_DISHES))
             {
                 $this->lang->load('web_portal/validation', $this->session->userdata('site_lang'));
-                $this->form_validation->set_message('check_image_upload', $this->lang->line('error_upload'));
+                $this->form_validation->set_message('edit_image_upload', $this->lang->line('error_upload'));
                 return FALSE;
             }
             else
