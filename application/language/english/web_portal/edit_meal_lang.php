@@ -5,6 +5,7 @@
     $lang["preordered_meal"] = "Pre-ordered meals";
     $lang["menu"] = "Menu";
     $lang["dishes_of_menu"] = "Dishes of menu";
+    $lang["for_vegans"] = "Vegetarian day";
     $lang["image"] = "Image";
     $lang["name_dish"] = "Name";
     $lang["category"] = "Category";

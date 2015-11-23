@@ -18,7 +18,7 @@
                             echo form_input($data, set_value('lunch_date', $meal->meal_date), 'disabled');
                         ?>
                     </div>
-                    <div class="form-group col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-group col-md-3 col-sm-3 col-xs-6">
                         <label><?php echo $edit_meal_lang['preordered_meal'] ?></label>
                         <?php
                             $data = array(
@@ -30,7 +30,16 @@
                             echo form_input($data, set_value('preordered_meal', $meal->preordered_meals));
                         ?>
                     </div>
-                </div>
+                    <div class="form-group col-md-3 col-sm-3 col-xs-6">
+                        <label for="inputDescription"></label>
+                        <div class="checkbox">
+                            <label>
+                            <?php
+                                echo ($meal->for_vegans == 1) ? form_checkbox( 'for_vegans', 'accept', TRUE) : form_checkbox( 'for_vegans', TRUE);
+                                echo $edit_meal_lang[ 'for_vegans']; ?>
+                            </label>
+                        </div>
+                    </div>
                 <div class="row">
                     <div class="form-group col-md-6 col-sm-6 col-xs-6">
                         <label ><?php echo $edit_meal_lang['menu'] ?></label>

@@ -20,7 +20,7 @@
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
                     </div>
-                    <div class="form-group col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-group col-md-3 col-sm-3 col-xs-6">
                         <label for="inputDescription"><?php echo $new_meal_lang['preordered_meal'] ?></label>
                         <?php
                             $data = array(
@@ -31,6 +31,16 @@
                             );
                             echo form_input($data, set_value('preordered_meal',''));
                         ?>
+                    </div>
+                    <div class="form-group col-md-3 col-sm-3 col-xs-6">
+                        <label for="inputDescription"></label>
+                        <div class="checkbox">
+                            <label>
+                            <?php
+                                echo form_checkbox('for_vegans', 'accept', FALSE);
+                                echo $new_meal_lang['for_vegans']; ?>
+                            </label>
+                        </div>
                     </div>
                 </div>
                 <div class="row">

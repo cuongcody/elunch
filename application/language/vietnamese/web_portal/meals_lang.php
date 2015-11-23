@@ -5,6 +5,7 @@
     $lang["preordered_meals"] = "Món ăn chuẩn bị trước";
     $lang["menu"] = "Thực đơn";
     $lang["dishes_of_menu"] = "Danh sách món ăn";
+    $lang["for_vegans"] = "Ngày ăn chay";
     $lang["name_dish"] = "Tên";
     $lang["create_meal"] = "Tạo bữa ăn";
     $lang["search"] = "Tìm";

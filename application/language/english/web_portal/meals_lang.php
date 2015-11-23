@@ -6,6 +6,7 @@
     $lang["menu"] = "Menu";
     $lang["dishes_of_menu"] = "List of dishes";
     $lang["name_dish"] = "Name";
+    $lang["for_vegans"] = "Vegetarian day";
     $lang["create_meal"] = "Create new meal";
     $lang["from"] = "From";
     $lang["to"] = "To";

@@ -30,16 +30,13 @@ class Votes_api extends Base_api {
         {
             foreach ($result as $temp)
             {
-                if (0 != $temp->num_votes)
-                {
-                    $dish = array();
-                    $dish['id'] = (int)$temp->id;
-                    $dish['name'] = $temp->name;
-                    $dish['description'] = $temp->description;
-                    $dish['image'] = $temp->image;
-                    $dish['num_votes'] = $temp->num_votes;
-                    array_push($dishes, $dish);
-                }
+                $dish = array();
+                $dish['id'] = (int)$temp->id;
+                $dish['name'] = $temp->name;
+                $dish['description'] = $temp->description;
+                $dish['image'] = $temp->image;
+                $dish['num_votes'] = isset($temp->num_votes) ? $temp->num_votes : 0;
+                array_push($dishes, $dish);
             }
             $response['status'] = $messages_lang['success'];
             $response['message'] = $messages_lang['get_votes_success'];

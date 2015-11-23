@@ -130,7 +130,7 @@ class Meals extends CI_Controller {
 
     public function load_new_meal_view()
     {
-        $message = array('title', 'name_dish', 'category',
+        $message = array('title', 'name_dish', 'category', 'for_vegans',
             'lunch_date', 'dishes_of_menu', 'preordered_meal', 'menu', 'image', 'lunch_date', 'save');
         $data = $this->common->set_language_and_data('new_meal', $message);
         $this->load->model('menus_model');
@@ -141,7 +141,7 @@ class Meals extends CI_Controller {
 
     public function load_edit_meal_view($meal_id)
     {
-        $message = array('title', 'name_dish', 'category',
+        $message = array('title', 'name_dish', 'category', 'for_vegans',
             'lunch_date', 'dishes_of_menu', 'preordered_meal', 'manage_meals', 'menu', 'image', 'edit');
         $data = $this->common->set_language_and_data('edit_meal', $message);
         $this->load->model('menus_model');
@@ -153,7 +153,7 @@ class Meals extends CI_Controller {
 
     public function load_meals_view($from = NULL, $to = NULL)
     {
-        $message = array('title', 'create_meal', 'meals', 'name_dish', 'category',
+        $message = array('title', 'create_meal', 'meals', 'name_dish', 'category', 'for_vegans',
          'lunch_date', 'dishes_of_menu', 'preordered_meal', 'menu', 'image', 'lunch_date', 'search',
           'from', 'to', 'edit', 'delete', 'generate_log_file', 'want_to_gen_log_file', 'are_you_sure', 'yes', 'cancel');
         $data = $this->common->set_language_and_data('meals', $message);
@@ -222,17 +222,19 @@ class Meals extends CI_Controller {
 
     public function store_meal()
     {
+        $for_vegans = (!empty($this->input->post('for_vegans'))) ? 1 : 0;
         $lunch_date = $this->input->post('lunch_date');
         $menu_id = $this->input->post('menu');
         $preordered_meal = $this->input->post('preordered_meal');
-        return $this->meals_model->insert_meal($lunch_date, $menu_id, $preordered_meal);
+        return $this->meals_model->insert_meal($lunch_date, $menu_id, $preordered_meal, $for_vegans);
     }
 
     public function edit_meal($meal_id)
     {
+        $for_vegans = (!empty($this->input->post('for_vegans'))) ? 1 : 0;
         $menu_id = $this->input->post('menu');
         $preordered_meal = $this->input->post('preordered_meal');
-        return $this->meals_model->update_meal($meal_id, $menu_id, $preordered_meal);
+        return $this->meals_model->update_meal($meal_id, $menu_id, $preordered_meal, $for_vegans);
     }
 
     public function check_date_format($date) {

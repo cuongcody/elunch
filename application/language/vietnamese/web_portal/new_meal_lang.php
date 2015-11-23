@@ -4,6 +4,7 @@
     $lang["preordered_meal"] = "Số lượng món ăn đặt trước";
     $lang["menu"] = "Thực đơn";
     $lang["dishes_of_menu"] = "Món ăn";
+    $lang["for_vegans"] = "Ngày ăn chay";
     $lang["image"] = "Ảnh";
     $lang["name_dish"] = "Tên";
     $lang["category"] = "Danh mục";

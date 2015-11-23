@@ -68,11 +68,12 @@ class Meals_model extends CI_Model {
      * @param       int  $preordered_meals
      * @return      bool
      */
-    function update_meal($meal_id, $menu_id, $preordered_meals)
+    function update_meal($meal_id, $menu_id, $preordered_meals, $for_vegans)
     {
         $data = array(
             'menu_id' => $menu_id,
-            'preordered_meals' => $preordered_meals);
+            'preordered_meals' => $preordered_meals,
+            'for_vegans' => $for_vegans);
         $this->db->where('id', $meal_id);
         return $this->db->update('meals', $data);
     }
@@ -85,12 +86,13 @@ class Meals_model extends CI_Model {
      * @param       int  $preordered_meals
      * @return      bool
      */
-    function insert_meal($meal_date, $menu_id, $preordered_meals)
+    function insert_meal($meal_date, $menu_id, $preordered_meals, $for_vegans)
     {
         $data = array(
             'meal_date' => $meal_date,
             'menu_id' => $menu_id,
-            'preordered_meals' => $preordered_meals);
+            'preordered_meals' => $preordered_meals,
+            'for_vegans' => $for_vegans);
         return $this->db->insert('meals', $data);
     }
 

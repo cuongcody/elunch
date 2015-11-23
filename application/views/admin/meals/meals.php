@@ -45,6 +45,7 @@
                                 echo "<th class='column'>".$meals_lang['preordered_meal']."</th>";
                                 echo "<th class='column'>".$meals_lang['menu']."</th>";
                                 echo "<th class='column'>".$meals_lang['dishes_of_menu']."</th>";
+                                echo "<th class='column'>".$meals_lang['for_vegans']."</th>";
                                 echo "<th class='column'></th>";
                                 echo "<th class='column'></th>";
                                 echo "<th class='column'></th>";
@@ -68,6 +69,9 @@
                                             <a href="#list_dishes_modal" class="label label-success" data-toggle="modal" data-target="#list_dishes_modal" data-path="<?php echo base_url()."admin/menus/list_dishes_from_menu/".$meal->menu_id ?>" onclick="false;">
                                                 <?php echo $meals_lang["dishes_of_menu"] ?>
                                             </a>
+                                        </td>
+                                        <td class="active">
+                                            <input type="checkbox" disabled class="text-center" <?php echo (($meal->for_vegans == 1) ? "checked" : "") ?> >
                                         </td>
                                         <td class="active"><?php echo anchor('admin/meals/edit/'.$meal->id, $meals_lang['edit'], "class='label label-info'") ?></td>
                                         <td class="active">

@@ -11,6 +11,8 @@ class Votes_model extends CI_Model {
      */
     function get_all_dishes_with_votes_number_in_a_week($day = NULL)
     {
+        $this->load->model('dishes_model');
+        $result_dishes = $this->dishes_model->get_all_dishes();
         $dishes = array();
         $first_day_of_week = $this->find_first_date_of_week($day);
         $query = $this->db->get_where('vote_logs', array('first_day_of_week' => $first_day_of_week));
@@ -26,10 +28,8 @@ class Votes_model extends CI_Model {
             }
             $voted_dish_ids_in_week_arr = (substr_count($voted_dish_ids_in_week, ';') > 0) ? explode(";", $voted_dish_ids_in_week) : array($voted_dish_ids_in_week);
             $last_day_of_week = $this->find_last_date_of_week($day);
-            $this->load->model('dishes_model');
-            $result = $this->dishes_model->get_all_dishes();
             $counts_value_in_voted_dish_ids = array_count_values($voted_dish_ids_in_week_arr);
-            foreach ($result as $dish)
+            foreach ($result_dishes as $dish)
             {
                 $num_votes = 0;
                 // Count dish_id have in voted dish ids in week or not
@@ -43,6 +43,7 @@ class Votes_model extends CI_Model {
             }
             usort($dishes, array($this,"compared_by_num_votes"));
         }
+        else $dishes = (array)$result_dishes;
         return $dishes;
     }
 
