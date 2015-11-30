@@ -9,7 +9,7 @@
     $lang["status"] = "Status";
     $lang["join"] = "Join";
     $lang["leave"] = "Leave";
-    $lang["choose_status"] = "Choose status";
+    $lang["day"] = "Day";
     $lang["for_vegan"] = "Vegetarian table";
     $lang["for_normal"] = "Normal table";
     $lang["yes"] = "Yes";

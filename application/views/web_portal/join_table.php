@@ -8,11 +8,12 @@
                     <!-- Introduction Row -->
                     <div class="row">
                         <div class="col-xs-12">
-                            <h1 class="page-header"><?php echo $join_table_lang['live_attendant_status'] ?></h1>
+                            <h1 class="page-header"><?php echo $join_table_lang['join_table'] ?></h1>
                             <div class="choose_day">
                                 <?php if (!empty($_SESSION['message'])) echo "<script type='text/javascript'>announcementMessage('".$_SESSION['message']."')</script>"; ?>
                                 <?php echo form_open_multipart( 'admin/home/tracking'); ?>
                                     <div class="form-group col-xs-6">
+                                        <label><?php echo $join_table_lang['shift'] ?></label>
                                         <?php
                                             $options=array();
                                             if (!empty($shift))
@@ -28,6 +29,7 @@
                                         ?>
                                     </div>
                                     <div class="form-group col-xs-6">
+                                        <label><?php echo $join_table_lang['day'] ?></label>
                                         <?php
                                             if ($user['want_vegan_meal'])
                                             {

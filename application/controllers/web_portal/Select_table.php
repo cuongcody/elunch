@@ -29,7 +29,7 @@ class Select_table extends CI_Controller {
 
     public function load_tables_view()
     {
-        $message = array('title', 'total_users', 'total_categories', 'lastest_comments', 'live_attendant_status', 'total_shifts', 'total_tables', 'total_dishes', 'total_floors', 'total_menus', 'shift', 'search', 'normal_day', 'vegan_day', 'list_tables', 'create_log', 'status', 'attend', 'absent', 'late', 'choose_status', 'note', 'private_note', 'lunch_date', 'actual_meals', 'log', 'for_vegan', 'for_normal', 'yes', 'cancel');
+        $message = array('title', 'join_table', 'shift', 'day', 'normal_day', 'vegan_day', 'list_tables', 'create_log', 'status');
         $data = $this->common->set_language_and_data('join_table', $message);
         $this->load->model('shifts_model');
         $user = array();
