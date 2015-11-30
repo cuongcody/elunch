@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Tables_user extends CI_Controller {
+class Select_table extends CI_Controller {
 
     public function __construct()
     {
@@ -9,6 +9,7 @@ class Tables_user extends CI_Controller {
         $this->load->library('common');
         $this->load->model('tables_model');
     }
+
     public function index()
     {
         if ($this->session->userdata('logged_in') && $this->session->userdata('logged_in')['role'] == 0)
@@ -178,7 +179,26 @@ class Tables_user extends CI_Controller {
             echo json_encode($data);
         }
         else redirect('admin/login','refresh');
+    }
 
+    public function change_users_taste($want_vegan_meal)
+    {
+        if ($this->session->userdata('logged_in') && $this->session->userdata('logged_in')['role'] == 0)
+        {
+            $this->load->model('users_model');
+            $data['want_vegan_meal'] = (bool)$want_vegan_meal;
+            $data['what_taste'] = NULL;
+            $user_id = $this->session->userdata('logged_in')['user_id'];
+            if ($this->users_model->edit_profile($data, $user_id))
+            {
+                $new_session = $this->session->userdata('logged_in');
+                $new_session['want_vegan_meal'] = $want_vegan_meal;
+                $this->session->set_userdata('logged_in', $new_session);
+                $this->common->return_notification('edit_user', 'edit_success', 1);
+            }
+            else $this->common->return_notification('edit_user', 'edit_failure', 0);
+            redirect('web_portal/select_table','refresh');
+        }
     }
 
 }

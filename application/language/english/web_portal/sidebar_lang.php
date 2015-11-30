@@ -40,4 +40,6 @@
     $lang["access_point"] = "Access point";
     $lang["manage_access_point"] = "Manage access point";
     $lang["add_access_point"] = "Create access point";
+    $lang["want_vegan_food"] = "Want to eat vegan food";
+    $lang["dont_want_vegan_food"] = "Don't want to eat vegan food";
 ?>

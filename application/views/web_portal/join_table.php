@@ -19,7 +19,7 @@
                                             {
                                                 $options[$shift->id] = $shift->name;
                                                 $select_shift = $this->input->post('shift');
-                                                echo form_dropdown('shift', $options, set_value('shift', ''), 'data-path="'.base_url('web_portal/tables_user/get_tables_from_shift').'" id="shift" class= "form-control"');
+                                                echo form_dropdown('shift', $options, set_value('shift', ''), 'data-path="'.base_url('web_portal/select_table/get_tables_from_shift').'" id="shift" class= "form-control"');
                                             }
                                             else
                                             {
@@ -41,13 +41,13 @@
                                                     NORMAL_DAY => $join_table_lang['normal_day']);
                                             }
                                             $select_day = $this->input->post('day');
-                                            echo form_dropdown('day', $options, set_value('day',( !empty($select_day) ) ? "$select_day" : 0),'data-path="'.base_url('web_portal/tables_user/list_status_of_users_from_tables').'" id="shift" class= "form-control"');
+                                            echo form_dropdown('day', $options, set_value('day',( !empty($select_day) ) ? "$select_day" : 0),'data-path="'.base_url('web_portal/select_table/list_status_of_users_from_tables').'" id="shift" class= "form-control"');
                                         ?>
                                     </div>
                                 <?php echo form_close(); ?>
                             </div>
                             <div>
-                                <input type="hidden" name="user" value="<?php echo $user['user_id'] ?>" data-path-join="<?php echo base_url('web_portal/tables_user/join_table') ?>" data-path-leave="<?php echo base_url('web_portal/tables_user/leave_table') ?>" >
+                                <input type="hidden" name="user" value="<?php echo $user['user_id'] ?>" data-path-join="<?php echo base_url('web_portal/select_table/join_table') ?>" data-path-leave="<?php echo base_url('web_portal/select_table/leave_table') ?>" >
                             </div>
                         </div>
                     </div>
