@@ -16,7 +16,7 @@ class Login extends CI_Controller {
         }
         elseif ($this->session->userdata('logged_in') && $this->session->userdata('logged_in')['role'] == 0)
         {
-            redirect('web_portal/tables_user', 'refresh');
+            redirect('web_portal/select_table', 'refresh');
         }
         else
         {
