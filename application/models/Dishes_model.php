@@ -87,7 +87,7 @@ class Dishes_model extends CI_Model {
         $date_from = new DateTime($date);
         $date_to = new DateTime($date);
         $date_to->add(new DateInterval('P'.$number_of_days.'D'));
-        $this->db->select('dishes.*, categories.id, pictures.image, pictures.dish_id, meals.meal_date, meals.for_vegans');
+        $this->db->select('dishes.*, categories.order, pictures.image, pictures.dish_id, meals.meal_date, meals.for_vegans');
         $this->db->from('meals');
         $this->db->join('menus', 'meals.menu_id = menus.id');
         $this->db->join('dishes_menus', 'dishes_menus.menu_id = menus.id');
@@ -98,7 +98,7 @@ class Dishes_model extends CI_Model {
         $this->db->where('meal_date <=', $date_to->format('Y-m-d'));
         $this->db->order_by('meal_date', 'asc');
         $this->db->order_by('menus.id', 'asc');
-        $this->db->order_by('categories.id', 'asc');
+        $this->db->order_by('categories.order', 'asc');
         $dishes_grouped_by_date = array();
         $dishes = $this->db->get()->result();
         if ($dishes != NULL)
