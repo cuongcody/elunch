@@ -1,7 +1,7 @@
 <?php
-    $lang["title"] = "Join table";
+    $lang["title"] = "Select table";
     $lang["total_users"] = "Total users";
-    $lang["join_table"] = "Join table";
+    $lang["join_table"] = "Select table";
     $lang["shift"] = "Shift";
     $lang["vegan_day"] = "Vegetarian day";
     $lang["normal_day"] = "Normal day";
