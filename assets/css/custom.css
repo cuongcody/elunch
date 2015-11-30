@@ -645,6 +645,10 @@ a:focus {
     margin-right: 0;
 }
 
+body.nav-sm .top_nav .navbar-right {
+    margin-right: 7%;
+}
+
 .top_nav .navbar-right {
     margin: 0;
     width: 70%;
@@ -5693,7 +5697,7 @@ a.hiddenanchor{
     position: absolute;
     top: 0px; width:100%;
 }
-#register{	
+#register{  
     z-index: 21;
     opacity: 0; width:100%;
 }
