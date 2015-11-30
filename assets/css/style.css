@@ -44,7 +44,7 @@ input[type='file'] {
 .circle.small {
     width: 75px;
     height: 75px;
-    background-color: #AEAFB0;
+    background-color: #dfdfdf;
     position: absolute;
     margin: -5px;
 }
@@ -173,4 +173,13 @@ input[type='file'] {
   padding: 10px;
   border-bottom: 1px solid #d7d7d7;
   background: white;
+}
+.join_table, .leave_table {
+  cursor: pointer;
+}
+.select-table{
+  margin-top: 30%;
+  font-size: 13px;
+  color: #D9534F;
+  font-weight: bold;
 }

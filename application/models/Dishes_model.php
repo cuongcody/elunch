@@ -11,6 +11,7 @@ class Dishes_model extends CI_Model {
      */
     function get_all_dishes($perpage = NULL, $offset = NULL, $search = NULL)
     {
+        $this->db->cache_on();
         $this->db->select('dishes.id, dishes.name, dishes.description, categories.name AS category, pictures.image, pictures.image_file_name');
         $this->db->from('dishes');
         $this->db->join('categories', 'dishes.category_id = categories.id');
@@ -32,6 +33,7 @@ class Dishes_model extends CI_Model {
      */
     function get_dishes_by_category($category_id)
     {
+        $this->db->cache_on();
         return $this->db->get_where('dishes', array('category_id' => $category_id))->result();
     }
 
@@ -61,6 +63,7 @@ class Dishes_model extends CI_Model {
      */
     function get_dishes_from_menu($menu_id)
     {
+        $this->db->cache_on();
         $this->db->select('dishes.id, dishes.name, dishes.description, categories.id AS category_id,
          categories.name AS category, pictures.image, pictures.image_file_name');
         $this->db->from('dishes');
@@ -128,6 +131,7 @@ class Dishes_model extends CI_Model {
             'category_id' => $dish['category']);
         if ($this->db->insert('dishes', $data_dish))
         {
+            $this->db->cache_delete('admin', 'dishes');
             $dish_id = $this->db->insert_id();
             $data_picture_of_dish = array(
                 'dish_id' => $dish_id,
@@ -169,6 +173,7 @@ class Dishes_model extends CI_Model {
         }
         else
         {
+            $this->db->cache_delete('admin', 'dishes');
             $this->db->trans_commit();
             return TRUE;
         }
@@ -202,6 +207,7 @@ class Dishes_model extends CI_Model {
         }
         else
         {
+            $this->db->cache_delete('admin', 'dishes');
             $this->db->trans_commit();
             return TRUE;
         }

@@ -11,6 +11,7 @@ class Menus extends CI_Controller {
         $this->load->model('menus_model');
 
     }
+
     public function index()
     {
         $this->common->authenticate();
@@ -128,8 +129,8 @@ class Menus extends CI_Controller {
         $config['num_links'] = 3;
         $config['full_tag_open'] = "<ul class='pagination'>";
         $config['full_tag_close'] ="</ul>";
-        $config['first_link'] = FALSE;
-        $config['last_link'] = FALSE;
+        $config['first_link'] = false;
+        $config['last_link'] = false;
         $config['num_tag_open'] = '<li>';
         $config['num_tag_close'] = '</li>';
         $config['cur_tag_open'] = "<li class='disabled'><li class='active'><a href='#'>";
@@ -186,7 +187,7 @@ class Menus extends CI_Controller {
     {
         $this->common->authenticate();
         $this->load->model('dishes_model');
-         echo json_encode($this->dishes_model->get_dishes_by_category($category_id));
+        echo json_encode($this->dishes_model->get_dishes_by_category($category_id));
     }
 
 }

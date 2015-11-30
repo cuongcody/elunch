@@ -62,6 +62,7 @@ class Categories_model extends CI_Model {
      */
     function update_category($category_id, $name, $description)
     {
+        $this->db->cache_delete('admin', 'dishes');
         $data = array(
             'name' => $name,
             'description'=> $description,
@@ -108,6 +109,7 @@ class Categories_model extends CI_Model {
         }
         else
         {
+            $this->db->cache_delete('admin', 'dishes');
             $this->db->trans_commit();
             return TRUE;
         }

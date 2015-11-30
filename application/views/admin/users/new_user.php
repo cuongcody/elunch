@@ -57,12 +57,12 @@
                     <div class="checkbox">
                         <label>
                         <?php
-                            echo form_checkbox( 'want_vegan_meal', 'accept', TRUE);
+                            echo form_checkbox( 'want_vegan_meal', 'accept', FALSE);
                             echo $new_user_lang[ 'want_vegan_meal']; ?>
                         </label>
                     </div>
                     <div class="form-group">
-                        <label for="comment"><?php echo $new_user_lang[ 'what_taste']; ?></label>
+                        <label for="comment"><?php echo $new_user_lang['what_taste']; ?></label>
                         <?php $data=array(
                             'name'=> 'what_taste',
                             'rows' => '5',

@@ -10,9 +10,13 @@ class Login extends CI_Controller {
     }
     public function index($lang = '')
     {
-        if ($this->session->userdata('logged_in'))
+        if ($this->session->userdata('logged_in') && $this->session->userdata('logged_in')['role'] == 1)
         {
             redirect('admin/home', 'refresh');
+        }
+        elseif ($this->session->userdata('logged_in') && $this->session->userdata('logged_in')['role'] == 0)
+        {
+            redirect('web_portal/tables_user', 'refresh');
         }
         else
         {
@@ -69,7 +73,7 @@ class Login extends CI_Controller {
             $issue_at = time();
             list($can_login, $result) = $this->users_model->login(array(
                 'email' => $email,
-                'password' => $password), 'admin');
+                'password' => $password));
             if ($can_login)
             {
                 $session_array = array(
@@ -77,7 +81,9 @@ class Login extends CI_Controller {
                     'email' => $result->email,
                     'first_name' => $result->first_name,
                     'last_name' => $result->last_name,
-                    'want_vegan_meal' => (boolean)$result->want_vegan_meal,
+                    'want_vegan_meal' => $result->want_vegan_meal,
+                    'shift_id' => $result->shift_id,
+                    'role' => $result->admin,
                     'avatar_content_file' => $result->avatar_content_file);
                 $this->session->set_userdata('logged_in', $session_array);
                 return TRUE;

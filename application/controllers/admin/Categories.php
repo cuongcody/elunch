@@ -10,6 +10,7 @@ class Categories extends CI_Controller {
         $this->load->library('common');
         $this->load->model('categories_model');
     }
+
     public function index()
     {
         $this->common->authenticate();
@@ -68,15 +69,15 @@ class Categories extends CI_Controller {
         $message = $this->common->get_message('delete_category', array('delete_success', 'delete_failure'));
         if ($this->categories_model->delete_category($category_id))
         {
-        $data = array(
-            'status' => 'success',
-            'message' => $message['delete_success']);
+            $data = array(
+                'status' => 'success',
+                'message' => $message['delete_success']);
         }
         else
         {
-        $data = array(
-            'status' => 'failure',
-            'message' => $message['delete_failure']);
+            $data = array(
+                'status' => 'failure',
+                'message' => $message['delete_failure']);
         }
         echo json_encode($data);
     }

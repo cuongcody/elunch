@@ -10,6 +10,7 @@ class Shifts extends CI_Controller {
         $this->load->library('common');
         $this->load->model('shifts_model');
     }
+
     public function index()
     {
         $this->common->authenticate();
@@ -68,15 +69,15 @@ class Shifts extends CI_Controller {
         $message = $this->common->get_message('delete_shift', array('delete_success', 'delete_failure'));
         if ($this->shifts_model->delete_shift($shift_id))
         {
-        $data = array(
-            'status' => 'success',
-            'message' => $message['delete_success']);
+            $data = array(
+                'status' => 'success',
+                'message' => $message['delete_success']);
         }
         else
         {
-        $data = array(
-            'status' => 'failure',
-            'message' => $message['delete_failure']);
+            $data = array(
+                'status' => 'failure',
+                'message' => $message['delete_failure']);
         }
         echo json_encode($data);
     }

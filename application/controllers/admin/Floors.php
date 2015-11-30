@@ -68,15 +68,15 @@ class Floors extends CI_Controller {
         $message = $this->common->get_message('delete_floor', array('delete_success', 'delete_failure'));
         if ($this->floors_model->delete_floor($floor_id))
         {
-        $data = array(
-            'status' => 'success',
-            'message' => $message['delete_success']);
+            $data = array(
+                'status' => 'success',
+                'message' => $message['delete_success']);
         }
         else
         {
-        $data = array(
-            'status' => 'failure',
-            'message' => $message['delete_failure']);
+            $data = array(
+                'status' => 'failure',
+                'message' => $message['delete_failure']);
         }
         echo json_encode($data);
     }

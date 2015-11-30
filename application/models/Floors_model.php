@@ -10,6 +10,7 @@ class Floors_model extends CI_Model {
      */
     function get_all_floors()
     {
+        $this->db->cache_on();
         $query = $this->db->get('floors');
         return (array)$query->result();
     }
@@ -38,7 +39,7 @@ class Floors_model extends CI_Model {
     }
 
     /**
-     * Inser new floor
+     * Insert new floor
      *
      * @param       string  $name
      * @param       string  $decription
@@ -46,6 +47,8 @@ class Floors_model extends CI_Model {
      */
     function insert_floor($name, $decription)
     {
+        $this->db->cache_delete('admin', 'floors');
+        $this->db->cache_delete('admin', 'users');
         $data = array(
             'name' => $name,
             'description' => $decription);
@@ -62,6 +65,8 @@ class Floors_model extends CI_Model {
      */
     function update_floor($floor_id, $name, $description)
     {
+        $this->db->cache_delete('admin', 'floors');
+        $this->db->cache_delete('admin', 'users');
         $data = array(
             'name' => $name,
             'description'=> $description,

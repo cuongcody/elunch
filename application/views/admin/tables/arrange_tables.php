@@ -24,9 +24,9 @@
                     </div>
                     <div class="form-group col-md-5 col-sm-5 col-xs-6">
                         <?php
-                            $options=array(
-                                '0' => $arrange_tables_lang['normal_day'],
-                                '1' => $arrange_tables_lang['vegan_day']);
+                            $options = array(
+                                NORMAL_DAY => $arrange_tables_lang['normal_day'],
+                                VEGAN_DAY => $arrange_tables_lang['vegan_day']);
                             $select_day = $this->input->post('day');
                             echo form_dropdown('day', $options, set_value('day',( !empty($select_day) ) ? "$select_day" : 0),'class= "form-control"');
                         ?>

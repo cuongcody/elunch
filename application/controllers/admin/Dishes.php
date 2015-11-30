@@ -131,8 +131,8 @@ class Dishes extends CI_Controller {
         $config['num_links'] = 3;
         $config['full_tag_open'] = "<ul class='pagination'>";
         $config['full_tag_close'] ="</ul>";
-        $config['first_link'] = FALSE;
-        $config['last_link'] = FALSE;
+        $config['first_link'] = false;
+        $config['last_link'] = false;
         $config['num_tag_open'] = '<li>';
         $config['num_tag_close'] = '</li>';
         $config['cur_tag_open'] = "<li class='disabled'><li class='active'><a href='#'>";
@@ -160,17 +160,17 @@ class Dishes extends CI_Controller {
         $message = $this->common->get_message('delete_dish', array('delete_success', 'delete_failure'));
         if ($this->dishes_model->delete_dish($dish_id))
         {
-        $image_file_name = $this->input->post('image_file_name');
-        $this->common->image_delete(SAVE_IMAGE_OF_DISHES.'/'.$image_file_name);
-        $data = array(
-            'status' => 'success',
-            'message' => $message['delete_success']);
+            $image_file_name = $this->input->post('image_file_name');
+            $this->common->image_delete(SAVE_IMAGE_OF_DISHES.'/'.$image_file_name);
+            $data = array(
+                'status' => 'success',
+                'message' => $message['delete_success']);
         }
         else
         {
-        $data = array(
-            'status' => 'failure',
-            'message' => $message['delete_failure']);
+            $data = array(
+                'status' => 'failure',
+                'message' => $message['delete_failure']);
         }
         echo json_encode($data);
     }
@@ -253,7 +253,7 @@ class Dishes extends CI_Controller {
             if (!$this->common->image_upload(SAVE_IMAGE_OF_DISHES))
             {
                 $this->lang->load('web_portal/validation', $this->session->userdata('site_lang'));
-                $this->form_validation->set_message('edit_image_upload', $this->lang->line('error_upload'));
+                $this->form_validation->set_message('check_image_upload', $this->lang->line('error_upload'));
                 return FALSE;
             }
             else

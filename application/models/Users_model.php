@@ -11,6 +11,7 @@ class Users_model extends CI_Model{
      */
     function get_all_users($perpage = NULL, $offset = NULL, $search = NULL)
     {
+        $this->db->cache_on();
         $this->db->select('users.*, floors.name AS floor, shifts.name AS shift, shifts.id AS shift_id, shifts.start_time, shifts.end_time');
         $this->db->from('users');
         $this->db->join('floors', 'users.floor_id = floors.id');
@@ -43,6 +44,7 @@ class Users_model extends CI_Model{
      */
     function delete_user($user_id)
     {
+        $this->db->cache_delete('admin', 'users');
         return $this->db->query('DELETE users, tracking_users FROM users
             INNER JOIN tracking_users ON users.id = tracking_users.user_id
             WHERE users.id = ?', array($user_id));
@@ -93,6 +95,7 @@ class Users_model extends CI_Model{
     {
         if (!is_null($data['want_vegan_meal']) || (!is_null($data['what_taste'])))
         {
+            $this->db->cache_delete('admin', 'users');
             if (!is_null($data['want_vegan_meal']))
             {
                 $data['want_vegan_meal'] = ($data['want_vegan_meal'] == 'true') ? 1 : 0;
@@ -114,7 +117,7 @@ class Users_model extends CI_Model{
      * @param       string  $login_admin
      * @return      [bool, object]
      */
-    function login($user, $login_admin = NULL)
+    function login($user)
     {
         $this->db->select('users.*, shifts.name AS shift, shifts.id AS shift_id, shifts.start_time, shifts.end_time');
         $this->db->from('users');
@@ -131,16 +134,12 @@ class Users_model extends CI_Model{
                 $value->floor_id = (int)$value->floor_id;
             }
             $result->access_point = $access_point;
-            if (!is_null($login_admin) && $result->admin == 1 || is_null($login_admin))
-            {
-                $this->load->library('encryption');
-                $data['authentication_token'] = $this->encryption->encrypt(date('Ymd Hms') + $user['password']);
-                $result->authentication_token = $data['authentication_token'];
-                $this->db->where('id', $result->id);
-                $this->db->update('users', $data);
-                return [TRUE, $result];
-            }
-            else return [FALSE, NULL];
+            $this->load->library('encryption');
+            $data['authentication_token'] = $this->encryption->encrypt(date('Ymd Hms') + $user['password']);
+            $result->authentication_token = $data['authentication_token'];
+            $this->db->where('id', $result->id);
+            $this->db->update('users', $data);
+            return [TRUE, $result];
         }
         else
         {
@@ -260,11 +259,6 @@ class Users_model extends CI_Model{
                 'want_vegan_meal' => $user['want_vegan_meal'],
                 'floor_id' => $user['floor'],
                 'shift_id' => $user['shift'],
-                'reset_password_sent_at' => date('Y-m-d H:i:s'),
-                'remember_created_at' => date('Y-m-d H:i:s'),
-                'current_sign_in_at' => date('Y-m-d H:i:s'),
-                'last_sign_in_at' => date('Y-m-d H:i:s'),
-                'confirmation_sent_at' => date('Y-m-d H:i:s'),
                 'created_at' => date('Y-m-d H:i:s'));
             $this->db->trans_begin();
             $this->db->insert('users', $data);
@@ -278,6 +272,7 @@ class Users_model extends CI_Model{
             }
             else
             {
+                $this->db->cache_delete('admin', 'users');
                 $this->db->trans_commit();
                 return [USER_CREATED_SUCCESSFULLY, $data];
             }
@@ -319,6 +314,7 @@ class Users_model extends CI_Model{
         }
         else
         {
+            $this->db->cache_delete('admin', 'users');
             $this->db->trans_commit();
             return TRUE;
         }
@@ -371,6 +367,7 @@ class Users_model extends CI_Model{
         }
         else
         {
+            $this->db->cache_delete('admin', 'users');
             $this->db->trans_commit();
             return TRUE;
         }
@@ -402,11 +399,42 @@ class Users_model extends CI_Model{
         else return TRUE;
     }
 
-    function reset_password($email)
+    function forgot_password($email)
     {
         $user = $this->get_user_by('email', $email);
         $this->load->helper('string');
-        $password = random_string('alnum', 16);
-        return [$this->change_password_of_admin($user->id, $password), $password];
+        $token = bin2hex(random_string('alnum', 16));
+        $this->db->where('id', $user->id);
+        return [$this->db->update('users', array('reset_password_token' => $token, 'reset_password_sent_at' => date('Y-m-d H:i:s'))), $token];
+    }
+
+    function reset_password($token, $password)
+    {
+        $user = $this->get_user_by('reset_password_token', $token);
+        if ($user != NULL)
+        {
+            $date_send_request = new DateTime(date('Y-m-d H:i:s', strtotime($user->reset_password_sent_at)));
+            $end_time_of_reset = $date_send_request->add(new DateInterval('P1D'))->format('Y-m-d H:i:s');
+            $current_date = (new DateTime(date('Y-m-d H:i:s')))->format('Y-m-d H:i:s');
+            if ($current_date <= $end_time_of_reset)
+            {
+                $this->db->trans_begin();
+                $this->change_password_of_admin($user->id, $password);
+                $this->db->where('id', $user->id);
+                $this->db->update('users', array('reset_password_token' => '', 'reset_password_sent_at' => ''));
+                if ($this->db->trans_status() === FALSE)
+                {
+                    $this->db->trans_rollback();
+                    return FALSE;
+                }
+                else
+                {
+                    $this->db->trans_commit();
+                    return TRUE;
+                }
+            }
+            return FALSE;
+        }
+        return FALSE;
     }
 }

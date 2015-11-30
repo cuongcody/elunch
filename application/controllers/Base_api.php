@@ -3,12 +3,13 @@
 require(APPPATH.'libraries/REST_Controller.php');
 
 class Base_api extends REST_Controller{
-    public $current_user = null;
+    public $current_user = NULL;
     public $messages_lang;
 
     function __construct()
     {
         parent::__construct();
+        $this->output->set_content_type('application/json');
         $this->load->library('common');
         global $messages_lang;
         $messages_lang = $this->common->set_language_for_server_api('base_api',
@@ -21,7 +22,7 @@ class Base_api extends REST_Controller{
         global $messages_lang;
         $headers = apache_request_headers();
         $response = array();
-        if(isset($headers['Authorization']))
+        if (isset($headers['Authorization']))
         {
             $token = explode(" ", $headers['Authorization']);
             $this->load->model('users_model');

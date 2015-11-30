@@ -31,6 +31,7 @@ class Tables_model extends CI_Model{
      */
     function get_tables($perpage, $offset, $search = NULL)
     {
+        $this->db->cache_on();
         $this->db->select('tables.id, tables.name, tables.description, tables.for_vegans, tables.seats,
             shifts.name AS shift , shifts.start_time, shifts.end_time');
         $this->db->from('tables');
@@ -74,6 +75,7 @@ class Tables_model extends CI_Model{
      */
     function delete_table($table_id)
     {
+        $this->db->cache_delete('admin', 'tables');
         $num_of_users_in_table = $this->count_users_in_table($table_id);
         if ($num_of_users_in_table > 0)
         {
@@ -95,6 +97,7 @@ class Tables_model extends CI_Model{
      */
     function insert_table($data)
     {
+        $this->db->cache_delete('admin', 'tables');
         return $this->db->insert('tables', $data);
     }
 
@@ -108,8 +111,9 @@ class Tables_model extends CI_Model{
     function update_table($table_id, $data)
     {
         $num_of_users_in_table = $this->count_users_in_table($table_id);
-        if ($data['seats'] > $num_of_users_in_table)
+        if ($data['seats'] >= $num_of_users_in_table)
         {
+            $this->db->cache_delete('admin', 'tables');
             $this->db->where('id', $table_id);
             return $this->db->update('tables', $data);
         }
@@ -126,6 +130,7 @@ class Tables_model extends CI_Model{
      */
     function get_tables_by_shift($shift_id, $for_vegans = NULL, $day = NULL)
     {
+        $this->db->cache_on();
         $query = '
             SELECT tables.id, tables.name, tables.description, tables.for_vegans, tables.seats,
             SUM(users.id AND tables_users.vegan_day = ?) AS occupied_seats,
@@ -382,7 +387,6 @@ class Tables_model extends CI_Model{
         if (is_null($day))
         {
             $data = array(
-            'table_id' => $table_id,
             'user_id' => $user_id);
         }
         elseif (!is_null($day) && $day == VEGAN_DAY)

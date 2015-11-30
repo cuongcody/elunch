@@ -93,7 +93,8 @@ class Tables extends CI_Controller {
         if (is_numeric($user_id) && is_numeric($table_id))
         {
             $result = $this->tables_model->arrange_to_add_user_in_table($user_id, $table_id, $day);
-            switch ($result) {
+            switch ($result)
+            {
                 case JOIN_TABLE_SUCCESSFULLY:
                     $this->load->model('users_model');
                     $user = $this->users_model->get_user_by('id', $user_id);
@@ -132,7 +133,8 @@ class Tables extends CI_Controller {
         if (is_numeric($user_id) && is_numeric($table_id))
         {
             $result = $this->tables_model->user_leave_table($user_id, $table_id);
-            switch ($result) {
+            switch ($result)
+            {
                 case LEAVE_TABLE_SUCCESSFULLY:
                     $data = array(
                     'status' => 'success',
@@ -232,8 +234,8 @@ class Tables extends CI_Controller {
         $config['num_links'] = 3;
         $config['full_tag_open'] = "<ul class='pagination'>";
         $config['full_tag_close'] ="</ul>";
-        $config['first_link'] = FALSE;
-        $config['last_link'] = FALSE;
+        $config['first_link'] = false;
+        $config['last_link'] = false;
         $config['num_tag_open'] = '<li>';
         $config['num_tag_close'] = '</li>';
         $config['cur_tag_open'] = "<li class='disabled'><li class='active'><a href='#'>";

@@ -18,6 +18,7 @@
                     <br />
                     <!-- sidebar menu -->
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                    <?php if ($this->session->userdata('logged_in')['role'] == 1) { ?>
                         <div class="menu_section">
                             <h3><?php echo $sidebar_lang['manage'] ?></h3>
                             <ul class="nav side-menu">
@@ -133,6 +134,7 @@
                                 </li>
                             </ul>
                         </div>
+                       <?php } ?>
                     </div>
                     <!-- /sidebar menu -->
                 </div>

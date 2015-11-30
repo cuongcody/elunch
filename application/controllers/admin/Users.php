@@ -10,6 +10,7 @@ class Users extends CI_Controller {
         $this->load->library('common');
         $this->load->model('users_model');
     }
+
     public function index()
     {
         $this->common->authenticate();
