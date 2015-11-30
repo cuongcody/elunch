@@ -11,7 +11,7 @@ class Common {
 
     public function authenticate()
     {
-        if ($this->CI->session->userdata('logged_in') && $this->CI->session->userdata('site_lang')) return TRUE;
+        if ($this->CI->session->userdata('logged_in') && $this->CI->session->userdata('site_lang') && $this->CI->session->userdata('logged_in')['role'] == 1) return TRUE;
         else redirect('admin/login', 'refresh');
     }
     public function load_view($content_view, $data)
@@ -75,7 +75,7 @@ class Common {
             'favourite_dishes', 'manage_favourite_dishes',
             'users', 'manage_users', 'add_user',
             'menus', 'manage_menus', 'add_menu',
-            'meals', 'manage_meals', 'add_meal', 'tracking_meal',
+            'meals', 'manage_meals', 'add_meal',
             'announcement', 'manage_announcement', 'add_announcement',
             'comments', 'manage_comments', 'add_comment',
             'access_point', 'manage_access_point', 'add_access_point'));
@@ -108,23 +108,48 @@ class Common {
             'allowed_types' => 'gif|jpg|png',
             'max_size' => '100000');
         $this->CI->load->library('upload', $config);
-        if (!$this->CI->upload->do_upload('img')){
+        if (!$this->CI->upload->do_upload('img'))
+        {
             return FALSE;
         }
         $image_data =  $this->CI->upload->data();
         if (!empty($image_data))
         {
             $image_config = array(
+                'image_library' => 'gd2',
                 "source_image" => $image_data['full_path'],
                 "new_image" => $image_data['file_path'],
-                "maintain_ratio" => TRUE,
-                "width" => 500,
-                "height" => 500);
+                "maintain_ratio" => TRUE);
+            // Resize image
+            $image_config['width'] = 250;
+            $image_config['height'] = 250;
             $dim = (intval($image_data["image_width"]) / intval($image_data["image_height"])) - ($image_config['width'] / $image_config['height']);
-            $image_config['master_dim'] = ($dim > 0)? "height" : "width";
-            $this->CI->load->library("image_lib", $image_config);
-            if (!$this->CI->image_lib->resize()) return FALSE;
-            else chmod($image_data['full_path'], 0777);
+            $image_config['master_dim'] = ($dim > 0) ? "height" : "width";
+             $this->CI->load->library("image_lib");
+            $this->CI->image_lib->initialize($image_config);
+            if (!$this->CI->image_lib->resize())
+            {
+                return FALSE;
+            }
+            $this->CI->image_lib->clear();
+            chmod($image_data['full_path'], 0777);
+            $image_config2 = array(
+            'image_library' => 'gd2',
+            "source_image" => $image_data['full_path'],
+            "new_image" => $image_data['file_path'].$image_data['raw_name'].'_thumb'.$image_data['file_ext'],
+            "maintain_ratio" => TRUE);
+            // Create thumbnail
+            $image_config2['width'] = 100;
+            $image_config2['height'] = 100;
+            $dim = (intval($image_data["image_width"]) / intval($image_data["image_height"])) - ($image_config2['width'] / $image_config2['height']);
+            $image_config2['master_dim'] = ($dim > 0) ? "height" : "width";
+            $this->CI->image_lib->initialize($image_config2);
+            if (!$this->CI->image_lib->resize())
+            {
+                return FALSE;
+            }
+            $this->CI->image_lib->clear();
+            chmod($image_data['file_path'].$image_data['raw_name'].'_thumb'.$image_data['file_ext'], 0777);
             $this->CI->session->set_userdata('upload', $image_data);
             return TRUE;
         }
