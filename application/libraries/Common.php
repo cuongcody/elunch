@@ -78,7 +78,8 @@ class Common {
             'meals', 'manage_meals', 'add_meal',
             'announcement', 'manage_announcement', 'add_announcement',
             'comments', 'manage_comments', 'add_comment',
-            'access_point', 'manage_access_point', 'add_access_point'));
+            'access_point', 'manage_access_point', 'add_access_point',
+            'want_vegan_food', 'dont_want_vegan_food'));
     }
 
     public function return_notification($language, $message_lang, $status)
