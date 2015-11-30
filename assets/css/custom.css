@@ -270,6 +270,10 @@ body.nav-md .container.body .right_col {
       bottom: -75%;
       width: 100%;
     }
+    .select-table{
+      margin-top: 30%;
+      font-size: 10px;
+    }
 }
 
 @media (max-width: 1270px) and (min-width: 192px) {
