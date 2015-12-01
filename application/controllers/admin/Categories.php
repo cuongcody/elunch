@@ -130,4 +130,24 @@ class Categories extends CI_Controller {
         return $this->categories_model->update_category($category_id, $category, $description);
     }
 
+    public function sort_cats()
+    {
+        $this->common->authenticate();
+        $cats = $this->input->post('cats');
+        $message = $this->common->get_message('edit_category', array('edit_success', 'edit_failure'));
+        if ($this->categories_model->order_cats($cats))
+        {
+            $data = array(
+                'status' => 'success',
+                'message' => $message['edit_success']);
+        }
+        else
+        {
+            $data = array(
+                'status' => 'failure',
+                'message' => $message['edit_failure']);
+        }
+        echo json_encode($data);
+    }
+
 }

@@ -15,6 +15,7 @@
                                 echo "<th class='column-title'>".$categories_lang['description']."</th>";
                                 echo "<th class='column-title'></th>";
                                 echo "<th class='column-title'></th>";
+                                echo "<th class='column-title'><a href='#' data-path='".base_url('admin/categories/sort_cats')."' id='sort_cats' class='label label-success'><i class='fa fa-sort-amount-asc'></i> Order</a></th>";
                             ?>
                         </tr>
                     </thead>
@@ -25,8 +26,8 @@
                                 foreach ($categories as $key => $category)
                                 {
                         ?>
-                                    <tr id="category_<?php echo $category->id ?>">
-                                        <td class="active"><?php echo ($key + 1) ?></td>
+                                    <tr id="category_<?php echo $category->id ?>" data-id="<?php echo $category->id ?>">
+                                        <td class="active index"><?php echo ($key + 1) ?></td>
                                         <td class="active"><?php echo $category->name ?></td>
                                         <td class="active">
                                             <a href="#detail_text_modal" data-toggle="modal" data-target="#detail_text_modal" data-content="<?php echo $category->description ?>" data-title="<?php echo $categories_lang['title']?> " onclick="false;">
@@ -37,6 +38,7 @@
                                         <td class="active">
                                             <a href="#delete_category_modal" class="label label-warning" data-toggle="modal" data-target="#delete_category_modal" data-category-id="<?php echo $category->id ?>" onclick="false;"><?php echo $categories_lang["delete"] ?></a>
                                         </td>
+                                        <td class="active"><i class="up fa fa-chevron-up"></i> <i class="down fa fa-chevron-down"></i></td>
                                     </tr>
                         <?php
                                 }

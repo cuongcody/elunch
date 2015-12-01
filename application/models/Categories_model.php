@@ -10,7 +10,7 @@ class Categories_model extends CI_Model {
      */
     function get_all_categories()
     {
-        $query = $this->db->get('categories');
+        $query = $this->db->order_by('order')->get('categories');
         return (array)$query->result();
     }
 
@@ -113,6 +113,11 @@ class Categories_model extends CI_Model {
             $this->db->trans_commit();
             return TRUE;
         }
+    }
+
+    function order_cats($data)
+    {
+        return $this->db->update_batch('categories', $data, 'id');
     }
 
 }

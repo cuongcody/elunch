@@ -25,4 +25,47 @@ $(function() {
             }
         });
     });
+    $(".up").click(function(event) {
+        $(this).parent().parent().each(function(index, el) {
+            if (!$(this).text().match(/^\s*$/)) {
+                $(this).find('.index').text(parseInt($(this).find('.index').text()) - 1);
+                $(this).prev().find('.index').text(parseInt($(this).prev().find('.index').text()) + 1);
+                $(this).insertBefore($(this).prev());
+            }
+        });
+    });
+
+    $(".down").click(function(event) {
+        $(this).parent().parent().each(function(index, el) {
+            if (!$(this).text().match(/^\s*$/)) {
+                $(this).find('.index').text(parseInt($(this).find('.index').text()) + 1);
+                $(this).next().find('.index').text(parseInt($(this).next().find('.index').text()) - 1);
+                $(this).insertAfter($(this).next()).fadeIn("slow");
+            }
+        });
+    });
+    $("#sort_cats").click(function(event) {
+        base_url = $(this).data('path');
+        cats = new Array;
+        $("tbody").find("tr").each(function(index, el) {
+            cat = {
+                id : $(this).data('id'),
+                order : $(this).find('.index').text()
+            }
+            cats.push(cat);
+        });
+        jQuery.ajax({
+            type: "POST",
+            url: base_url,
+            dataType: 'json',
+            data: {cats:cats},
+            success: function(res) {
+                if (res.status == 'success')
+                {
+                    toastr.success(res.message);
+                }
+                else {toastr.error(res.message);}
+            }
+        });
+    });
 });
