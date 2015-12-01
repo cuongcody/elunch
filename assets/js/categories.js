@@ -28,9 +28,13 @@ $(function() {
     $(".up").click(function(event) {
         $(this).parent().parent().each(function(index, el) {
             if (!$(this).text().match(/^\s*$/)) {
-                $(this).find('.index').text(parseInt($(this).find('.index').text()) - 1);
-                $(this).prev().find('.index').text(parseInt($(this).prev().find('.index').text()) + 1);
+                if(parseInt($(this).find('.index').text()) > 1)
+                {
+                    $(this).find('.index').text(parseInt($(this).find('.index').text()) - 1);
+                    $(this).prev().find('.index').text(parseInt($(this).prev().find('.index').text()) + 1);
+                }
                 $(this).insertBefore($(this).prev());
+
             }
         });
     });
@@ -38,8 +42,10 @@ $(function() {
     $(".down").click(function(event) {
         $(this).parent().parent().each(function(index, el) {
             if (!$(this).text().match(/^\s*$/)) {
-                $(this).find('.index').text(parseInt($(this).find('.index').text()) + 1);
-                $(this).next().find('.index').text(parseInt($(this).next().find('.index').text()) - 1);
+                if (parseInt($(this).next().find('.index').text()) > 1) {
+                    $(this).find('.index').text(parseInt($(this).find('.index').text()) + 1);
+                    $(this).next().find('.index').text(parseInt($(this).next().find('.index').text()) - 1);
+                }
                 $(this).insertAfter($(this).next()).fadeIn("slow");
             }
         });
