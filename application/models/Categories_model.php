@@ -117,6 +117,7 @@ class Categories_model extends CI_Model {
 
     function order_cats($data)
     {
+        $this->db->cache_delete('admin', 'dishes');
         return $this->db->update_batch('categories', $data, 'id');
     }
 
