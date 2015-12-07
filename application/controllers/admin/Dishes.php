@@ -97,7 +97,7 @@ class Dishes extends CI_Controller {
     {
         foreach ($dishes as $key => $dish)
         {
-            if ($dish->num_votes == 0) {
+            if (!isset($dish->num_votes) || $dish->num_votes == 0) {
                 unset($dishes[$key]);
             }
         }
