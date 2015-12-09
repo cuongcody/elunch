@@ -182,8 +182,8 @@ class Users_model extends CI_Model{
     function change_password_of_admin($user_id, $new_password)
     {
         $this->load->library('encryption');
-        $new_password_hash = $this->bcrypt->hash_password(md5($new_password));
-        $authentication_token = $this->encryption->encrypt(date('Ymd Hms') + md5($new_password));
+        $new_password_hash = $this->bcrypt->hash_password($new_password);
+        $authentication_token = $this->encryption->encrypt(date('Ymd Hms') + $new_password);
         $data = array(
             'encrypted_password'=> $new_password_hash,
             'authentication_token' => $authentication_token);
@@ -248,8 +248,8 @@ class Users_model extends CI_Model{
         {
             $data = array(
                 'email' => strtolower($user['email']),
-                'encrypted_password' => $this->bcrypt->hash_password(md5($user['password'])),
-                'authentication_token' => $this->encryption->encrypt(date('Ymd Hms') + md5($user['password'])),
+                'encrypted_password' => $this->bcrypt->hash_password($user['password']),
+                'authentication_token' => $this->encryption->encrypt(date('Ymd Hms') + $user['password']),
                 'first_name' => $user['first_name'],
                 'last_name' => $user['last_name'],
                 'what_taste' => $user['what_taste'],

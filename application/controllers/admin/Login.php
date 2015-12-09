@@ -72,7 +72,7 @@ class Login extends CI_Controller {
             $issue_at = time();
             list($can_login, $result) = $this->users_model->login(array(
                 'email' => $email,
-                'password' => md5($password)));
+                'password' => $password));
             if ($can_login)
             {
                 $session_array = array(
