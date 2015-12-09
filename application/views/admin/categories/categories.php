@@ -3,7 +3,7 @@
     <div class="row">
         <div class= 'col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10 col-xs-12'>
             <div id="elevator_item"><a id="elevator" onclick="return false;" title="Back To Top"></a></div>
-            <?php echo anchor('admin/categories/add', $categories_lang['create_category'], "class='btn btn-primary'"); ?>
+            <?php echo anchor('admin/categories/add', $categories_lang['create_category'], "class='btn btn-loading btn-primary'"); ?>
             <?php if (!empty($_SESSION['message'])) echo "<script type='text/javascript'>announcementMessage('".$_SESSION['message']."')</script>"; ?>
             <div class='table-responsive'>
                 <table class="table table-striped responsive-utilities jambo_table bulk_action">
@@ -15,7 +15,7 @@
                                 echo "<th class='column-title'>".$categories_lang['description']."</th>";
                                 echo "<th class='column-title'></th>";
                                 echo "<th class='column-title'></th>";
-                                echo "<th class='column-title'><a href='#' data-path='".base_url('admin/categories/sort_cats')."' id='sort_cats' class='label label-success'><i class='fa fa-sort-amount-asc'></i> Order</a></th>";
+                                echo "<th class='column-title'><a href='javascript:void(0)' data-path='".base_url('admin/categories/sort_cats')."' id='sort_cats' class='label label-success'><i class='fa fa-sort-amount-asc'></i> Order</a></th>";
                             ?>
                         </tr>
                     </thead>
@@ -34,11 +34,11 @@
                                                 <p class="detail-text"><?php echo (strlen($category->description) > 30) ? substr($category->description, 0, 30)."..." : $category->description ?></p>
                                             </a>
                                         </td>
-                                        <td class="active"><?php echo anchor('admin/categories/edit/'.$category->id, $categories_lang['edit'], "class='label label-info'") ?></td>
+                                        <td class="active"><?php echo anchor('admin/categories/edit/'.$category->id, $categories_lang['edit'], "class='btn-loading label label-info'") ?></td>
                                         <td class="active">
                                             <a href="#delete_category_modal" class="label label-warning" data-toggle="modal" data-target="#delete_category_modal" data-category-id="<?php echo $category->id ?>" onclick="false;"><?php echo $categories_lang["delete"] ?></a>
                                         </td>
-                                        <td class="active"><i class="up fa fa-chevron-up"></i> <i class="down fa fa-chevron-down"></i></td>
+                                        <td class="active"><a href="javascript:void(0)" ><i class="up fa fa-chevron-up"></i></a> <a href="javascript:void(0)" ><i class="down fa fa-chevron-down"></i></a></td>
                                     </tr>
                         <?php
                                 }

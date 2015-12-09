@@ -6,6 +6,7 @@ $(function() {
         });
 
     $('#delete_shift').click(function() {
+        $(".se-pre-con").fadeIn('slow');
         var shift_id = $('input[name="shift_id"]').val();
         base_url = $('#delete_shift').data("path");
         jQuery.ajax({
@@ -14,14 +15,16 @@ $(function() {
             dataType: 'json',
             data: {},
             success: function(res) {
-                if (res.status == 'success')
-                {
-                    $('#shift_' + shift_id).hide('slow', function() {
-                        toastr.success(res.message);
-                        $('#shift_' + shift_id).remove();
-                     });
-                }
-                else {toastr.error(res.message);}
+                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                    if (res.status == 'success')
+                    {
+                        $('#shift_' + shift_id).hide('slow', function() {
+                            toastr.success(res.message);
+                            $('#shift_' + shift_id).remove();
+                         });
+                    }
+                    else {toastr.error(res.message);}
+                });
             }
         });
     });

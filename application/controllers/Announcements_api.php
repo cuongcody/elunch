@@ -24,7 +24,7 @@ class Announcements_api extends Base_api {
         $this->authenticate();
         $messages_lang = $this->common->set_language_for_server_api('announcements_api',
             array('get_announcements_success', 'get_announcements_failure', 'get_announcements_not_valid'));
-        $to = $this->input->get('to');
+        $to = ($this->input->get('to') == NULL) ? date('Y-m-d') : $this->input->get('to');
         $days = $this->input->get('days');
         if (strtotime($to))
         {
@@ -54,6 +54,8 @@ class Announcements_api extends Base_api {
                 }
                 $date_to = date('Y-m-d', strtotime($messages[sizeof($messages) - 1]['created_at']));
                 $is_more_announcements = ($this->announcements_model->get_announcements_for_user($user_id, NULL, $date_to) != NULL) ? TRUE : FALSE;
+                $data['current_day'] = $to;
+                $data['date_get_more_announcements'] = $date_from;
                 $data['is_more_announcements'] = $is_more_announcements;
                 $data['messages'] = $messages;
                 $response['status'] = $messages_lang['success'];

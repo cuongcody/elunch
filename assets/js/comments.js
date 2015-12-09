@@ -29,6 +29,7 @@ $(function() {
     });
 
     $('#add_reply_comment').click(function() {
+        $(".se-pre-con").fadeIn('slow');
         comment_id = $('input[name="comment_id_choose"]').val();
         if (comment_id != null){
             base_url = $('#add_reply_comment').data("path") + '/' + comment_id;
@@ -39,31 +40,33 @@ $(function() {
                 data: {content: content},
                 dataType: 'json',
                 success: function(res){
-                    $('.error').remove();
-                    if (res.status == 'errors')
-                    {
-                        $('div.add_reply').prepend(
-                            "<div class='error alert alert-warning'>" + res.message + '</div>');
-                    }
-                    else if (res.status == 'success')
-                    {
-                        $('#add_reply_comment_modal').modal('toggle');
-                        toastr.success(res.message);
-                        $('.msg_list').prepend(
-                        "<li><a><span class='image'>" +
-                        "<img class='img-thumbnail' src='" + res.avatar_content_file + "' alt=''></span>" +
-                        "<span><span>" + res.email + "</span></span>" +
-                        "<span class='message'>" + res.content + "</span>" +
-                        "<span class='time'>" + res.created_at + "</span></a>"
-                        ).show('slow');
-                        new_num_replies = parseInt($("#comment_item_" + comment_id).find('.num_replies').text()) + 1;
+                    $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                        $('.error').remove();
+                        if (res.status == 'errors')
+                        {
+                            $('div.add_reply').prepend(
+                                "<div class='error alert alert-warning'>" + res.message + '</div>');
+                        }
+                        else if (res.status == 'success')
+                        {
+                            $('#add_reply_comment_modal').modal('toggle');
+                            toastr.success(res.message);
+                            $('.msg_list').prepend(
+                            "<li><a><span class='image'>" +
+                            "<img class='img-thumbnail' src='" + res.avatar_content_file + "' alt=''></span>" +
+                            "<span><span>" + res.email + "</span></span>" +
+                            "<span class='message'>" + res.content + "</span>" +
+                            "<span class='time'>" + res.created_at + "</span></a>"
+                            ).show('slow');
+                            new_num_replies = parseInt($("#comment_item_" + comment_id).find('.num_replies').text()) + 1;
 
-                        $("#comment_item_" + comment_id).find('.num_replies').text(new_num_replies);
-                    }
-                    else if (res.status == 'failure')
-                    {
-                        toastr.error(res.message);
-                    }
+                            $("#comment_item_" + comment_id).find('.num_replies').text(new_num_replies);
+                        }
+                        else if (res.status == 'failure')
+                        {
+                            toastr.error(res.message);
+                        }
+                    });
                 }
             });
         }
@@ -77,6 +80,7 @@ $(function() {
         });
 
     $('#delete_comment').click(function() {
+        $(".se-pre-con").fadeIn('slow');
         var comment_id = $('input[name="comment_id"]').val();
         base_url = $('#delete_comment').data("path");
         jQuery.ajax({
@@ -85,20 +89,22 @@ $(function() {
             dataType: 'json',
             data: {},
             success: function(res) {
-                if (res.status == 'success')
-                {
-                    $('#comment_item_' + comment_id).hide('slow', function() {
-                        $(".comment-detail").hide('slow', function() {
-                            $(".all-comment").hide('slow', function() {
-                                toastr.success(res.message);
-                                $(".comment-detail").replaceWith('<div class="col-xs-12 comment-detail"></div>');
-                                $(".all-comment").replaceWith('<div class="col-xs-12 all-comment"><ul class="list-unstyled msg_list"></ul></div>');
-                                $('#comment_item_' + comment_id).remove();
+                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                    if (res.status == 'success')
+                    {
+                        $('#comment_item_' + comment_id).hide('slow', function() {
+                            $(".comment-detail").hide('slow', function() {
+                                $(".all-comment").hide('slow', function() {
+                                    toastr.success(res.message);
+                                    $(".comment-detail").replaceWith('<div class="col-xs-12 comment-detail"></div>');
+                                    $(".all-comment").replaceWith('<div class="col-xs-12 all-comment"><ul class="list-unstyled msg_list"></ul></div>');
+                                    $('#comment_item_' + comment_id).remove();
+                                });
                             });
-                        });
-                     });
-                }
-                else {toastr.error(res.message);}
+                         });
+                    }
+                    else {toastr.error(res.message);}
+                });
             }
         });
     });

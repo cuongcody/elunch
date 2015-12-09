@@ -15,10 +15,10 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
                                     <?php if ($this->session->userdata('logged_in')['role'] == 0) { ?>
-                                    <li><a href="<?php echo base_url('web_portal/select_table/change_users_taste/'. (1 - $this->session->userdata('logged_in')['want_vegan_meal'])) ?>"><i class="fa fa-sliders pull-right"></i><?php echo ($this->session->userdata('logged_in')['want_vegan_meal'] == 1) ? $sidebar_lang['dont_want_vegan_food'] : $sidebar_lang['want_vegan_food'] ?></a>
+                                    <li><a href="<?php echo base_url('web_portal/select_table/change_users_taste/'. (1 - $this->session->userdata('logged_in')['want_vegan_meal'])) ?>" class="btn-loading"><i class="fa fa-sliders pull-right"></i><?php echo ($this->session->userdata('logged_in')['want_vegan_meal'] == 1) ? $sidebar_lang['dont_want_vegan_food'] : $sidebar_lang['want_vegan_food'] ?></a>
                                     </li>
                                     <?php } ?>
-                                    <li><a href="<?php echo base_url('admin/home/logout') ?>"><i class="fa fa-sign-out pull-right"></i><?php echo $sidebar_lang['logout'] ?></a>
+                                    <li><a href="<?php echo base_url('admin/home/logout') ?>" class="btn-loading"><i class="fa fa-sign-out pull-right"></i><?php echo $sidebar_lang['logout'] ?></a>
                                     </li>
                                 </ul>
                             </li>

@@ -61,9 +61,9 @@ class Dishes_api extends Base_api {
         $this->authenticate();
         $messages_lang = $this->common->set_language_for_server_api('dishes_api',
             array('get_meals_success', 'get_meals_failure', 'get_meals_not_valid', 'vegan_meal'));
-        $from_date = $this->input->get('from');
+        $from_date = ($this->input->get('from') != NULL) ? $this->input->get('from') : date('Y-m-d');
         $days = $this->input->get('days');
-        $days = ($days == NULL) ? 0 : $days;
+        $days = ($days == NULL) ? 4 : $days;
         if ($days > 30 OR $days < 0 OR !is_numeric($days) OR !strtotime($from_date))
         {
             $response = array();

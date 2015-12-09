@@ -182,8 +182,8 @@ class Users_model extends CI_Model{
     function change_password_of_admin($user_id, $new_password)
     {
         $this->load->library('encryption');
-        $new_password_hash = $this->bcrypt->hash_password($new_password);
-        $authentication_token = $this->encryption->encrypt(date('Ymd Hms') + $new_password);
+        $new_password_hash = $this->bcrypt->hash_password(md5($new_password));
+        $authentication_token = $this->encryption->encrypt(date('Ymd Hms') + md5($new_password));
         $data = array(
             'encrypted_password'=> $new_password_hash,
             'authentication_token' => $authentication_token);
@@ -248,8 +248,8 @@ class Users_model extends CI_Model{
         {
             $data = array(
                 'email' => strtolower($user['email']),
-                'encrypted_password' => $this->bcrypt->hash_password($user['password']),
-                'authentication_token' => $this->encryption->encrypt(date('Ymd Hms') + $user['password']),
+                'encrypted_password' => $this->bcrypt->hash_password(md5($user['password'])),
+                'authentication_token' => $this->encryption->encrypt(date('Ymd Hms') + md5($user['password'])),
                 'first_name' => $user['first_name'],
                 'last_name' => $user['last_name'],
                 'what_taste' => $user['what_taste'],
@@ -436,5 +436,30 @@ class Users_model extends CI_Model{
             return FALSE;
         }
         return FALSE;
+    }
+
+    public function send_mail($email, $token)
+    {
+        $message = $this->common->get_message('forgot_password', array('reset_password', 'send_mail_success'));
+        $url = base_url('admin/forgot_password/reset').'?token='.$token;
+        $config = Array(
+            'protocol' => 'smtp',
+            'smtp_host' => 'ssl://smtp.gmail.com',
+            'smtp_port' => 465,
+            'smtp_user' => 'elunch.enclaveit@gmail.com',
+            'smtp_pass' => 'enclaveit@123',
+            'mailtype'  => 'html',
+            'auth' => true,
+            'charset'   => 'iso-8859-1'
+        );
+        date_default_timezone_set('GMT');
+        $this->load->library('email');
+        $this->email->initialize($config);
+        $this->email->set_newline("\r\n");
+        $this->email->from('elunch.enclaveit@gmail.com', 'Elunch');
+        $this->email->to($email);
+        $this->email->subject($message['reset_password']);
+        $this->email->message($message['send_mail_success']. $url);
+        return $this->email->send();
     }
 }

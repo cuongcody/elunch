@@ -15,7 +15,15 @@ class Menus extends CI_Controller {
     public function index()
     {
         $this->common->authenticate();
-        $search = $this->input->post('search');
+        $search = $this->common->delete_session_searchitem('name');
+        $search = '';
+        $this->load_menus_view($search);
+    }
+
+    public function search()
+    {
+        $this->common->authenticate();
+        $search = $this->common->searchitem_handler('name', $this->input->post('search'));
         $this->load_menus_view($search);
     }
 
@@ -121,16 +129,16 @@ class Menus extends CI_Controller {
         $message = array('title', 'search', 'search_name', 'menu', 'description', 'image', 'category', 'dishes_of_menu', 'name_dish', 'create_menu', 'edit', 'delete', 'search', 'are_you_sure', 'yes', 'cancel');
         $data = $this->common->set_language_and_data('menus', $message);
         $this->load->library('pagination');
-        $config['base_url'] = base_url().'/admin/menus';
+        $config['base_url'] = ($search == NULL) ? base_url().'/admin/menus' : base_url().'/admin/menus/search';
         $config['total_rows'] = $this->menus_model->get_num_of_menus($search);
-        $config['per_page'] = (($search != '') ? $config['total_rows'] : 10);
+        $config['per_page'] = 10;
         $config['use_page_numbers'] = TRUE;
-        $config['uri_segment'] = 3;
+        $config['uri_segment'] = $config['uri_segment'] = ($search == NULL) ? 3 : 4;
         $config['num_links'] = 3;
         $config['full_tag_open'] = "<ul class='pagination'>";
         $config['full_tag_close'] ="</ul>";
-        $config['first_link'] = false;
-        $config['last_link'] = false;
+        $config['first_link'] = FALSE;
+        $config['last_link'] = FALSE;
         $config['num_tag_open'] = '<li>';
         $config['num_tag_close'] = '</li>';
         $config['cur_tag_open'] = "<li class='disabled'><li class='active'><a href='#'>";
@@ -146,7 +154,7 @@ class Menus extends CI_Controller {
 
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
-        $data['page'] = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        $data['page'] = ($search == NULL) ? (($this->uri->segment(3)) ? $this->uri->segment(3) : 0) : (($this->uri->segment(4)) ? $this->uri->segment(4) : 0);
         $menus = $this->menus_model->get_all_menus($config['per_page'],  ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page'], $search);
         $data['menus'] = $menus;
         $this->common->load_view('admin/menus/menus', $data);

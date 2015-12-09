@@ -1,3 +1,5 @@
+
+
 function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
@@ -44,5 +46,17 @@ $(function() {
     });
     $("#elevator").click(function(){
         $("html,body").animate({scrollTop: 0}, 500);
+    });
+
+    $(window).load(function() {
+        // Animate loader off screen
+        $(".se-pre-con").fadeOut("slow");
+    });
+
+    $('input[name="submit"]').click(function(event) {
+        $(".se-pre-con").fadeIn('slow');
+    });
+    $(".btn-loading").click(function(event) {
+        $(".se-pre-con").fadeIn('slow');
     });
 });

@@ -38,24 +38,6 @@ input[type='file'] {
 .table-header {
   margin-bottom: 0px;
 }
-.circle{
-  border-radius: 50%;
-}
-.circle.small {
-    width: 75px;
-    height: 75px;
-    background-color: #dfdfdf;
-    position: absolute;
-    margin: -5px;
-}
-
-.circle.big {
-    width: 225px;
-    height: 225px;
-    background-color: #2A3F54;
-    position: relative;
-    margin: 100px 100px 150px 10px;
-}
 .btn-table-normal {
   background-color: #2A3F54;
   color: #E7E7E7;
@@ -65,42 +47,10 @@ input[type='file'] {
   background-color: #1ABB9C;
   color: #E7E7E7;
 }
-.circle-1 {
-    left: -25%;
-    top: -10%;
-}
-
-.circle-2 {
-    top: -40%;
-    left: 35%;
-}
-
-.circle-3 {
-    right: -25%;
-    top: -10%;
-}
-
-.circle-4 {
-    left: -37%;
-    bottom: 15%;
-}
-
-.circle-5 {
-    left: -5%;
-    bottom: -30%;
-}
-
-.circle-6 {
-    right: -37%;
-    bottom: 15%;
-}
-.circle-7 {
-    right: -5%;
-    bottom: -30%;
-}
 .img-user{
   width: 100%;
   height: 100%;
+  border: 2px solid #fff;
 }
 .border-success {
   border: 3px solid #26B99A;
@@ -116,9 +66,7 @@ input[type='file'] {
 }
 .table-name
 {
-  position: absolute;
-  bottom: -60%;
-  width: 100%;
+ 
   color: #73879C;
 }
 
@@ -178,8 +126,62 @@ input[type='file'] {
   cursor: pointer;
 }
 .select-table{
-  margin-top: 30%;
-  font-size: 13px;
+  margin-top: 25%;
+  font-size: 12px;
   color: #D9534F;
   font-weight: bold;
+}
+.tables
+{
+  margin-top: 150px;
+  margin-bottom: 150px;
+  border-radius: 50%;
+  background-color: #2A3F54;
+}
+.user-name {
+  margin-top: -10px;
+}
+.table-name {
+  position: absolute;
+  bottom: -70%;
+  width: 100%;
+  color: #73879C;
+
+}
+
+@media only screen and (max-width: 767px) {
+
+/*--[ Mobile styles go here]-------------------------------*/
+.moon {
+  width: 45px;
+  height: 45px;
+}
+
+.orbit-center {
+  width: 105px;
+  height: 105px;
+  margin-top: 100px;
+  margin-left: 50px;
+}
+
+.table-name
+{
+  position: absolute;
+  bottom: -120%;
+  width: 100%;
+}
+}
+/* Paste this css to your style sheet file or under head tag */
+/* This only works with JavaScript, 
+if it's not present, don't show loader */
+.no-js #loader { display: none;  }
+.js #loader { display: block; position: absolute; left: 100px; top: 0; }
+.se-pre-con {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: url(http://113.160.225.87:8484/assets/images/Preloader_10.gif) center no-repeat #fff;
 }

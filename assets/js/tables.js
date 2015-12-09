@@ -9,6 +9,7 @@ $(function() {
     });
 
     $('#add_user').click(function() {
+        $(".se-pre-con").fadeIn('slow');
         var table_id = $('#add_user_modal input[name="table_id"]').val();
         var user_id = $( "#user-choose option:selected" ).val();
         var day  = $('input[name="day"]').val();
@@ -19,21 +20,23 @@ $(function() {
             dataType: 'json',
             data: {table_id:table_id, user_id:user_id, day:day},
             success: function(res) {
-                if (res.status == 'success')
-                {
-                    toastr.success(res.message);
-                    $('.users_item').append(
-                        "<tr id='user_" + res.user.id + "' class='heading'>" +
-                        "<td class='column-title'><img class='img-thumbnail' width='50' height='50' src='" + res.user.avatar_content_file + "'alt=''></td>" +
-                        "<td class='column-title'>" + res.user.first_name + "</td>" +
-                        "<td class='column-title'><input type='checkbox' disabled class='text-center' name='vehicle' " + ((res.user.want_vegan_meal == 1) ? 'checked' : '') + "></td>" +
-                        "<td class='column-title'>" + res.user.floor + "</td>" +
-                        "<td class='column-title'><a href='#leave_table_modal' class='label label-warning' data-toggle='modal' data-target='#leave_table_modal' data-table-id='" + table_id + "' data-user-id='" + res.user.id + "' onclick='false;'><i class='fa fa-times'></i></a></td></tr>"
-                    );
-                    new_occupied_seats = parseInt($('#table-tab_' + table_id).find('.occupied_seats').text()) + 1;
-                    $('#table-tab_' + table_id).find('.occupied_seats').text(new_occupied_seats);
-                }
-                else {toastr.error(res.message);}
+                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                    if (res.status == 'success')
+                    {
+                        toastr.success(res.message);
+                        $('.users_item').append(
+                            "<tr id='user_" + res.user.id + "' class='heading'>" +
+                            "<td class='column-title'><img class='img-thumbnail' width='50' height='50' src='" + res.user.avatar_content_file + "'alt=''></td>" +
+                            "<td class='column-title'>" + res.user.first_name + "</td>" +
+                            "<td class='column-title'><input type='checkbox' disabled class='text-center' name='vehicle' " + ((res.user.want_vegan_meal == 1) ? 'checked' : '') + "></td>" +
+                            "<td class='column-title'>" + res.user.floor + "</td>" +
+                            "<td class='column-title'><a href='#leave_table_modal' class='label label-warning' data-toggle='modal' data-target='#leave_table_modal' data-table-id='" + table_id + "' data-user-id='" + res.user.id + "' onclick='false;'><i class='fa fa-times'></i></a></td></tr>"
+                        );
+                        new_occupied_seats = parseInt($('#table-tab_' + table_id).find('.occupied_seats').text()) + 1;
+                        $('#table-tab_' + table_id).find('.occupied_seats').text(new_occupied_seats);
+                    }
+                    else {toastr.error(res.message);}
+                });
             }
         });
     });
@@ -44,6 +47,7 @@ $(function() {
         });
 
     $('#leave_table').click(function() {
+        $(".se-pre-con").fadeIn('slow');
         var table_id  = $('#leave_table_modal input[name="table_id"]').val();
         var user_id  = $('#leave_table_modal input[name="user_id"]').val();
         base_url = $(this).data("path");
@@ -53,16 +57,18 @@ $(function() {
             dataType: 'json',
             data: {table_id:table_id, user_id:user_id},
             success: function(res) {
-                if (res.status == 'success')
-                {
-                    $('#user_' + user_id).hide('slow', function() {
-                        toastr.success(res.message);
-                        $('#user_' + user_id).remove();
-                     });
-                    new_occupied_seats = parseInt($('#table-tab_' + table_id).find('.occupied_seats').text()) - 1;
-                    $('#table-tab_' + table_id).find('.occupied_seats').text(new_occupied_seats);
-                }
-                else {toastr.error(res.message);}
+                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                    if (res.status == 'success')
+                    {
+                        $('#user_' + user_id).hide('slow', function() {
+                            toastr.success(res.message);
+                            $('#user_' + user_id).remove();
+                         });
+                        new_occupied_seats = parseInt($('#table-tab_' + table_id).find('.occupied_seats').text()) - 1;
+                        $('#table-tab_' + table_id).find('.occupied_seats').text(new_occupied_seats);
+                    }
+                    else {toastr.error(res.message);}
+                });
             }
         });
     });
@@ -74,6 +80,7 @@ $(function() {
         });
 
     $('#delete_table').click(function() {
+        $(".se-pre-con").fadeIn('slow');
         var table_id = $('#delete_table_modal input[name="table_id"]').val();
         base_url = $('#delete_table').data("path");
         jQuery.ajax({
@@ -82,14 +89,16 @@ $(function() {
             dataType: 'json',
             data: {},
             success: function(res) {
-                if (res.status == 'success')
-                {
-                    $('#table_' + table_id).hide('slow', function() {
-                        toastr.success(res.message);
-                        $('#table_' + table_id).remove();
-                     });
-                }
-                else {toastr.error(res.message);}
+                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                    if (res.status == 'success')
+                    {
+                        $('#table_' + table_id).hide('slow', function() {
+                            toastr.success(res.message);
+                            $('#table_' + table_id).remove();
+                         });
+                    }
+                    else {toastr.error(res.message);}
+                });
             }
         })
     });

@@ -6,6 +6,7 @@ $(function() {
         });
 
     $('#delete_floor').click(function() {
+        $(".se-pre-con").fadeIn('slow');
         var floor_id = $('input[name="floor_id"]').val();
         base_url = $('#delete_floor').data("path");
         jQuery.ajax({
@@ -14,14 +15,16 @@ $(function() {
             dataType: 'json',
             data: {},
             success: function(res) {
-                if (res.status == 'success')
-                {
-                    $('#floor_' + floor_id).hide('slow', function() {
-                        toastr.success(res.message);
-                        $('#floor_' + floor_id).remove();
-                     });
-                }
-                else {toastr.error(res.message);}
+                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                    if (res.status == 'success')
+                    {
+                        $('#floor_' + floor_id).hide('slow', function() {
+                            toastr.success(res.message);
+                            $('#floor_' + floor_id).remove();
+                        });
+                    }
+                    else {toastr.error(res.message);}
+                });
             }
         });
     });

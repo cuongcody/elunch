@@ -6,6 +6,7 @@ $(function() {
         });
 
     $('#delete_access_point').click(function() {
+        $(".se-pre-con").fadeIn('slow');
         var access_point_id = $('input[name="access_point_id"]').val();
         base_url = $('#delete_access_point').data("path");
         jQuery.ajax({
@@ -14,19 +15,22 @@ $(function() {
             dataType: 'json',
             data: {},
             success: function(res) {
-                if (res.status == 'success')
-                {
-                    $('#access_point_' + access_point_id).hide('slow', function() {
-                        toastr.success(res.message);
-                        $('#access_point_' + access_point_id).remove();
-                     });
-                }
-                else toastr.error(res.message);
+                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                    if (res.status == 'success')
+                    {
+                        $('#access_point_' + access_point_id).hide('slow', function() {
+                            toastr.success(res.message);
+                            $('#access_point_' + access_point_id).remove();
+                        });
+                    }
+                    else toastr.error(res.message);
+                });
             }
         });
     });
 });
 function chooseAccessPoint() {
+        $(".se-pre-con").fadeIn('slow');
         var base_url = $("#push_notification").data('path');
         jQuery.ajax({
             type: "POST",
@@ -34,8 +38,10 @@ function chooseAccessPoint() {
             dataType: 'json',
             data: {},
             success: function(res) {
-                if (res.status == 'success') toastr.success(res.message);
-                else toastr.error(res.message);
+                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                    if (res.status == 'success') toastr.success(res.message);
+                    else toastr.error(res.message);
+                });
             }
         });
 

@@ -8,6 +8,7 @@ $(function() {
         });
 
     $('#delete_dish').click(function() {
+        $(".se-pre-con").fadeIn('slow');
         var dish_id = $('#delete_dish_modal input[name="dish_id"]').val();
         var image_file_name = $('#delete_dish_modal input[name="dish_id"]').data('dish-image-file-name');
         base_url = $('#delete_dish').data("path");
@@ -17,14 +18,16 @@ $(function() {
             dataType: 'json',
             data: {image_file_name:image_file_name},
             success: function(res) {
-                if (res.status == 'success')
-                {
-                    $('#dish_' + dish_id).hide('slow', function() {
-                        toastr.success(res.message);
-                        $('#dish_' + dish_id).remove();
-                     });
-                }
-                else {toastr.error(res.message);}
+                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                    if (res.status == 'success')
+                    {
+                        $('#dish_' + dish_id).hide('slow', function() {
+                            toastr.success(res.message);
+                            $('#dish_' + dish_id).remove();
+                         });
+                    }
+                    else {toastr.error(res.message);}
+                });
             }
         })
     });

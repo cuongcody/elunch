@@ -8,6 +8,7 @@ $(function() {
         });
 
     $('#delete_user').click(function() {
+        $(".se-pre-con").fadeIn('slow');
         var user_id = $('#delete_user_modal input[name="user_id"]').val();
         var avatar_file_name = $('#delete_user_modal input[name="user_id"]').data('user-avatar-file-name');
         base_url = $('#delete_user').data("path");
@@ -17,19 +18,23 @@ $(function() {
             data: {avatar_file_name: avatar_file_name},
             dataType: 'json',
             success: function(res) {
-                if (res.status == 'success')
-                {
-                    $('#user_' + user_id).hide('slow', function() {
-                        toastr.success(res.message);
-                        $('#user_' + user_id).remove();
-                     });
-                }
-                else {toastr.error(res.message);}
+                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                    if (res.status == 'success')
+                    {
+                        $('#user_' + user_id).hide('slow', function() {
+                            toastr.success(res.message);
+                            $('#user_' + user_id).remove();
+                         });
+                    }
+                    else {toastr.error(res.message);}
+                });
+
             }
         })
     });
 
     $('#change_password').click(function() {
+        $(".se-pre-con").fadeIn('slow');
         base_url = $('#change_password').data("path");
         var password = $("input[name=password]").val();
         var confirm_password = $("input[name=confirm_password]").val();
@@ -39,22 +44,25 @@ $(function() {
             data: {password: password, confirm_password: confirm_password},
             dataType: 'json',
             success: function(res){
-                $('.error').remove();
-                if (res.status == 'failure')
-                {
-                    $('div.change_password').prepend(
-                        "<div class='error alert alert-warning'>" + res.message + '</div>');
-                }
-                else
-                {
-                    $('#change_password_modal').modal('toggle');
-                    toastr.success(res.message);
-                }
+                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                    $('.error').remove();
+                    if (res.status == 'failure')
+                    {
+                        $('div.change_password').prepend(
+                            "<div class='error alert alert-warning'>" + res.message + '</div>');
+                    }
+                    else
+                    {
+                        $('#change_password_modal').modal('toggle');
+                        toastr.success(res.message);
+                    }
+                });
             }
         });
     });
 
     $('#change_shift').click(function() {
+        $(".se-pre-con").fadeIn('slow');
         base_url = $('#change_shift').data("path");
         var shift = $("select[name=shift]").val();
         $.ajax({
@@ -63,17 +71,19 @@ $(function() {
             data: {shift: shift},
             dataType: 'json',
             success: function(res){
-                $('.error').remove();
-                if (res.status == 'failure')
-                {
-                    $('div.change_shift').prepend(
-                        "<div class='error alert alert-warning'>" + res.message + '</div>');
-                }
-                else
-                {
-                    $('#change_shift_modal').modal('toggle');
-                    toastr.success(res.message);
-                }
+                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                    $('.error').remove();
+                    if (res.status == 'failure')
+                    {
+                        $('div.change_shift').prepend(
+                            "<div class='error alert alert-warning'>" + res.message + '</div>');
+                    }
+                    else
+                    {
+                        $('#change_shift_modal').modal('toggle');
+                        toastr.success(res.message);
+                    }
+                });
             }
         });
     });

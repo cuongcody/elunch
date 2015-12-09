@@ -1,0 +1,38 @@
+.center-title {
+font-size:30px;
+}
+
+.center-title.small {
+font-size:13px;
+}
+
+.orbit-center {
+position: relative;
+width: 225px;
+height: 225px;
+margin: 150px 100px 150px 10px;
+text-align:center;
+line-height:90px;
+padding:0px;
+}
+
+.moon {
+border-radius: 50%;
+position: absolute;
+width: 75px;
+height: 75px;
+margin:0px;
+padding:0px;
+font-size:13px;
+line-height:43px;
+background-color: #dfdfdf;
+transition:.3s background, 0s color;
+z-index:1;
+}
+
+.moon.active {
+background:#2ecc71;
+color:#fff;
+font-size:13px;
+z-index:2;
+}

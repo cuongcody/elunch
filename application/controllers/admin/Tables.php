@@ -14,7 +14,15 @@ class Tables extends CI_Controller {
     public function index()
     {
         $this->common->authenticate();
-        $search = $this->input->post('search');
+        $search = $this->common->delete_session_searchitem('name');
+        $search = '';
+        $this->load_tables_view($search);
+    }
+
+    public function search()
+    {
+        $this->common->authenticate();
+        $search = $this->common->searchitem_handler('name', $this->input->post('search'));
         $this->load_tables_view($search);
     }
 
@@ -81,6 +89,46 @@ class Tables extends CI_Controller {
                 'message' => $message['delete_failure']);
         }
         echo json_encode($data);
+    }
+
+    public function send_mail($table_id)
+    {
+        $data = array();
+        $data['table'] = $this->tables_model->get_table_by($table_id);
+        $data['users']['normal_day'] = $this->tables_model->get_users_in_table($table_id, NORMAL_DAY);
+        $data['users']['vegan_day'] = $this->tables_model->get_users_in_table($table_id, NORMAL_DAY);
+        $all_users_in_table = array();
+        $all_users_in_table = $data['users']['normal_day'];
+        foreach ($data['users']['normal_day'] as $user_normal) {
+            if (!in_array($user_normal, $data['users']['vegan_day'])) $all_users_in_table[] = $data['users']['vegan_day'];
+        }
+        $emails = array();
+        foreach ($all_users_in_table as $key => $user) {
+            $emails[] = $user->email;
+        }
+        $view = $this->load->view('admin/tables/tables_mail', $data, true);
+        $message = $this->common->get_message('tables_mail', array('title'));
+        $config = Array(
+            'protocol' => 'smtp',
+            'smtp_host' => 'ssl://smtp.gmail.com',
+            'smtp_port' => 465,
+            'smtp_user' => 'elunch.enclaveit@gmail.com',
+            'smtp_pass' => 'enclaveit@123',
+            'mailtype'  => 'html',
+            'auth' => true,
+            'charset'   => 'iso-8859-1'
+        );
+        date_default_timezone_set('GMT');
+        $this->load->library('email');
+        $this->email->initialize($config);
+        $this->email->set_newline("\r\n");
+        $this->email->from('elunch.enclaveit@gmail.com', 'Elunch');
+        $this->email->to($emails);
+        $this->email->subject($message['title']);
+        $this->email->message($view);
+        if ($this->email->send()) $this->common->return_notification('tables', 'send_success', 1);
+        else $this->common->return_notification('tables', 'send_failure', 0);
+        redirect('admin/tables','refresh');
     }
 
     public function add_user()
@@ -226,11 +274,11 @@ class Tables extends CI_Controller {
         $message = array('title', 'search_name', 'search', 'table_name', 'seats', 'available_seats', 'for_vegans', 'shift', 'description', 'image', 'list_of_users', 'name', 'floor', 'create_table', 'edit', 'delete', 'are_you_sure', 'yes', 'cancel');
         $data = $this->common->set_language_and_data('tables', $message);
         $this->load->library('pagination');
-        $config['base_url'] = base_url().'/admin/tables';
+        $config['base_url'] = ($search == NULL) ? base_url().'/admin/tables' : base_url().'/admin/tables/search';
         $config['total_rows'] = $this->tables_model->get_num_of_tables($search);
-        $config['per_page'] = (($search != '') ? $config['total_rows'] : 10);
+        $config['per_page'] = 10;
         $config['use_page_numbers'] = TRUE;
-        $config['uri_segment'] = 3;
+        $config['uri_segment'] = $config['uri_segment'] = ($search == NULL) ? 3 : 4;
         $config['num_links'] = 3;
         $config['full_tag_open'] = "<ul class='pagination'>";
         $config['full_tag_close'] ="</ul>";
@@ -251,7 +299,7 @@ class Tables extends CI_Controller {
 
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
-        $data['page'] = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        $data['page'] = ($search == NULL) ? (($this->uri->segment(3)) ? $this->uri->segment(3) : 0) : (($this->uri->segment(4)) ? $this->uri->segment(4) : 0);
         $tables = $this->tables_model->get_tables($config['per_page'],  ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page'], $search);
         $data['tables'] = $tables;
         $this->common->load_view('admin/tables/tables', $data);

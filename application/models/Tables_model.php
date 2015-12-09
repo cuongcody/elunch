@@ -76,7 +76,9 @@ class Tables_model extends CI_Model{
     function delete_table($table_id)
     {
         $this->db->cache_delete('admin', 'tables');
-        $num_of_users_in_table = $this->count_users_in_table($table_id);
+        $this->db->cache_delete('admin', 'home');
+        $table = $this->get_table_by($table_id);
+        $num_of_users_in_table = ($table->for_vegans == 1) ? $this->count_users_in_table($table_id, VEGAN_DAY) : $this->count_users_in_table($table_id, NORMAL_DAY);
         if ($num_of_users_in_table > 0)
         {
             return $this->db->query('DELETE tables, tables_users FROM tables_users
@@ -98,6 +100,7 @@ class Tables_model extends CI_Model{
     function insert_table($data)
     {
         $this->db->cache_delete('admin', 'tables');
+        $this->db->cache_delete('admin', 'home');
         return $this->db->insert('tables', $data);
     }
 
@@ -110,10 +113,12 @@ class Tables_model extends CI_Model{
      */
     function update_table($table_id, $data)
     {
-        $num_of_users_in_table = $this->count_users_in_table($table_id);
+        $table = $this->get_table_by($table_id);
+        $num_of_users_in_table = ($table->for_vegans == 1) ? $this->count_users_in_table($table_id, VEGAN_DAY) : $this->count_users_in_table($table_id, NORMAL_DAY);
         if ($data['seats'] >= $num_of_users_in_table)
         {
             $this->db->cache_delete('admin', 'tables');
+            $this->db->cache_delete('admin', 'home');
             $this->db->where('id', $table_id);
             return $this->db->update('tables', $data);
         }

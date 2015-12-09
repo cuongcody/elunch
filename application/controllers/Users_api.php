@@ -237,6 +237,42 @@ class Users_api extends Base_api {
     }
 
     /**
+     * Forgot password of user
+     * url: http://localhost/forgot_password
+     * Method: POST
+     * @param       string  $email
+     * @return      json
+     */
+    function forgot_password_post()
+    {
+        $this->verify_required_params(array('email'));
+        $messages_lang = $this->common->set_language_for_server_api('users_api',
+            array('variables_not_valid', 'reset_password_success', 'reset_password_failure'));
+        $email = $this->post('email');
+        if ($this->users_model->is_user_exists($email))
+        {
+            $this->users_model->forgot_password($email);
+            list($result, $token) = $this->users_model->forgot_password($email);
+            if ($result)
+            {
+                $this->users_model->send_mail($email, $token);
+                $response['status'] = $messages_lang['success'];
+                $response['message'] = $messages_lang['reset_password_success'];
+            }
+            else
+            {
+                $response['status'] = $messages_lang['failure'];
+                $response['message'] = $messages_lang['reset_password_failure'];
+            }
+        }
+        else
+        {
+            $response['status'] = $messages_lang['failure'];
+            $response['message'] = $messages_lang['variables_not_valid'];
+        }
+        $this->response($response, 200);
+    }
+    /**
     * Validating email address
     * @param  string  $email
     * @return json

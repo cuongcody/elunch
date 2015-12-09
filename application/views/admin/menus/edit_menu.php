@@ -81,7 +81,7 @@
                 <div class="form-group">
                     <div class="col-md-12 col-md-12 col-xs-12 text-center">
                         <?php echo form_submit( 'submit', $edit_menu_lang['edit'], 'class = "btn btn-primary"'); ?>
-                        <a href="<?php echo base_url('admin/menus'); ?>" class='btn btn-info'><?php echo $edit_menu_lang['manage_menus'] ?></a>
+                        <a href="<?php echo base_url('admin/menus'); ?>" class='btn btn-loading btn-info'><?php echo $edit_menu_lang['manage_menus'] ?></a>
                     </div>
                 </div>
             <?php echo form_close(); ?>

@@ -13,6 +13,7 @@ $(function() {
         });
 
     $('#delete_menu').click(function() {
+        $(".se-pre-con").fadeIn('slow');
         var menu_id  = $('input[name="menu_id"]').val();
         base_url = $('#delete_menu').data("path");
         jQuery.ajax({
@@ -21,14 +22,16 @@ $(function() {
             dataType: 'json',
             data: {},
             success: function(res) {
-                if (res.status == 'success')
-                {
-                    $('#menu_' + menu_id).hide('slow', function() {
-                        toastr.success(res.message);
-                        $('#menu_' + menu_id).remove();
-                     });
-                }
-                else {toastr.error(res.message);}
+                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                    if (res.status == 'success')
+                    {
+                        $('#menu_' + menu_id).hide('slow', function() {
+                            toastr.success(res.message);
+                            $('#menu_' + menu_id).remove();
+                         });
+                    }
+                    else {toastr.error(res.message);}
+                });
             }
         })
     });

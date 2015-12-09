@@ -75,7 +75,7 @@
                 <div class="form-group text-center">
                     <div class="col-xs-12">
                         <?php echo form_submit( 'submit', $edit_meal_lang['edit'], 'class = "btn btn-primary"'); ?>
-                        <a href="<?php echo base_url('admin/meals'); ?>" class='btn btn-info'><?php echo $edit_meal_lang['manage_meals'] ?></a>
+                        <a href="<?php echo base_url('admin/meals'); ?>" class='btn btn-loading btn-info'><?php echo $edit_meal_lang['manage_meals'] ?></a>
                     </div>
                 </div>
             <?php echo form_close(); ?>

@@ -6,6 +6,7 @@ $(function() {
         });
 
     $('#delete_category').click(function() {
+        $(".se-pre-con").fadeIn('slow');
         var category_id = $('input[name="category_id"]').val();
         base_url = $('#delete_category').data("path");
         jQuery.ajax({
@@ -14,14 +15,16 @@ $(function() {
             dataType: 'json',
             data: {},
             success: function(res) {
-                if (res.status == 'success')
-                {
-                    $('#category_' + category_id).hide('slow', function() {
-                        toastr.success(res.message);
-                        $('#category_' + category_id).remove();
-                     });
-                }
-                else {toastr.error(res.message);}
+                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                    if (res.status == 'success')
+                    {
+                        $('#category_' + category_id).hide('slow', function() {
+                            toastr.success(res.message);
+                            $('#category_' + category_id).remove();
+                         });
+                    }
+                    else {toastr.error(res.message);}
+                });
             }
         });
     });
@@ -51,6 +54,7 @@ $(function() {
         });
     });
     $("#sort_cats").click(function(event) {
+        $(".se-pre-con").fadeIn('slow');
         base_url = $(this).data('path');
         cats = new Array;
         $("tbody").find("tr").each(function(index, el) {
@@ -66,11 +70,13 @@ $(function() {
             dataType: 'json',
             data: {cats:cats},
             success: function(res) {
-                if (res.status == 'success')
-                {
-                    toastr.success(res.message);
-                }
-                else {toastr.error(res.message);}
+                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                    if (res.status == 'success')
+                    {
+                        toastr.success(res.message);
+                    }
+                    else {toastr.error(res.message);}
+                });
             }
         });
     });

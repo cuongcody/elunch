@@ -5,22 +5,40 @@
             <div id="elevator_item"><a id="elevator" onclick="return false;" title="Back To Top"></a></div>
             <div class='row'>
                 <div class= "col-xs-12 col-md-5">
-                    <?php echo anchor('admin/dishes/add', $dishes_lang['create_dish'], "class='btn btn-primary'"); ?>
+                    <?php echo anchor('admin/dishes/add', $dishes_lang['create_dish'], "class='btn btn-loading btn-primary'"); ?>
                 </div>
-                <div class= "col-xs-12 col-md-offset-2 col-md-5">
-                    <?php echo form_open_multipart('admin/dishes/'); ?>
-                        <div class="col-xs-12">
-                            <div class="input-group">
+                <div class= "col-xs-12 col-md-7">
+                    <?php echo form_open('admin/dishes/search'); ?>
+                        <div class="row">
+                            <div class="form-group col-xs-5">
                                 <?php
-                                    $data = array(
-                                        'name' => 'search',
-                                        'class' => 'form-control',
-                                        'placeholder' => $dishes_lang['search_name']);
-                                    echo form_input($data, set_value('search', ''));
+                                    $options=array('all' => 'All categories');
+                                    if (!empty($categories))
+                                    {
+                                        foreach ($categories as $item)
+                                        { $options[$item->id] = $item->name; }
+                                        $select_category = $this->input->post('category');
+                                        echo form_dropdown('category', $options, $this->session->userdata('search_category'), 'class= "form-control"');
+                                    }
+                                    else
+                                    {
+                                        echo form_dropdown('category', $options, set_value('category', ''),'class= "form-control"');
+                                    }
                                 ?>
-                                <span class="input-group-btn">
-                                    <?php echo form_submit( 'submit', $dishes_lang['search'], 'class = "btn btn-primary"'); ?>
-                                </span>
+                            </div>
+                            <div class="form-group col-xs-7">
+                                <div class="input-group">
+                                    <?php
+                                        $data = array(
+                                            'name' => 'search',
+                                            'class' => 'form-control',
+                                            'placeholder' => $dishes_lang['search_name']);
+                                        echo form_input($data, $this->session->userdata('search_dishes_name'));
+                                    ?>
+                                    <span class="input-group-btn">
+                                        <?php echo form_submit( 'submit', $dishes_lang['search'], 'class = "btn btn-primary"'); ?>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     <?php echo form_close(); ?>
@@ -61,7 +79,7 @@
                                             </a>
                                         </td>
                                         <td class="active"><?php echo $dish->category ?></td>
-                                        <td class="active"><?php echo anchor('admin/dishes/edit/'.$dish->id, $dishes_lang['edit'], "class='label label-info'") ?></td>
+                                        <td class="active"><?php echo anchor('admin/dishes/edit/'.$dish->id, $dishes_lang['edit'], "class='btn-loading label label-info'") ?></td>
                                         <td class="active">
                                             <a href="#delete_dish_modal" class="label label-warning" data-toggle="modal" data-target="#delete_dish_modal" data-dish-image-file-name="<?php echo $dish->image_file_name ?>" data-dish-id="<?php echo $dish->id ?>" onclick="false;"><?php echo $dishes_lang["delete"] ?></a>
                                         </td>

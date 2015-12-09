@@ -14,7 +14,15 @@ class Users extends CI_Controller {
     public function index()
     {
         $this->common->authenticate();
-        $search = $this->input->post('search');
+        $search = $this->common->delete_session_searchitem('name');
+        $search = '';
+        $this->load_users_view($search);
+    }
+
+    public function search()
+    {
+        $this->common->authenticate();
+        $search = $this->common->searchitem_handler('name', $this->input->post('search'));
         $this->load_users_view($search);
     }
 
@@ -193,11 +201,11 @@ class Users extends CI_Controller {
         $message = array('title', 'search', 'search_name', 'email', 'first_name', 'last_name', 'what_taste', 'want_vegan_meal', 'floor', 'role', 'user', 'admin', 'create_user', 'edit', 'delete', 'are_you_sure', 'yes', 'cancel');
         $data = $this->common->set_language_and_data('users', $message);
         $this->load->library('pagination');
-        $config['base_url'] = base_url().'/admin/users';
+        $config['base_url'] = ($search == NULL) ? base_url().'/admin/users' : base_url().'/admin/users/search';
         $config['total_rows'] = $this->users_model->get_num_of_users($search);
-        $config['per_page'] = (($search != '') ? $config['total_rows'] : 10);
+        $config['per_page'] = 10;
         $config['use_page_numbers'] = TRUE;
-        $config['uri_segment'] = 3;
+        $config['uri_segment'] = ($search == NULL) ? 3 : 4;
         $config['num_links'] = 3;
         $config['full_tag_open'] = "<ul class='pagination'>";
         $config['full_tag_close'] ="</ul>";
@@ -217,7 +225,7 @@ class Users extends CI_Controller {
         $config['last_tagl_close'] = "</li>";
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
-        $data['page'] = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        $data['page'] = ($search == NULL) ? (($this->uri->segment(3)) ? $this->uri->segment(3) : 0) : (($this->uri->segment(4)) ? $this->uri->segment(4) : 0);
         $users = $this->users_model->get_all_users($config['per_page'], ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page'], $search);
         $data['users'] = $users;
         $this->common->load_view('admin/users/users', $data);

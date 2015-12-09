@@ -9,4 +9,6 @@
     $lang["change_password_failure"] = "Change password failed";
     $lang["password_not_match"] = "Passwords do not match";
     $lang["variables_not_valid"] = "Email address is not valid";
+    $lang["reset_password_success"] = "Password has been reset and sent to your email";
+    $lang["reset_password_failure"] = "Reset password failed";
 ?>

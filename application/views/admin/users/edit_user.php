@@ -80,7 +80,7 @@
                             </div>
                             <div class="form-group text-center">
                                 <?php echo form_submit( 'submit', $edit_user_lang[ 'edit'], 'class = "btn btn-primary"'); ?>
-                                <a href="<?php echo base_url('admin/users'); ?>" class='btn btn-info'><?php echo $edit_user_lang['manage_users'] ?></a>
+                                <a href="<?php echo base_url('admin/users'); ?>" class='btn btn-loading btn-info'><?php echo $edit_user_lang['manage_users'] ?></a>
                             </div>
                         <?php echo form_close(); ?>
                 </div>

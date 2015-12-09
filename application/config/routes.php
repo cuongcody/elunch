@@ -65,6 +65,7 @@ $route['tables'] = 'tables_api/tables';
 $route['seat'] = 'tables_api/seat';
 // User profile api
 $route['change_password'] = 'users_api/change_password';
+$route['forgot_password'] = 'users_api/forgot_password';
 $route['user/(:num)/gcm_regid'] = 'users_api/gcm_regid/$1';
 // Votes api
 $route['vote'] = 'votes_api/vote';

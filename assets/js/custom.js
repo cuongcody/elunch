@@ -52,18 +52,27 @@ $(function () {
 
 /* Sidebar Menu active class */
 $(function () {
+    // Delete char contain char "edit", "search" in url
     if (window.location.href.indexOf('edit/') > 0) {
-        url_sub = window.location.href.replace('edit/', '');
+        url_temp = window.location.href.replace('edit/', '');
     }
-    else url_sub = window.location.href;
-    var i = url_sub.lastIndexOf('/');
-    if ($.isNumeric(url_sub.substr(i+1))) {
-        url = window.location.href.substr(0, i);
+    else if (window.location.href.indexOf('search/') > 0) {
+        url_temp = window.location.href.replace('search/', '');
     }
-    else url = window.location.href;
-    if ( url.indexOf('#') > 0) {
-        url = url.substr(0, url.indexOf('#'));
+    else if (window.location.href.indexOf('search') > 0) {
+        url_temp = window.location.href.replace('/search', '');
     }
+    else url_temp = window.location.href;
+    // Get new url contain from 0 to number
+    var i = url_temp.lastIndexOf('/');
+    if ($.isNumeric(url_temp.substr(i+1))) {
+        url_temp = url_temp.substr(0, i);
+    }
+    // Get new url contain from 0 to char #
+    if ( url_temp.indexOf('#') > 0) {
+        url = url_temp.substr(0, url.indexOf('#'));
+    }
+    else url = url_temp;
     $('#sidebar-menu a[href="' + url + '"]').parent('li').addClass('current-page');
     $('#sidebar-menu a').filter(function () {
         return this.href == url;

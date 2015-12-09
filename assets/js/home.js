@@ -38,15 +38,36 @@ function getTablesByShiftAjax() {
             tables = '';
             $.each(res.tables, function(index, value) {
                 btn_tables += '<a class="btn ' + ((value.for_vegans == 1) ? 'btn-table-vegan' : 'btn-table-normal') + '" href="#table_' + value.id + '">' + value.name + '</a>';
-                tables += '<div id="table_' + value.id + '" class="col-xs-offset-1 col-xs-8 col-xs-offset-1 col-sm-offset-3 col-sm-6 col-sm-offset-3 col-md-12 tables">' +
-                '<div class="table text-center circle big ' + ((value.for_vegans == 1) ? 'bg-green' : '') + '">' +
-                '<input type="hidden" data-name="' + value.name + '" name="table_id" value="' + value.id + '">' +
-                '<h4 class="table-name text-center">' + value.name + '</h4></div></div></hr>'
+                tables += '<div class="col-xs-offset-1 col-xs-8 col-xs-offset-1 col-sm-offset-3 col-sm-6 col-sm-offset-3 col-md-12"><div id="table_' + value.id + '" class="tables orbit-center ' + ((value.for_vegans == 1) ? 'bg-green' : '') + '">' +
+                '<input type="hidden" data-seats="' + value.seats + '" data-name="' + value.name + '" name="table_id" value="' + value.id + '">' +
+                '<h4 class="table-name text-center">' + value.name + '</h4></div></div></hr>';
             });
             $('.btn-tables').html(btn_tables);
             $('.all-tables').html(tables);
+            $(".tables").each(function(index, el) {
+                seats = $(this).find('input[name="table_id"]').data('seats');
+                drawSeats($(this).attr('id'), seats,  index);
+            });
             getUsersByTablesAjax();
         }
+    });
+}
+
+function drawSeats(table, seats, index)
+{
+    if (window.matchMedia('(max-width: 767px)').matches) {
+        var map = new MoonMap('#' + table, {
+            n: seats,
+            radius: 100
+        });
+    } else {
+        var map = new MoonMap('#' + table, {
+            n: seats,
+            radius: 170
+        });
+    }
+    $("#" + table).find('.moon').each(function(index, el) {
+        $(this).addClass('circle_' + index);
     });
 }
 function getUsersByTablesAjax() {
@@ -63,25 +84,43 @@ function getUsersByTablesAjax() {
         dataType: 'json',
         success: function(res){
             $.each(res.tables, function(index, el) {
-                for(var i = 0; i < 7; i++) {
-                    $('#table_' + el.id).find('.circle-' + (i+1)).remove();
-                    if (el.users[i] != undefined)
-                    {
+                var count_users = $('#table_' + el.id).find('.moon').length;
+                for(var i = 0; i < count_users; i++) {
+                    if (el.users[i] != undefined) {
                         if (el.users[i].status_id == 2) status_user = 'border-danger';
                         else if (el.users[i].status_id == 1) status_user = 'border-success';
                         else status_user = 'border-warning';
-                        html = '<a href="#choose_status_user_modal" id="user_' +
-                            el.users[i].id + '" data-toggle="modal" data-target="#choose_status_user_modal" onclick="false;" class="users circle small border-a circle-' +
-                            (i + 1) + ' ' + status_user + '"><img class="img-thumbnail img-user img-circle" src="' +
-                            el.users[i].avatar_content_file + '"><p class="text-center">' + el.users[i].first_name + '</p>' +
-                            '<input type="hidden" name="user_in_table" data-table-id="'+ el.id + '" data-user-id="'+ el.users[i].id + '" data-user-email="'+ el.users[i].email + '" data-user-avatar_content_file="'+ el.users[i].avatar_content_file + '" data-user-firstname="'+ el.users[i].first_name + '" data-user-lastname="'+ el.users[i].last_name + '" value="'+ el.users[i].status_id +'"></a>';
-                        $('#table_' + el.id).find('.table').append(html);
+                        $('#table_' + el.id).find('.circle_' + i).addClass(status_user);
+                        $('#table_' + el.id).find('.circle_' + i).addClass('update-status');
+                        $('#table_' + el.id).find('.circle_' + i).attr('href', '#choose_status_user_modal');
+                        $('#table_' + el.id).find('.circle_' + i).attr('id', 'user_' + el.users[i].id);
+                        $('#table_' + el.id).find('.circle_' + i).attr('data-toggle', 'modal');
+                        $('#table_' + el.id).find('.circle_' + i).attr('data-target', 'choose_status_user_modal');
+                        html = '<img class="img-responsive img-user img-circle" src="' +
+                            el.users[i].avatar_content_file + '"><div class="text-center user-name">' + el.users[i].first_name + '</div>' +
+                            '<input type="hidden" name="user_in_table" data-table-id="'+ el.id + '" data-user-id="'+ el.users[i].id + '" data-user-email="'+ el.users[i].email + '" data-user-avatar_content_file="'+ el.users[i].avatar_content_file + '" data-user-firstname="'+ el.users[i].first_name + '" data-user-lastname="'+ el.users[i].last_name + '" value="'+ el.users[i].status_id +'">';
+                        $('#table_' + el.id).find('.circle_' + i).html(html);
                     }
-                    else
-                    {
-                        $('#table_' + el.id).find('.table').append('<a class="circle small circle-' + (i + 1) + '"></a>');
+                    else {
+                        $('#table_' + el.id).find('.circle_' + i).removeClass('border-danger');
+                        $('#table_' + el.id).find('.circle_' + i).removeClass('border-success');
+                        $('#table_' + el.id).find('.circle_' + i).removeClass('border-warning');
+                        $('#table_' + el.id).find('.circle_' + i).removeClass('update-status');
+                        $('#table_' + el.id).find('.circle_' + i).removeAttr('href');
+                        $('#table_' + el.id).find('.circle_' + i).removeAttr('id');
+                        $('#table_' + el.id).find('.circle_' + i).removeAttr('data-toggle');
+                        $('#table_' + el.id).find('.circle_' + i).removeAttr('data-target');
+                        $('#table_' + el.id).find('.circle_' + i).html("");
                     }
                 }
+            });
+            $(".update-status").click(function(e) {
+                /* Act on the event */
+                $('#choose_status_user_modal').modal('show');
+                var table_id = $(this).find("input[name='user_in_table']").data('table-id');
+                var user_id = $(this).find("input[name='user_in_table']").data('user-id');
+                $('#choose_status_user_modal').find('input[name="table_id"]').val(table_id);
+                $('#choose_status_user_modal').find('input[name="user_id"]').val(user_id);
             });
         }
     });
@@ -111,14 +150,6 @@ function trackingMealLog(base_url, shift, tables, lunch_date, note, private_note
 }
 
 $(function() {
-
-    $('#choose_status_user_modal').on('show.bs.modal', function(e) {
-            //get data-id attribute of the clicked element
-            var table_id = $(e.relatedTarget).find("input[name='user_in_table']").data('table-id');
-            var user_id = $(e.relatedTarget).find("input[name='user_in_table']").data('user-id');
-            $(e.currentTarget).find('input[name="table_id"]').val(table_id);
-            $(e.currentTarget).find('input[name="user_id"]').val(user_id);
-    });
 
     $(".choose-status").click(function(event) {
         base_url = $("#choose_status_user_modal").find('input[name="user_id"]').data('path');
@@ -219,3 +250,5 @@ function getLastestCommentsAjax()
         }
     });
 }
+
+

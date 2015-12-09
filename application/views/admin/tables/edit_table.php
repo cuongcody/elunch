@@ -61,7 +61,7 @@
                     </div>
                     <div class="form-group text-center">
                         <?php echo form_submit( 'submit', $edit_table_lang[ 'edit'], 'class = "btn btn-primary"'); ?>
-                        <a href="<?php echo base_url('admin/tables'); ?>" class='btn btn-info'><?php echo $edit_table_lang['manage_tables'] ?></a>
+                        <a href="<?php echo base_url('admin/tables'); ?>" class='btn btn-loading btn-info'><?php echo $edit_table_lang['manage_tables'] ?></a>
                     </div>
                     <?php echo form_close(); ?>
                 </div>

@@ -5,10 +5,10 @@
             <div id="elevator_item"><a id="elevator" onclick="return false;" title="Back To Top"></a></div>
             <div class='row'>
                 <div class= "col-xs-12 col-md-5">
-                    <?php echo anchor('admin/menus/add', $menus_lang['create_menu'], "class='btn btn-primary'"); ?>
+                    <?php echo anchor('admin/menus/add', $menus_lang['create_menu'], "class='btn btn-loading btn-loading btn-primary'"); ?>
                 </div>
                 <div class= "col-xs-12 col-md-offset-2 col-md-5">
-                    <?php echo form_open_multipart('admin/menus/'); ?>
+                    <?php echo form_open('admin/menus/search'); ?>
                         <div class="col-xs-12">
                             <div class="input-group">
                                 <?php
@@ -16,7 +16,7 @@
                                         'name' => 'search',
                                         'class' => 'form-control',
                                         'placeholder' => $menus_lang['search_name']);
-                                    echo form_input($data, set_value('search', ''));
+                                    echo form_input($data, $this->session->userdata('search_name'));
                                 ?>
                                 <span class="input-group-btn">
                                     <?php echo form_submit( 'submit', $menus_lang['search'], 'class = "btn btn-primary"'); ?>
@@ -34,11 +34,11 @@
                         <tr class='heading'>
                             <?php
                                 echo "<th class='column-title'></th>";
-                                echo "<th class='column'>".$menus_lang['menu']."</th>";
-                                echo "<th class='column'>".$menus_lang['description']."</th>";
-                                echo "<th class='column'>".$menus_lang['dishes_of_menu']."</th>";
-                                echo "<th class='column'></th>";
-                                echo "<th class='column'></th></thead>";
+                                echo "<th class='column-title'>".$menus_lang['menu']."</th>";
+                                echo "<th class='column-title'>".$menus_lang['description']."</th>";
+                                echo "<th class='column-title'>".$menus_lang['dishes_of_menu']."</th>";
+                                echo "<th class='column-title'></th>";
+                                echo "<th class='column-title'></th></thead>";
                             ?>
                         </tr>
                     </thead>
@@ -60,7 +60,7 @@
                                         <td class="active">
                                             <a href="#list_dishes_modal" class="label label-success" data-toggle="modal" data-target="#list_dishes_modal" data-path="<?php echo base_url()."admin/menus/list_dishes_from_menu/".$menu->id ?>" onclick="false;"><?php echo $menus_lang["dishes_of_menu"] ?></a>
                                         </td>
-                                        <td class="active"><?php echo anchor('admin/menus/edit/'.$menu->id, $menus_lang['edit'], "class='label label-info'") ?></td>
+                                        <td class="active"><?php echo anchor('admin/menus/edit/'.$menu->id, $menus_lang['edit'], "class='btn-loading label label-info'") ?></td>
                                         <td class="active">
                                             <a href="#delete_menu_modal" class="label label-warning" data-toggle="modal" data-target="#delete_menu_modal" data-menu-id="<?php echo $menu->id?>" onclick="false;"><?php echo $menus_lang["delete"] ?></a></td>
                                     </tr>

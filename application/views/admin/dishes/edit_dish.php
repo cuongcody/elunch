@@ -44,7 +44,7 @@
                 </div>
                 <div class="form-group text-center">
                     <?php echo form_submit('submit', $edit_dish_lang['edit'], 'class = "btn btn-primary"'); ?>
-                    <a href="<?php echo base_url('admin/dishes'); ?>" class='btn btn-info'><?php echo $edit_dish_lang['manage_dishes'] ?></a>
+                    <a href="<?php echo base_url('admin/dishes'); ?>" class='btn btn-loading btn-info'><?php echo $edit_dish_lang['manage_dishes'] ?></a>
                 </div>
             <?php echo form_close(); ?>
         </div>

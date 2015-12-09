@@ -14,8 +14,19 @@ class Dishes extends CI_Controller {
     public function index()
     {
         $this->common->authenticate();
-        $search = $this->input->post('search');
-        $this->load_dishes_view($search);
+        $search = '';
+        $category = '';
+        $this->common->delete_session_searchitem('dishes_name');
+        $this->common->delete_session_searchitem('category');
+        $this->load_dishes_view($search, $category);
+    }
+
+    public function search()
+    {
+        $this->common->authenticate();
+        $search = $this->common->searchitem_handler('dishes_name', $this->input->post('search'));
+        $category = $this->common->searchitem_handler('category', $this->input->post('category'));
+        $this->load_dishes_view($search, $category);
     }
 
     public function favourite_dishes()
@@ -118,16 +129,23 @@ class Dishes extends CI_Controller {
         $this->common->load_view('admin/dishes/edit_dish', $data);
     }
 
-    public function load_dishes_view($search)
+    public function load_dishes_view($dishes_name, $category)
     {
         $message = array('title', 'search_name', 'search', 'description', 'name', 'category', 'image', 'create_dish', 'edit', 'delete', 'are_you_sure', 'yes', 'cancel');
         $data = $this->common->set_language_and_data('dishes', $message);
         $this->load->library('pagination');
-        $config['base_url'] = base_url().'/admin/dishes';
-        $config['total_rows'] = $this->dishes_model->get_num_of_dishes($search);
-        $config['per_page'] = (($search != '') ? $config['total_rows'] : 10);
+        $config['base_url'] = ($dishes_name == NULL && $category == NULL) ? base_url().'/admin/dishes' : base_url().'/admin/dishes/search';
+        if ($dishes_name == NULL)
+        {
+            $config['total_rows'] = $this->dishes_model->get_num_of_dishes_by_category($category);
+        }
+        elseif ($dishes_name != NULL)
+        {
+            $config['total_rows'] = $this->dishes_model->get_num_of_dishes_by_category($category, $dishes_name);
+        }
+        $config['per_page'] = 10;
         $config['use_page_numbers'] = TRUE;
-        $config['uri_segment'] = 3;
+        $config['uri_segment'] = ($dishes_name == NULL && $category == NULL) ? 3 : 4;
         $config['num_links'] = 3;
         $config['full_tag_open'] = "<ul class='pagination'>";
         $config['full_tag_close'] ="</ul>";
@@ -148,9 +166,12 @@ class Dishes extends CI_Controller {
 
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
-        $data['page'] = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-        $dishes = $this->dishes_model->get_all_dishes($config['per_page'], ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page'], $search);
+        $data['page'] = ($dishes_name == NULL && $category == NULL) ? (($this->uri->segment(3)) ? $this->uri->segment(3) : 0) : (($this->uri->segment(4)) ? $this->uri->segment(4) : 0);
+        $dishes = $this->dishes_model->get_all_dishes($config['per_page'], ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page'], $dishes_name, $category);
         $data['dishes'] = $dishes;
+        $this->load->model('categories_model');
+        $categories = $this->categories_model->get_all_categories();
+        $data['categories'] = $categories;
         $this->common->load_view('admin/dishes/dishes', $data);
     }
 

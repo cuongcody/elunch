@@ -5,10 +5,10 @@
             <div id="elevator_item"><a id="elevator" onclick="return false;" title="Back To Top"></a></div>
             <div class='row'>
                 <div class= "col-xs-12 col-md-5">
-                    <?php echo anchor('admin/tables/add', $tables_lang['create_table'], "class='btn btn-primary'"); ?>
+                    <?php echo anchor('admin/tables/add', $tables_lang['create_table'], "class='btn btn-loading btn-primary'"); ?>
                 </div>
                 <div class= "col-xs-12 col-md-offset-2 col-md-5">
-                    <?php echo form_open_multipart('admin/tables/'); ?>
+                    <?php echo form_open('admin/tables/search'); ?>
                         <div class="col-xs-12">
                             <div class="input-group">
                                 <?php
@@ -16,7 +16,7 @@
                                         'name' => 'search',
                                         'class' => 'form-control',
                                         'placeholder' => $tables_lang['search_name']);
-                                    echo form_input($data, set_value('search', ''));
+                                    echo form_input($data, $this->session->userdata('search_name'));
                                 ?>
                                 <span class="input-group-btn">
                                     <?php echo form_submit( 'submit', $tables_lang['search'], 'class = "btn btn-primary"'); ?>
@@ -34,13 +34,14 @@
                         <tr class='heading'>
                             <?php
                                 echo "<th class='column-title'></th>";
-                                echo "<th class='column'>".$tables_lang['table_name']."</th>";
-                                echo "<th class='column'>".$tables_lang['description']."</th>";
-                                echo "<th class='column'>".$tables_lang['for_vegans']."</th>";
-                                echo "<th class='column'>".$tables_lang['seats']."</th>";
-                                echo "<th class='column'>".$tables_lang['shift']."</th>";
-                                echo "<th class='column'></th>";
-                                echo "<th class='column'></th></thead>";
+                                echo "<th class='column-title'>".$tables_lang['table_name']."</th>";
+                                echo "<th class='column-title'>".$tables_lang['description']."</th>";
+                                echo "<th class='column-title'>".$tables_lang['for_vegans']."</th>";
+                                echo "<th class='column-title'>".$tables_lang['seats']."</th>";
+                                echo "<th class='column-title'>".$tables_lang['shift']."</th>";
+                                echo "<th class='column-title'></th>";
+                                echo "<th class='column-title'></th>";
+                                echo "<th class='column-title'></th></thead>";
                             ?>
                         </tr>
                     </thead>
@@ -64,9 +65,14 @@
                                         </td>
                                         <td class="active"><?php echo $table->seats ?></td>
                                         <td class="active"><?php echo $table->shift ?></td>
-                                        <td class="active"><?php echo anchor('admin/tables/edit/'.$table->id, $tables_lang['edit'], "class='label label-info'") ?></td>
+                                        <td class="active"><?php echo anchor('admin/tables/edit/'.$table->id, $tables_lang['edit'], "class='btn-loading label label-info'") ?></td>
                                         <td class="active">
                                             <a href="#delete_table_modal" class="label label-warning" data-toggle="modal" data-target="#delete_table_modal" data-table-id="<?php echo $table->id ?>" onclick="false;"><?php echo $tables_lang["delete"] ?></a>
+                                        </td>
+                                        <td class="active">
+                                            <a href="<?php echo base_url('admin/tables/send_mail/'.$table->id) ?>" class="btn-loading label label-danger" data-date="<?php  ?>" data-path="">
+                                                <i class="fa fa-envelope-o"></i>
+                                            </a>
                                         </td>
                                     </tr>
                         <?php

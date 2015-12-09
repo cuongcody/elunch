@@ -18,4 +18,6 @@
     $lang["are_you_sure"] = "Bạn muốn xóa bàn ăn này?";
     $lang["yes"] = "Có";
     $lang["cancel"] = "Hủy bỏ";
+    $lang["send_success"] = "Gửi email thành công";
+    $lang["send_failure"] = "Gửi email thất bại";
 ?>

@@ -9,13 +9,16 @@ class Dishes_model extends CI_Model {
      * @param       int  $offset
      * @return      array
      */
-    function get_all_dishes($perpage = NULL, $offset = NULL, $search = NULL)
+    function get_all_dishes($perpage = NULL, $offset = NULL, $search = NULL, $category_id = NULL)
     {
-        $this->db->cache_on();
         $this->db->select('dishes.id, dishes.name, dishes.description, categories.name AS category, pictures.image, pictures.image_file_name');
         $this->db->from('dishes');
         $this->db->join('categories', 'dishes.category_id = categories.id');
         $this->db->join('pictures', 'dishes.id = pictures.dish_id');
+        if ($category_id != NULL && $category_id != 'all')
+        {
+            $this->db->where('categories.id', $category_id);
+        }
         if (!is_null($perpage) && !is_null($offset))
         {
             $this->db->limit($perpage, $offset)->order_by('categories.name', 'ASC')->order_by('dishes.name', 'ASC');
@@ -35,6 +38,17 @@ class Dishes_model extends CI_Model {
     {
         $this->db->cache_on();
         return $this->db->get_where('dishes', array('category_id' => $category_id))->result();
+    }
+
+    function get_num_of_dishes_by_category($category_id, $dish_name = NULL)
+    {
+        $data = array();
+        if ($category_id != 'all')
+        {
+            $data = array('category_id' => $category_id);
+        }
+        if ($dish_name == NULL) return $this->db->get_where('dishes', $data)->num_rows();
+        else return $this->db->like('dishes.name', $dish_name)->get_where('dishes', $data)->num_rows();
     }
 
     /**
@@ -87,18 +101,16 @@ class Dishes_model extends CI_Model {
         $date_from = new DateTime($date);
         $date_to = new DateTime($date);
         $date_to->add(new DateInterval('P'.$number_of_days.'D'));
-        $this->db->select('dishes.*, categories.order, pictures.image, pictures.dish_id, meals.meal_date, meals.for_vegans');
+        $this->db->select('dishes.*, pictures.image, pictures.dish_id, meals.meal_date, meals.for_vegans');
         $this->db->from('meals');
         $this->db->join('menus', 'meals.menu_id = menus.id');
         $this->db->join('dishes_menus', 'dishes_menus.menu_id = menus.id');
         $this->db->join('dishes', 'dishes_menus.dish_id = dishes.id');
         $this->db->join('pictures', 'dishes.id = pictures.dish_id');
-        $this->db->join('categories', 'categories.id = dishes.category_id');
         $this->db->where('meal_date >=', $date_from->format('Y-m-d'));
         $this->db->where('meal_date <=', $date_to->format('Y-m-d'));
         $this->db->order_by('meal_date', 'asc');
         $this->db->order_by('menus.id', 'asc');
-        $this->db->order_by('categories.order', 'asc');
         $dishes_grouped_by_date = array();
         $dishes = $this->db->get()->result();
         if ($dishes != NULL)

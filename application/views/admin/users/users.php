@@ -5,10 +5,10 @@
             <div id="elevator_item"><a id="elevator" onclick="return false;" title="Back To Top"></a></div>
             <div class='row'>
                 <div class= "col-xs-12 col-md-5">
-                    <?php echo anchor('admin/users/add', $users_lang['create_user'], "class='btn btn-primary'"); ?>
+                    <?php echo anchor('admin/users/add', $users_lang['create_user'], "class='btn btn-loading btn-primary'"); ?>
                 </div>
                 <div class= "col-xs-12 col-md-offset-2 col-md-5">
-                    <?php echo form_open_multipart('admin/users/'); ?>
+                    <?php echo form_open_multipart('admin/users/search'); ?>
                         <div class="col-xs-12">
                             <div class="input-group">
                                 <?php
@@ -16,10 +16,10 @@
                                         'name' => 'search',
                                         'class' => 'form-control',
                                         'placeholder' => $users_lang['search_name']);
-                                    echo form_input($data, set_value('search', ''));
+                                    echo form_input($data, $this->session->userdata('search_name'));
                                 ?>
                                 <span class="input-group-btn">
-                                    <?php echo form_submit( 'submit', $users_lang['search'], 'class = "btn btn-primary"'); ?>
+                                    <?php echo form_submit('submit', $users_lang['search'], 'class = "btn btn-primary"'); ?>
                                 </span>
                             </div>
                         </div>
@@ -65,7 +65,7 @@
                                             <input type="checkbox" disabled class="text-center" <?php echo (($user->want_vegan_meal == 1) ? "checked" : "") ?> >
                                         </td>
                                         <td class="active"><?php echo (($user->admin == 0) ? $users_lang['user'] : $users_lang['admin']) ?></td>
-                                        <td class="active"><?php echo anchor('admin/users/edit/'.$user->id, $users_lang['edit'], "class='label label-info'") ?></td>
+                                        <td class="active"><?php echo anchor('admin/users/edit/'.$user->id, $users_lang['edit'], "class='label btn-loading label-info'") ?></td>
                                         <td class="active">
                                             <a href="#delete_user_modal" class="label label-warning" data-toggle="modal" data-target="#delete_user_modal" data-user-avatar-file-name="<?php echo $user->avatar_file_name ?>" data-user-id="<?php echo $user->id ?>" onclick="false;"><?php echo $users_lang["delete"] ?></a>
                                         </td>

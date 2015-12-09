@@ -24,7 +24,7 @@ class Comments_api extends Base_api {
         $this->authenticate();
         $messages_lang = $this->common->set_language_for_server_api('comments_api',
             array('get_comments_success', 'get_comments_failure', 'get_comments_not_valid'));
-        $to = $this->input->get('to');
+        $to = ($this->input->get('to') == NULL) ? date('Y-m-d') : $this->input->get('to');
         $days = $this->input->get('days');
         $response = array();
         if (strtotime($to))
@@ -57,6 +57,8 @@ class Comments_api extends Base_api {
                 $date_to = date('Y-m-d', strtotime($comments[sizeof($comments) - 1]['created_at']));
                 $is_more_comments = ($this->comments_model->get_comments_of_user($user_id, NULL, $date_to) != NULL) ? TRUE : FALSE;
                 $data['is_more_comments'] = $is_more_comments;
+                $data['current_day'] = $to;
+                $data['date_get_more_comments'] = $date_from;
                 $data['comments'] = $comments;
                 $response['status'] = $messages_lang['success'];
                 $response['message'] = $messages_lang['get_comments_success'];

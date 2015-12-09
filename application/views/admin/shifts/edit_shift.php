@@ -58,7 +58,7 @@
                         </div>
                         <div class="form-group text-center">
                             <?php echo form_submit('submit', $edit_shift_lang['edit'], 'class = "btn btn-primary"'); ?>
-                            <a href="<?php echo base_url('admin/shifts'); ?>" class='btn btn-info'><?php echo $edit_shift_lang['manage_shifts'] ?></a>
+                            <a href="<?php echo base_url('admin/shifts'); ?>" class='btn btn-loading btn-info'><?php echo $edit_shift_lang['manage_shifts'] ?></a>
                         </div>
                     <?php echo form_close(); ?>
                 </div>

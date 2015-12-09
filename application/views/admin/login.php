@@ -22,8 +22,10 @@
         <script src="<?php echo base_url('assets/js/moment.js'); ?>"></script>
         <script src="<?php echo (base_url('assets/js/bootstrap-datetimepicker.min.js')); ?>"></script>
         <script src="<?php echo (base_url('assets/js/js.js')); ?>"></script>
+        <script src="<?php echo base_url('assets/js/jquery.modernizr.js'); ?>"></script>
     </head>
     <body>
+        <div class="se-pre-con"></div>
         <div class="container">
             <div class="row" >
                 <div class="col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-xs-offset-1 col-xs-10">
@@ -33,7 +35,7 @@
                             <div class="panel-body">
                                 <?php if (!empty($_SESSION['message'])) echo "<script type='text/javascript'>announcementMessage('".$_SESSION['message']."')</script>"; ?>
                                 <?php if (NULL != validation_errors()) echo "<div class='alert alert-warning'>".validation_errors().'</div>'; ?>
-                                <?php echo form_open('admin/login/check_login'); ?>
+                                <?php echo form_open('admin/login/'); ?>
                                 <div class="form-group input-group">
                                     <span class="input-group-addon"><i class="fa fa-user"></i></span>
                                     <?php
@@ -66,7 +68,7 @@
                                 </div>
                                 <div class="form-group text-center">
                                     <?php
-                                        echo anchor('admin/forgot_password/', $login_lang['forgot_password']);
+                                        echo anchor('admin/forgot_password/', $login_lang['forgot_password'], "class='btn-loading'");
                                     ?>
                                 </div>
                                 <?php echo form_close(); ?>

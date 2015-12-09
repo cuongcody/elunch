@@ -19,7 +19,7 @@ $(function() {
     });
 
     $('#delete_meal').click(function() {
-
+        $(".se-pre-con").fadeIn('slow');
         var meal_id  = $('#delete_meal_modal input[name="meal_id"]').val();
         base_url = $('#delete_meal').data("path");
         jQuery.ajax({
@@ -28,19 +28,22 @@ $(function() {
             dataType: 'json',
             data: {},
             success: function(res) {
-                if (res.status == 'success')
-                {
-                    $('#meal_' + meal_id).hide('slow', function() {
-                        toastr.success(res.message);
-                        $('#meal_' + meal_id).remove();
-                     });
-                }
-                else {toastr.error(res.message);}
+                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                    if (res.status == 'success')
+                    {
+                        $('#meal_' + meal_id).hide('slow', function() {
+                            toastr.success(res.message);
+                            $('#meal_' + meal_id).remove();
+                        });
+                    }
+                    else {toastr.error(res.message);}
+                });
             }
         })
     });
 
     $('.btn-meal-report').click(function() {
+        $(".se-pre-con").fadeIn('slow');
         meal_date = $(this).data('date');
         base_url = $(this).data('path');
         window.location.replace(base_url + '/' + meal_date);
@@ -63,6 +66,7 @@ $(function() {
     });
 
     $('#gen_log_file_meal').click(function() {
+        $(".se-pre-con").fadeIn('slow');
         var meal_id  = $('#gen_log_file_meal_modal input[name="meal_id"]').val();
         var meal_date  = $('#gen_log_file_meal_modal input[name="meal_date"]').val();
         base_url = $('#gen_log_file_meal').data("path");
@@ -72,62 +76,20 @@ $(function() {
             dataType: 'json',
             data: {},
             success: function(res) {
-                if (res.status == 'success')
-                {
-                    $('#meal_' + meal_id).find('.log_file').hide('slow', function() {
-                        toastr.success(res.message);
-                        $('#meal_' + meal_id).find('.log_file').remove();
-                     });
-                }
-                else {toastr.error(res.message);}
+                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                    if (res.status == 'success')
+                    {
+                        $('#meal_' + meal_id).find('.log_file').hide('slow', function() {
+                            toastr.success(res.message);
+                            $('#meal_' + meal_id).find('.log_file').remove();
+                        });
+                    }
+                    else {toastr.error(res.message);}
+                });
+
             }
         })
     });
-
-    $(".choose-status").click(function(event) {
-        base_url = $("#choose_status_user_modal").find('input[name="user_id"]').data('path');
-        status = $(this).find('strong').data('status');
-        user_id = $("#choose_status_user_modal").find('input[name="user_id"]').val();
-        table_id = $("#choose_status_user_modal").find('input[name="table_id"]').val();
-        updateStatusOfUser(base_url, table_id, user_id, status);
-    });
-
-    $("#tracking_meal_log").click(function() {
-        base_url = $(this).data("path");
-        lunch_date  = $('input[name="lunch_date"]').val();
-        note = $('#note').val();
-        actual_meals = $('input[name=actual_meals]').val();
-        shift = {
-            id : $('input[name="shift"]').val(),
-            name : $('input[name="shift"]').data('name'),
-            start_time : $('input[name="shift"]').data('start-time'),
-            end_time : $('input[name="shift"]').data('end-time')
-        };
-        var tables = [];
-        $('.tables').each(function(index, value) {
-            var table = {};
-            var users = [];
-            $(this).find('.users').each(function(index, value) {
-                var user = {};
-                user = {
-                    email : $(this).find('input[name="user_in_table"]').data('user-email'),
-                    avatar_content_file : $(this).find('input[name="user_in_table"]').data('user-avatar_content_file'),
-                    first_name : $(this).find('input[name="user_in_table"]').data('user-firstname'),
-                    last_name : $(this).find('input[name="user_in_table"]').data('user-lastname'),
-                    status_user : $(this).find('input[name="user_in_table"]').val()
-                }
-                users.push(user);
-            });
-            table = {
-                id : $(this).find('input[name="table_id"]').val(),
-                name : $(this).find('input[name="table_id"]').data('name'),
-                users : users
-            }
-            tables.push(table);
-        });
-        trackingMealLog(base_url, shift, tables, lunch_date, note, actual_meals);
-    });
-
 });
 
 $(function() {

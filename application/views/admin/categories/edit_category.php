@@ -32,7 +32,7 @@
                         </div>
                         <div class="form-group text-center">
                             <?php echo form_submit('submit', $edit_category_lang['edit'], 'class = "btn btn-primary"'); ?>
-                            <a href="<?php echo base_url('admin/categories'); ?>" class='btn btn-info'><?php echo $edit_category_lang['manage_categories'] ?></a>
+                            <a href="<?php echo base_url('admin/categories'); ?>" class='btn btn-loading btn-info'><?php echo $edit_category_lang['manage_categories'] ?></a>
                         </div>
                     <?php echo form_close(); ?>
                 </div>

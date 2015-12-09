@@ -30,7 +30,24 @@ class Login extends CI_Controller {
             // Retrieve session values
             $login_lang = $this->session->all_userdata('login_lang');
             $this->load->helper('form');
-            $this->load->view('admin/login', $login_lang);
+            if (isset($_POST['submit']))
+            {
+                $this->config->set_item('language', $this->session->userdata('site_lang'));
+                $this->load->helper('security');
+                $this->load->library('form_validation');
+                //validation rules
+                $this->form_validation->set_rules('email', 'lang:email', 'trim|required|valid_email|xss_clean');
+                $this->form_validation->set_rules('password', 'lang:password', 'trim|required|min_length[5]|xss_clean|callback_check_database');
+                if ($this->form_validation->run() == FALSE)
+                {
+                    $this->load->view('admin/login', $this->session->all_userdata());
+                }
+                else
+                {
+                    redirect('admin/home','refresh');
+                }
+            }
+            else $this->load->view('admin/login', $login_lang);
         }
     }
 
@@ -48,24 +65,6 @@ class Login extends CI_Controller {
         return $msg_lang;
     }
 
-    public function check_login()
-    {
-        $this->config->set_item('language', $this->session->userdata('site_lang'));
-        $this->load->helper('security');
-        $this->load->library('form_validation');
-        //validation rules
-        $this->form_validation->set_rules('email', 'lang:email', 'trim|required|valid_email|xss_clean');
-        $this->form_validation->set_rules('password', 'lang:password', 'trim|required|min_length[5]|xss_clean|callback_check_database');
-        if ($this->form_validation->run() == FALSE)
-        {
-            $this->load->view('admin/login', $this->session->all_userdata());
-        }
-        else
-        {
-            redirect('admin/home','refresh');
-        }
-    }
-
     public function check_database($password)
     {
         $email = $this->input->post('email');
@@ -73,7 +72,7 @@ class Login extends CI_Controller {
             $issue_at = time();
             list($can_login, $result) = $this->users_model->login(array(
                 'email' => $email,
-                'password' => $password));
+                'password' => md5($password)));
             if ($can_login)
             {
                 $session_array = array(

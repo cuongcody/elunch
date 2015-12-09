@@ -18,4 +18,6 @@
     $lang["are_you_sure"] = "Do you want to delete this table?";
     $lang["yes"] = "Yes";
     $lang["cancel"] = "Cancel";
+    $lang["send_success"] = "Have send mail for all users in table successfully";
+    $lang["send_failure"] = "Cannot send mail for all users in table";
 ?>

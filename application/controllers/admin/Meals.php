@@ -17,12 +17,14 @@ class Meals extends CI_Controller {
         $this->common->authenticate();
         if (isset($_POST['submit']))
         {
+            $from = $this->input->post('from');
+            $to = $this->input->post('to');
             $this->validation('index');
             if ($this->form_validation->run() == FALSE)
             {
                 $this->load_meals_view();
             }
-            else $this->load_meals_view($this->input->post('from'), $this->input->post('to'));
+            else $this->load_meals_view($from, $to);
         }
         $this->load_meals_view();
     }
@@ -160,7 +162,7 @@ class Meals extends CI_Controller {
         $this->load->library('pagination');
         $config['base_url'] = base_url('admin/meals');
         $config['total_rows'] = $this->meals_model->get_num_of_meals($from, $to);
-        $config['per_page'] = (($from != '' || $to != '') ? $config['total_rows'] : 10);
+        $config['per_page'] = 10;
         $config['use_page_numbers'] = TRUE;
         $config['uri_segment'] = 3;
         $config['num_links'] = 3;
