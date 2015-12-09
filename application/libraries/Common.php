@@ -184,6 +184,30 @@ class Common {
         return stripos($headers[0],"200 OK") ? TRUE : FALSE;
     }
 
+    public function searchitem_handler($search_name, $searchitem)
+    {
+        if ($searchitem)
+        {
+            $this->CI->session->set_userdata('search_'.$search_name, $searchitem);
+            return $searchitem;
+        }
+        elseif($this->CI->session->userdata('search_'.$search_name))
+        {
+            $searchitem = $this->CI->session->userdata('search_'.$search_name);
+            return $searchitem;
+        }
+        else
+        {
+            $searchitem = "";
+            return $searchitem;
+        }
+    }
+
+    public function delete_session_searchitem($search_name)
+    {
+        $this->CI->session->unset_userdata('search_'.$search_name);
+    }
+
     /**
      * Sending Push Notification
      */
