@@ -150,7 +150,7 @@ function getUsersByTablesAjax() {
                 var count_users = $('#table_' + el.id).find('.moon').length;
                 for(var i = 0; i < count_users; i++) {
                     if (el.users[i] != undefined) {
-                        leave_table_class = (el.users[i].id != user_id) ? 'border-success' : 'leave_table border-danger';
+                        leave_table_class = (el.users[i].id != user_id) ? 'border-success' : 'have_joined_table leave_table border-danger';
                         $('#table_' + el.id).find('.circle_' + i).addClass(leave_table_class);
                         $('#table_' + el.id).find('.circle_' + i).data('index', i);
                         $('#table_' + el.id).find('.circle_' + i).attr('id', 'user_' + el.users[i].id);

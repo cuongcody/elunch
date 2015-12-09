@@ -6,7 +6,7 @@
   margin-bottom: 10px;
   width:212px;
   height:67px;
-  background: url('http://113.160.225.76:8890/images/mantis_logo.gif');
+  background: url('http://113.160.225.76:8989/elunch/assets/images/logo.gif');
   background-repeat: no-repeat;
 }
 
@@ -92,7 +92,7 @@ input[type='file'] {
   display: block;
   width: 60px;
   height: 50px;
-  background: url(http://113.160.225.87:8484/assets/images/icon_top.png) center center no-repeat;
+  background: url(http://113.160.225.76:8989/elunch/assets/images/icon_top.png) center center no-repeat;
   background-color: #444;
   background-color: rgba(0,0,0,.6);
   border-radius: 2px;
