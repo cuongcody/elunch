@@ -38,7 +38,7 @@
                                         <td class="active">
                                             <a href="#delete_category_modal" class="label label-warning" data-toggle="modal" data-target="#delete_category_modal" data-category-id="<?php echo $category->id ?>" onclick="false;"><?php echo $categories_lang["delete"] ?></a>
                                         </td>
-                                        <td class="active"><a href="javascript:void(0)" ><i class="up fa fa-chevron-up"></i></a> <a href="javascript:void(0)" ><i class="down fa fa-chevron-down"></i></a></td>
+                                        <td class="active"><i class="up fa fa-chevron-up"></i> <i class="down fa fa-chevron-down"></i></td>
                                     </tr>
                         <?php
                                 }
