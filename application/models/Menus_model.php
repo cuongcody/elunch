@@ -3,6 +3,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Menus_model extends CI_Model {
 
+    private static $db;
+
+    function __construct() {
+        parent::__construct();
+        self::$db = &get_instance()->db;
+    }
+
     /**
      * Get menus based on pagination
      *
@@ -10,17 +17,17 @@ class Menus_model extends CI_Model {
      * @param       int  $offset
      * @return      object
      */
-    function get_all_menus($perpage = NULL, $offset = NULL, $search = NULL)
+    static function get_all_menus($perpage = NULL, $offset = NULL, $search = NULL)
     {
-        $this->db->select('menus.id, menus.name, menus.description');
-        $this->db->from('menus');
-        $this->db->join('dishes_menus','menus.id = dishes_menus.menu_id');
+        self::$db->select('menus.id, menus.name, menus.description');
+        self::$db->from('menus');
+        self::$db->join('dishes_menus','menus.id = dishes_menus.menu_id');
         if (!is_null($perpage) && !is_null($offset))
         {
-            $this->db->limit($perpage, $offset)->group_by('menus.id');
+            self::$db->limit($perpage, $offset)->group_by('menus.id');
         }
-        $this->db->like('menus.name', $search);
-        $query = $this->db->order_by('menus.name', 'ASC');
+        self::$db->like('menus.name', $search);
+        $query = self::$db->order_by('menus.name', 'ASC');
         return (array)$query->get()->result();
     }
 
@@ -30,15 +37,15 @@ class Menus_model extends CI_Model {
      * @param       int  $menu_id
      * @return      array
      */
-    function get_dishes_by_menu($menu_id)
+    static function get_dishes_by_menu($menu_id)
     {
-        $this->db->select('pictures.image, $dishes.name, categories.name AS category_name');
-        $this->db->from('dishes');
-        $this->db->join('pictures', 'pictures.dish_id = dishes.id');
-        $this->db->join('dishes_menus', 'dishes_menus.dish_id = dishes.id');
-        $this->db->join('categories', 'dishes.category_id = categories.id');
-        $this->db->where('menus.id', $menu_id);
-        return $this->db->get()->result();
+        self::$db->select('pictures.image, $dishes.name, categories.name AS category_name');
+        self::$db->from('dishes');
+        self::$db->join('pictures', 'pictures.dish_id = dishes.id');
+        self::$db->join('dishes_menus', 'dishes_menus.dish_id = dishes.id');
+        self::$db->join('categories', 'dishes.category_id = categories.id');
+        self::$db->where('menus.id', $menu_id);
+        return self::$db->get()->result();
     }
 
     /**
@@ -47,9 +54,9 @@ class Menus_model extends CI_Model {
      * @param       int  $menu_id
      * @return      object
      */
-    public function get_menu_by_id($menu_id)
+    static function get_menu_by_id($menu_id)
     {
-        $query = $this->db->get_where('menus', array('id' => $menu_id));
+        $query = self::$db->get_where('menus', array('id' => $menu_id));
         return $query->first_row();
     }
 
@@ -58,13 +65,13 @@ class Menus_model extends CI_Model {
      *
      * @return      int
      */
-    function get_num_of_menus($search = NULL)
+    static function get_num_of_menus($search = NULL)
     {
-        $this->db->select('menus.id, menus.name, menus.description');
-        $this->db->from('menus');
-        $this->db->join('dishes_menus','menus.id = dishes_menus.menu_id')->group_by('menus.id')->order_by('menus.id', 'DESC');
-        $this->db->like('menus.name', $search);
-        $query = $this->db->get();
+        self::$db->select('menus.id, menus.name, menus.description');
+        self::$db->from('menus');
+        self::$db->join('dishes_menus','menus.id = dishes_menus.menu_id')->group_by('menus.id')->order_by('menus.id', 'DESC');
+        self::$db->like('menus.name', $search);
+        $query = self::$db->get();
         return $query->num_rows();
     }
 
@@ -109,6 +116,7 @@ class Menus_model extends CI_Model {
                 'dish_id' => $dish);
             array_push($datas, $data);
         }
+        self::$db->cache_delete('admin', 'menus');
         return $this->db->insert_batch('dishes_menus', $datas);
     }
 
@@ -135,6 +143,7 @@ class Menus_model extends CI_Model {
         }
         else
         {
+            $this->db->cache_delete('admin', 'menus');
             $this->db->trans_commit();
             return TRUE;
         }
@@ -146,9 +155,10 @@ class Menus_model extends CI_Model {
      * @param       int  $menu_id
      * @return      bool
      */
-    function delete_menu($menu_id)
+    static function delete_menu($menu_id)
     {
-        return $this->db->query('DELETE menus, dishes_menus FROM menus
+        self::$db->cache_delete('admin', 'menus');
+        return self::$db->query('DELETE menus, dishes_menus FROM menus
             INNER JOIN dishes_menus ON dishes_menus.menu_id = menus.id
             WHERE dishes_menus.menu_id = ? AND menus.id = ?', array($menu_id, $menu_id));
     }
@@ -160,9 +170,10 @@ class Menus_model extends CI_Model {
      * @param       string  $field_value
      * @return      bool
      */
-    function delete_dishes_in_menu_by_field($field, $field_value)
+    static function delete_dishes_in_menu_by_field($field, $field_value)
     {
-        $this->db->where_in($field, $field_value);
-        return $this->db->delete('dishes_menus');
+        self::$db->cache_delete('admin', 'menus');
+        self::$db->where_in($field, $field_value);
+        return self::$db->delete('dishes_menus');
     }
 }

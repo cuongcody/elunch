@@ -37,7 +37,7 @@ class Tables_api extends Base_api {
         {
             $day = $for_vegans = NORMAL_DAY;
         }
-        $result = $this->tables_model->get_tables_by_shift($shift_id, $for_vegans, $day);
+        $result = Tables_model::get_tables_by_shift($shift_id, $for_vegans, $day);
         $tables = array();
         $response = array();
         if ($result != NULL)
@@ -56,7 +56,7 @@ class Tables_api extends Base_api {
                 $table['start_time'] = $temp->start_time;
                 $table['end_time'] = $temp->end_time;
                 $users = array();
-                $result = $this->tables_model->get_users_in_table($temp->id, $day);
+                $result = Tables_model::get_users_in_table($temp->id, $day);
                 if ($result != NULL)
                 {
                     foreach ($result as $key => $temp)

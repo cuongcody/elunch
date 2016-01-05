@@ -115,6 +115,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $announcements_lang['cancel'] ?></button>
                 <button type="button" id="add_reply_announcement" class="btn btn-primary" data-path="<?php echo base_url('admin/announcements/add_reply') ?>"><?php echo $announcements_lang['send'] ?></button>
+                <div class='loadingx'></div>
             </div>
         </div>
     </div>

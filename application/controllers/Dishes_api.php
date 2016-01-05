@@ -21,7 +21,7 @@ class Dishes_api extends Base_api {
         $this->authenticate();
         $messages_lang = $this->common->set_language_for_server_api('dishes_api',
             array('get_dishes_success', 'get_dishes_failure'));
-        $result = $this->dishes_model->get_all_dishes();
+        $result = Dishes_model::get_all_dishes();
         $response = array();
         if (!is_null($result))
         {
@@ -72,7 +72,7 @@ class Dishes_api extends Base_api {
         }
         else
         {
-            $result = $this->dishes_model->get_dishes_of_meals_from($from_date, $days);
+            $result = Dishes_model::get_dishes_of_meals_from($from_date, $days);
             if ($result != NULL)
             {
                 $dates = array();
@@ -83,7 +83,7 @@ class Dishes_api extends Base_api {
                     {
                         $dish = array();
                         $dish['id'] = (int)$temp2->dish_id;
-                        $dish['name'] = $temp2->name.(($temp2->for_vegans == 1) ? ' ('.$messages_lang['vegan_meal'].')' : '');
+                        $dish['name'] = $temp2->name.(($temp2->for_vegans == 1) ? $messages_lang['vegan_meal'] : '');
                         $dish['description'] = $temp2->description;
                         $dish['image'] = $temp2->image;
                         array_push($dishes, $dish);

@@ -3,6 +3,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Announcements_model extends CI_Model {
 
+    private static $db;
+
+    function __construct() {
+        parent::__construct();
+        self::$db = &get_instance()->db;
+    }
+
     /**
      * Get announcements for user
      *
@@ -16,7 +23,7 @@ class Announcements_model extends CI_Model {
 
         $messages = array();
         $this->load->model('users_model');
-        $user = $this->users_model->get_user_by('id', $user_id);
+        $user = Users_model::get_user_by('id', $user_id);
         // Get all messages from admin
         $result = $this->get_announcements(NULL, NULL, $start_time, $end_time);
         if ($result != NULL)
@@ -35,7 +42,7 @@ class Announcements_model extends CI_Model {
                 {
                     $this->load->model('tables_model');
                     // Get shift and table of user
-                    $shift_and_tables = $this->tables_model->get_shift_and_tables_of_user($user_id);
+                    $shift_and_tables = Tables_model::get_shift_and_tables_of_user($user_id);
                     if ($shift_and_tables != NULL)
                     {
                         $shift_id = $shift_and_tables[0]->shift_id;
@@ -76,7 +83,7 @@ class Announcements_model extends CI_Model {
     {
         $announcement = new stdClass();
         $this->load->model('users_model');
-        $user = $this->users_model->get_user_by('id', $user_id);
+        $user = Users_model::get_user_by('id', $user_id);
         $announcements_with_read_replies = array();
         $announcements_with_read_replies = (array)json_decode($user->read_replies_announcements);
         $have_read_replies_announcement= "";
@@ -99,18 +106,18 @@ class Announcements_model extends CI_Model {
      * @param       int  $announcement_id
      * @return      array
      */
-    function get_replies_announcement_by_id($announcement_id)
+    static function get_replies_announcement_by_id($announcement_id)
     {
-        $this->db->select('admin_messages.id,
+        self::$db->select('admin_messages.id,
             reply_messages.id AS reply_id, reply_messages.type_messages, reply_messages.content AS reply_content, reply_messages.created_at AS reply_created_at, reply_messages.updated_at AS reply_updated_at,
             users.email, users.avatar_content_file ');
-        $this->db->from('admin_messages');
-        $this->db->join('reply_messages', 'reply_messages.message_id = admin_messages.id');
-        $this->db->join('users', 'users.id = reply_messages.user_id');
-        $this->db->where('admin_messages.id', $announcement_id);
-        $this->db->where('reply_messages.type_messages', ANNOUNCEMENT);
-        $this->db->order_by('reply_messages.created_at', 'DESC');
-        $query = $this->db->get();
+        self::$db->from('admin_messages');
+        self::$db->join('reply_messages', 'reply_messages.message_id = admin_messages.id');
+        self::$db->join('users', 'users.id = reply_messages.user_id');
+        self::$db->where('admin_messages.id', $announcement_id);
+        self::$db->where('reply_messages.type_messages', ANNOUNCEMENT);
+        self::$db->order_by('reply_messages.created_at', 'DESC');
+        $query = self::$db->get();
         return $query->result();
     }
 
@@ -123,10 +130,10 @@ class Announcements_model extends CI_Model {
      * @param       date(Y-m-d)  $end_time
      * @return      array
      */
-    function get_announcements($per_page = NULL, $offset = NULL, $start_time = NULL, $end_time = NULL)
+    static function get_announcements($per_page = NULL, $offset = NULL, $start_time = NULL, $end_time = NULL)
     {
         if (!is_null($offset) && !is_null($per_page)){
-            $query = $this->db->query('
+            $query = self::$db->query('
                 SELECT admin_messages.*,
                 SUM(reply_messages.id AND reply_messages.type_messages = ? ) AS number_of_replies,
                 users.id AS user_id, users.avatar_content_file, users.email
@@ -139,7 +146,7 @@ class Announcements_model extends CI_Model {
         }
         elseif ((!is_null($start_time) && !is_null($end_time)))
         {
-            $query = $this->db->query('
+            $query = self::$db->query('
                 SELECT admin_messages.*,
                 SUM(reply_messages.id AND reply_messages.type_messages = ? ) AS number_of_replies,
                 users.id AS user_id, users.avatar_content_file, users.email
@@ -154,7 +161,7 @@ class Announcements_model extends CI_Model {
         }
         elseif (!is_null($start_time))
         {
-            $query = $this->db->query('
+            $query = self::$db->query('
                 SELECT admin_messages.*,
                 SUM(reply_messages.id AND reply_messages.type_messages = ? ) AS number_of_replies,
                 users.id AS user_id, users.avatar_content_file, users.email
@@ -168,7 +175,7 @@ class Announcements_model extends CI_Model {
         }
         elseif (!is_null($end_time))
         {
-            $query = $this->db->query('
+            $query = self::$db->query('
                 SELECT admin_messages.*,
                 SUM(reply_messages.id AND reply_messages.type_messages = ? ) AS number_of_replies,
                 users.id AS user_id, users.avatar_content_file, users.email
@@ -204,7 +211,7 @@ class Announcements_model extends CI_Model {
             ', array(ANNOUNCEMENT, $announcement_id));
         $result = $query->first_row();
         $this->load->model('users_model');
-        $user = $this->users_model->get_user_by('id', $user_id);
+        $user = Users_model::get_user_by('id', $user_id);
         $announcements_with_read_replies = array();
         $announcements_with_read_replies = (array)json_decode($user->read_replies_announcements);
         $count_replies_have_read = 0;
@@ -227,13 +234,13 @@ class Announcements_model extends CI_Model {
      * @param       int  $announcement_id
      * @return      object
      */
-    function get_user_in_announcement($announcement_id)
+    static function get_user_in_announcement($announcement_id)
     {
-        $announcement = $this->db->get_where('admin_messages', array('id' => $announcement_id))->first_row();
+        $announcement = self::$db->get_where('admin_messages', array('id' => $announcement_id))->first_row();
         $user = array();
         if (!is_null($announcement->user) && $announcement->user != 'all')
         {
-            $user = $this->db->get_where('users', array('id' => $announcement->user))->first_row();
+            $user = self::$db->get_where('users', array('id' => $announcement->user))->first_row();
         }
         return $user;
     }
@@ -243,9 +250,9 @@ class Announcements_model extends CI_Model {
      *
      * @return      int
      */
-    function number_of_announcements()
+    static function number_of_announcements()
     {
-        $query = $this->db->get('admin_messages');
+        $query = self::$db->get('admin_messages');
         return $query->num_rows();
     }
 
@@ -287,9 +294,9 @@ class Announcements_model extends CI_Model {
      * @param       array  $data
      * @return      [bool, int]
      */
-    function insert_announcement($data)
+    static function insert_announcement($data)
     {
-        return [$this->db->insert('admin_messages', $data), $this->db->insert_id()];
+        return [self::$db->insert('admin_messages', $data), self::$db->insert_id()];
     }
 
     /**
@@ -329,12 +336,12 @@ class Announcements_model extends CI_Model {
      * @param       int  $announcement_id
      * @return      bool
      */
-    function delete_announcement($announcement_id)
+    static function delete_announcement($announcement_id)
     {
-        $have_comment_in_admin_message = $this->db->get_where('reply_messages', array('type_messages' => ANNOUNCEMENT, 'message_id' => $announcement_id))->num_rows();
+        $have_comment_in_admin_message = self::$db->get_where('reply_messages', array('type_messages' => ANNOUNCEMENT, 'message_id' => $announcement_id))->num_rows();
         if ($have_comment_in_admin_message > 0)
         {
-            return $this->db->query('
+            return self::$db->query('
                 DELETE admin_messages, reply_messages
                 FROM admin_messages
                 INNER JOIN reply_messages ON admin_messages.id = reply_messages.message_id
@@ -344,8 +351,8 @@ class Announcements_model extends CI_Model {
         }
         else
         {
-            $this->db->where('id', $announcement_id);
-            return $this->db->delete('admin_messages');
+            self::$db->where('id', $announcement_id);
+            return self::$db->delete('admin_messages');
         }
     }
 
@@ -359,7 +366,7 @@ class Announcements_model extends CI_Model {
     function have_read_announcement($user_id, $announcement_id)
     {
         $this->load->model('users_model');
-        $user = $this->users_model->get_user_by('id', $user_id);
+        $user = Users_model::get_user_by('id', $user_id);
         $have_read_announcements = $user->read_announcements;
         if ($have_read_announcements == NULL) $have_read_announcements = $announcement_id;
         else
@@ -388,7 +395,7 @@ class Announcements_model extends CI_Model {
         $read_replies_for_announcement['announcement'] = $announcement_id;
         $read_replies_for_announcement['replies'] = $reply_ids;
         $this->load->model('users_model');
-        $user = $this->users_model->get_user_by('id', $user_id);
+        $user = Users_model::get_user_by('id', $user_id);
         $reply_ids_for_announcements = (array)json_decode($user->read_replies_announcements);
         $reply_ids_for_announcements[] = $read_replies_for_announcement;
         $this->db->where('id', $user_id);

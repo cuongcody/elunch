@@ -15,7 +15,7 @@ $(function() {
             dataType: 'json',
             data: {},
             success: function(res) {
-                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                $(".se-pre-con").fadeOut('slow', function() {
                     if (res.status == 'success')
                     {
                         $('#floor_' + floor_id).hide('slow', function() {

@@ -2,6 +2,13 @@
 
 class Comments_model extends CI_Model {
 
+    private static $db;
+
+    function __construct() {
+        parent::__construct();
+        self::$db = &get_instance()->db;
+    }
+
     /**
      * Get comments for user
      *
@@ -10,11 +17,11 @@ class Comments_model extends CI_Model {
      * @param       date(Y-m-d)  $end_time
      * @return      array
      */
-    function get_comments_of_user($user_id, $start_time = NULL, $end_time = NULL)
+    static function get_comments_of_user($user_id, $start_time = NULL, $end_time = NULL)
     {
         if (is_null($start_time) && is_null($end_time))
         {
-            $query = $this->db->query('
+            $query = self::$db->query('
                 SELECT comments.*,users.id AS user_id, users.read_comments, users.read_replies_comments,
                 users.email, users.avatar_content_file,
                 SUM(reply_messages.id AND reply_messages.type_messages = ? ) AS number_of_replies
@@ -27,7 +34,7 @@ class Comments_model extends CI_Model {
         }
         elseif ((!is_null($start_time) && !is_null($end_time)))
         {
-            $query = $this->db->query('
+            $query = self::$db->query('
                 SELECT comments.*, users.id AS user_id, users.read_comments, users.read_replies_comments,
                 users.email, users.avatar_content_file,
                 SUM(reply_messages.id AND reply_messages.type_messages = ? ) AS number_of_replies
@@ -42,7 +49,7 @@ class Comments_model extends CI_Model {
         }
         elseif (!is_null($end_time))
         {
-            $query = $this->db->query('
+            $query = self::$db->query('
                 SELECT comments.*, users.id AS user_id, users.read_comments, users.read_replies_comments,
                 users.email, users.avatar_content_file,
                 SUM(reply_messages.id AND reply_messages.type_messages = ? ) AS number_of_replies
@@ -89,9 +96,9 @@ class Comments_model extends CI_Model {
      * @param       int  $comment_id
      * @return      object
      */
-    function get_comment_by_id($user_id, $comment_id)
+    static function get_comment_by_id($user_id, $comment_id)
     {
-        $query = $this->db->query('
+        $query = self::$db->query('
             SELECT comments.*, users.id AS user_id, users.read_comments, users.read_replies_comments,
             users.email, users.avatar_content_file,
             SUM(reply_messages.id AND reply_messages.type_messages = ? ) AS number_of_replies
@@ -134,9 +141,9 @@ class Comments_model extends CI_Model {
      * @param       int  $offset
      * @return      array
      */
-    function get_comments($per_page, $offset)
+    static function get_comments($per_page, $offset)
     {
-        $query = $this->db->query('
+        $query = self::$db->query('
             SELECT comments.*,
             SUM(reply_messages.id AND reply_messages.type_messages = ? ) AS number_of_replies,
             users.avatar_content_file, users.email, users.first_name, users.last_name,
@@ -158,13 +165,13 @@ class Comments_model extends CI_Model {
      * @param       int  $comment_id
      * @return      object
      */
-    function get_user_in_comment($comment_id)
+    static function get_user_in_comment($comment_id)
     {
-        $this->db->select('users.*');
-        $this->db->from('comments');
-        $this->db->join('users', 'users.id = comments.user_id');
-        $this->db->where('comments.id', $comment_id);
-        $query = $this->db->get();
+        self::$db->select('users.*');
+        self::$db->from('comments');
+        self::$db->join('users', 'users.id = comments.user_id');
+        self::$db->where('comments.id', $comment_id);
+        $query = self::$db->get();
         return $query->first_row();
     }
 
@@ -173,9 +180,9 @@ class Comments_model extends CI_Model {
      *
      * @return      int
      */
-    function number_of_comments()
+    static function number_of_comments()
     {
-        $query = $this->db->get('comments');
+        $query = self::$db->get('comments');
         return $query->num_rows();
     }
 
@@ -192,7 +199,7 @@ class Comments_model extends CI_Model {
     {
         $comment = new stdClass();
         $this->load->model('users_model');
-        $user = $this->users_model->get_user_by('id', $user_id);
+        $user = Users_model::get_user_by('id', $user_id);
         $comments_with_read_replies = array();
         $comments_with_read_replies = (array)json_decode($user->read_replies_comments);
         $have_read_replies_comment= "";
@@ -215,18 +222,18 @@ class Comments_model extends CI_Model {
      * @param       int  $comment_id
      * @return      array
      */
-    function get_replies_comment_by_id($comment_id)
+    static function get_replies_comment_by_id($comment_id)
     {
-        $this->db->select('comments.id,
+        self::$db->select('comments.id,
             reply_messages.id AS reply_id, reply_messages.type_messages, reply_messages.content AS reply_content, reply_messages.created_at AS reply_created_at, reply_messages.updated_at AS reply_updated_at,
             users.email, users.avatar_content_file ');
-        $this->db->from('comments');
-        $this->db->join('reply_messages', 'reply_messages.message_id = comments.id');
-        $this->db->join('users', 'users.id = reply_messages.user_id');
-        $this->db->where('comments.id', $comment_id);
-        $this->db->where('reply_messages.type_messages', COMMENTS);
-        $this->db->order_by('reply_messages.created_at', 'DESC');
-        $query = $this->db->get();
+        self::$db->from('comments');
+        self::$db->join('reply_messages', 'reply_messages.message_id = comments.id');
+        self::$db->join('users', 'users.id = reply_messages.user_id');
+        self::$db->where('comments.id', $comment_id);
+        self::$db->where('reply_messages.type_messages', COMMENTS);
+        self::$db->order_by('reply_messages.created_at', 'DESC');
+        $query = self::$db->get();
         return $query->result();
     }
 
@@ -293,10 +300,10 @@ class Comments_model extends CI_Model {
      * @param       array  $comment
      * @return      bool
      */
-    function edit_comment($comment_id, $comment)
+    static function edit_comment($comment_id, $comment)
     {
         $comment['updated_at'] = date('Y-m-d H:i:s');
-        $this->db->where('id', $comment_id);
+        self::$db->where('id', $comment_id);
         return $this->db->update('comments', $comment);
     }
 
@@ -306,12 +313,12 @@ class Comments_model extends CI_Model {
      * @param       int  $comment_id
      * @return      bool
      */
-    function delete_comment($comment_id)
+    static function delete_comment($comment_id)
     {
-        $have_reply_in_comment = $this->db->get_where('reply_messages', array('type_messages' => COMMENTS, 'message_id' => $comment_id))->num_rows();
+        $have_reply_in_comment = self::$db->get_where('reply_messages', array('type_messages' => COMMENTS, 'message_id' => $comment_id))->num_rows();
         if ($have_reply_in_comment > 0)
         {
-            return $this->db->query('
+            return self::$db->query('
                 DELETE comments, reply_messages
                 FROM comments
                 INNER JOIN reply_messages ON comments.id = reply_messages.message_id
@@ -321,8 +328,8 @@ class Comments_model extends CI_Model {
         }
         else
         {
-            $this->db->where('id', $comment_id);
-            return $this->db->delete('comments');
+            self::$db->where('id', $comment_id);
+            return self::$db->delete('comments');
         }
     }
 
@@ -336,7 +343,7 @@ class Comments_model extends CI_Model {
     function have_read_comment($user_id, $comment_id)
     {
         $this->load->model('users_model');
-        $user = $this->users_model->get_user_by('id', $user_id);
+        $user = Users_model::get_user_by('id', $user_id);
         $have_read_comments = $user->read_comments;
         if ($have_read_comments == NULL) $have_read_comments = $comment_id;
         else
@@ -365,7 +372,7 @@ class Comments_model extends CI_Model {
         $read_replies_for_comment['comment'] = $comment_id;
         $read_replies_for_comment['replies'] = $reply_ids;
         $this->load->model('users_model');
-        $user = $this->users_model->get_user_by('id', $user_id);
+        $user = Users_model::get_user_by('id', $user_id);
         $reply_ids_for_comments = (array)json_decode($user->read_replies_comments);
         $reply_ids_for_comments[] = $read_replies_for_comment;
         $this->db->where('id', $user_id);

@@ -3,15 +3,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Floors_model extends CI_Model {
 
+    private static $db;
+
+    function __construct() {
+        parent::__construct();
+        self::$db = &get_instance()->db;
+    }
+
     /**
      * Get all floors
      *
      * @return      array
      */
-    function get_all_floors()
+    static function get_all_floors()
     {
-        $this->db->cache_on();
-        $query = $this->db->get('floors');
+        self::$db->cache_on();
+        $query = self::$db->get('floors');
         return (array)$query->result();
     }
 
@@ -20,9 +27,9 @@ class Floors_model extends CI_Model {
      *
      * @return      int
      */
-    function get_num_of_floors()
+    static function get_num_of_floors()
     {
-        $query = $this->db->get('floors');
+        $query = self::$db->get('floors');
         return $query->num_rows();
     }
 
@@ -32,9 +39,9 @@ class Floors_model extends CI_Model {
      * @param       int  $floor_id
      * @return      object
      */
-    function get_floor_by_id($floor_id)
+    static function get_floor_by_id($floor_id)
     {
-        $query = $this->db->get_where('floors', array('id' => $floor_id));
+        $query = self::$db->get_where('floors', array('id' => $floor_id));
         return $query->first_row();
     }
 
@@ -45,14 +52,14 @@ class Floors_model extends CI_Model {
      * @param       string  $decription
      * @return      bool
      */
-    function insert_floor($name, $decription)
+    static function insert_floor($name, $decription)
     {
-        $this->db->cache_delete('admin', 'floors');
-        $this->db->cache_delete('admin', 'users');
+        self::$db->cache_delete('admin', 'floors');
+        self::$db->cache_delete('admin', 'users');
         $data = array(
             'name' => $name,
             'description' => $decription);
-        return $this->db->insert('floors', $data);
+        return self::$db->insert('floors', $data);
     }
 
     /**
@@ -63,16 +70,16 @@ class Floors_model extends CI_Model {
      * @param       string  $decription
      * @return      bool
      */
-    function update_floor($floor_id, $name, $description)
+    static function update_floor($floor_id, $name, $description)
     {
-        $this->db->cache_delete('admin', 'floors');
-        $this->db->cache_delete('admin', 'users');
+        self::$db->cache_delete('admin', 'floors');
+        self::$db->cache_delete('admin', 'users');
         $data = array(
             'name' => $name,
             'description'=> $description,
             'updated_at' => date('Y-m-d H:i:s'));
-        $this->db->where('id', $floor_id);
-        return $this->db->update('floors', $data);
+        self::$db->where('id', $floor_id);
+        return self::$db->update('floors', $data);
     }
 
     /**
@@ -81,10 +88,10 @@ class Floors_model extends CI_Model {
      * @param       int  $floor_id
      * @return      bool
      */
-    function delete_floor($floor_id)
+    static function delete_floor($floor_id)
     {
-        $have_users_in_floor = $this->db->get_where('users', array('floor_id' => $floor_id))->num_rows();
+        $have_users_in_floor = self::$db->get_where('users', array('floor_id' => $floor_id))->num_rows();
         if ($have_users_in_floor > 0) return FALSE;
-        else return $this->db->delete('floors', array('id' => $floor_id));
+        else return self::$db->delete('floors', array('id' => $floor_id));
     }
 }

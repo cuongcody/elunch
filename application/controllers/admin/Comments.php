@@ -23,7 +23,7 @@ class Comments extends CI_Controller {
         $data = $this->common->set_language_and_data('comments', $message);
         $this->load->library('pagination');
         $config['base_url'] = base_url('admin/comments');
-        $config['total_rows'] = $this->comments_model->number_of_comments();
+        $config['total_rows'] = Comments_model::number_of_comments();
         $config['per_page'] = 5;
         $config['use_page_numbers'] = TRUE;
         $config['uri_segment'] = 3;
@@ -47,7 +47,7 @@ class Comments extends CI_Controller {
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
         $data['page'] = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-        $comments = $this->comments_model->get_comments($config['per_page'],  ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page']);
+        $comments = Comments_model::get_comments($config['per_page'],  ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page']);
         $data['comments'] = $comments;
         $this->common->load_view('admin/comments/comments', $data);
     }
@@ -55,7 +55,7 @@ class Comments extends CI_Controller {
     public function get_detail_comment($comment_id)
     {
         $this->common->authenticate();
-        $result = $this->comments_model->get_replies_comment_by_id($comment_id);
+        $result = Comments_model::get_replies_comment_by_id($comment_id);
         $data = array();
         $replies = array();
         foreach ($result as $item)
@@ -76,7 +76,7 @@ class Comments extends CI_Controller {
     public function get_lastest_comments()
     {
         $this->common->authenticate();
-        $result = $this->comments_model->get_comments(10, 0);
+        $result = Comments_model::get_comments(10, 0);
         $data['comments'] = $result;
         echo json_encode($data);
     }
@@ -109,10 +109,10 @@ class Comments extends CI_Controller {
                     $data['content'] = $content;
                     $data['created_at'] = date('Y-m-d H:i:s');
                     $data['avatar_content_file'] = $this->session->userdata('logged_in')['avatar_content_file'];
-                    $user = $this->comments_model->get_user_in_comment($comment_id);
+                    $user = Comments_model::get_user_in_comment($comment_id);
                     if ($user != NULL)
                     {
-                        $comment = $this->comments_model->get_comment_by_id($user->id, $comment_id);
+                        $comment = Comments_model::get_comment_by_id($user->id, $comment_id);
                         $send_notification = array();
                         $send_notification['data'] = array(
                             'type' => 'reply_comment',
@@ -158,7 +158,7 @@ class Comments extends CI_Controller {
     {
         $this->common->authenticate();
         $message = $this->common->get_message('delete_comment', array('delete_success', 'delete_failure'));
-        if ($this->comments_model->delete_comment($comment_id))
+        if (Comments_model::delete_comment($comment_id))
         {
             $data = array(
                 'status' => 'success',

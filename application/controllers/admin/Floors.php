@@ -66,7 +66,7 @@ class Floors extends CI_Controller {
     {
         $this->common->authenticate();
         $message = $this->common->get_message('delete_floor', array('delete_success', 'delete_failure'));
-        if ($this->floors_model->delete_floor($floor_id))
+        if (Floors_model::delete_floor($floor_id))
         {
             $data = array(
                 'status' => 'success',
@@ -85,8 +85,7 @@ class Floors extends CI_Controller {
     {
         $message = array('title', 'description', 'floor', 'create_floor', 'edit', 'delete', 'are_you_sure', 'yes', 'cancel');
         $data = $this->common->set_language_and_data('floors', $message);
-        $floors = $this->floors_model->get_all_floors();
-        $data['floors'] = $floors;
+        $data['floors'] = Floors_model::get_all_floors();
         $this->common->load_view('admin/floors/floors', $data);
     }
 
@@ -111,7 +110,7 @@ class Floors extends CI_Controller {
     {
         $message = array('title', 'description', 'manage_floors', 'floor', 'edit');
         $data = $this->common->set_language_and_data('edit_floor', $message);
-        $data['floor'] = $this->floors_model->get_floor_by_id($floor_id);
+        $data['floor'] = Floors_model::get_floor_by_id($floor_id);
         $this->common->load_view('admin/floors/edit_floor', $data);
     }
 
@@ -119,14 +118,14 @@ class Floors extends CI_Controller {
     {
         $floor = $this->input->post('floor');
         $description = $this->input->post('description');
-        return $this->floors_model->insert_floor($floor, $description);
+        return Floors_model::insert_floor($floor, $description);
     }
 
     public function edit_floor($floor_id)
     {
         $description = $this->input->post('description');
         $floor = $this->input->post('floor');
-        return $this->floors_model->update_floor($floor_id, $floor, $description);
+        return Floors_model::update_floor($floor_id, $floor, $description);
     }
 
 }

@@ -1,5 +1,5 @@
 <?php
-require(APPPATH.'controllers/Base_api.php');
+require_once(APPPATH.'controllers/Base_api.php');
 
 class Users_api extends Base_api {
 
@@ -23,7 +23,7 @@ class Users_api extends Base_api {
         $messages_lang = $this->common->set_language_for_server_api('users_api',
             array('get_user_profile_success', 'get_user_profile_failure'));
         $response = array();
-        $result = $this->users_model->get_user_by('id', $user_id);
+        $result = Users_model::get_user_by('id', $user_id);
         if ($result != NULL)
         {
             $user['id'] = (int)$result->id;
@@ -98,7 +98,7 @@ class Users_api extends Base_api {
         $messages_lang = $this->common->set_language_for_server_api('users_api',
             array('edit_user_profile_success', 'edit_user_profile_failure'));
         $gcm_regid = (!is_null($this->put('gcm_regid'))) ? $this->put('gcm_regid') : '';
-        $result = $this->users_model->update_gcm_regid($user_id, $gcm_regid);
+        $result = Users_model::update_gcm_regid($user_id, $gcm_regid);
         if ($result == TRUE)
         {
             $response['status'] = $messages_lang['success'];
@@ -213,7 +213,7 @@ class Users_api extends Base_api {
             $res = $this->users_model->change_password($user_id, $current_password, $new_password);
             if ($res == TRUE)
             {
-                $result = $this->users_model->get_user_by('id', $user_id);
+                $result = Users_model::get_user_by('id', $user_id);
                 $issue_at = time();
                 $user['authentication_token'] = $this->jwt->encode(array(
                                     'iat' => $issue_at,
@@ -249,7 +249,7 @@ class Users_api extends Base_api {
         $messages_lang = $this->common->set_language_for_server_api('users_api',
             array('variables_not_valid', 'reset_password_success', 'reset_password_failure'));
         $email = $this->post('email');
-        if ($this->users_model->is_user_exists($email))
+        if (Users_model::is_user_exists($email))
         {
             $this->users_model->forgot_password($email);
             list($result, $token) = $this->users_model->forgot_password($email);

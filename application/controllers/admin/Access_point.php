@@ -105,7 +105,7 @@ class Access_point extends CI_Controller {
     {
         $message = array('title', 'bssid', 'ssid', 'create_access_point', 'push_notification', 'edit', 'delete', 'selected', 'are_you_sure', 'yes', 'cancel');
         $data = $this->common->set_language_and_data('access_point', $message);
-        $access_point = $this->access_point_model->get_all_access_point();
+        $access_point = Access_point_model::get_all_access_point();
         $data['access_point'] = $access_point;
         $this->common->load_view('admin/access_point/access_point', $data);
     }
@@ -131,7 +131,7 @@ class Access_point extends CI_Controller {
     {
         $message = array('title', 'bssid', 'ssid', 'selected', 'manage_access_point', 'edit');
         $data = $this->common->set_language_and_data('edit_access_point', $message);
-        $data['access_point_item'] = $this->access_point_model->get_access_point_by_id($access_point_id);
+        $data['access_point_item'] = Access_point_model::get_access_point_by_id($access_point_id);
         $this->common->load_view('admin/access_point/edit_access_point', $data);
     }
 

@@ -3,16 +3,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Access_point_model extends CI_Model {
 
+    private static $db;
+
+    function __construct() {
+        parent::__construct();
+        self::$db = &get_instance()->db;
+    }
+
     /**
      * Get all access point
      *
      * @param       int  $selected
      * @return      array
      */
-    function get_all_access_point($selected = NULL)
+    static function get_all_access_point($selected = NULL)
     {
         $data = (!is_null($selected)) ? array('selected' => $selected) : array();
-        $query = $this->db->get_where('access_point', $data);
+        $query = self::$db->get_where('access_point', $data);
         return (array)$query->result();
     }
 
@@ -21,9 +28,9 @@ class Access_point_model extends CI_Model {
      *
      * @return      int
      */
-    function get_num_of_access_point()
+    static function get_num_of_access_point()
     {
-        $query = $this->db->get('access_point');
+        $query = self::$db->get('access_point');
         return $query->num_rows();
     }
 
@@ -33,9 +40,9 @@ class Access_point_model extends CI_Model {
      * @param       int  $access_point_id
      * @return      Object
      */
-    function get_access_point_by_id($access_point_id)
+    static function get_access_point_by_id($access_point_id)
     {
-        $query = $this->db->get_where('access_point', array('id' => $access_point_id));
+        $query = self::$db->get_where('access_point', array('id' => $access_point_id));
         return $query->first_row();
     }
 
@@ -121,7 +128,7 @@ class Access_point_model extends CI_Model {
         if ($access_point != NULL)
         {
             $this->load->model('users_model');
-            $users = $this->users_model->get_all_users();
+            $users = Users_model::get_all_users();
             $registation_ids = array();
             if ($users != NULL)
             {

@@ -123,7 +123,7 @@ class Users extends CI_Controller {
     {
         $this->common->authenticate();
         $message = $this->common->get_message('delete_user', array('delete_success', 'delete_failure'));
-        if ($this->users_model->delete_user($user_id))
+        if (Users_model::delete_user($user_id))
         {
             $avatar_file_name = $this->input->post('avatar_file_name');
             $this->common->image_delete(SAVE_IMAGE_OF_USERS.'/'.$avatar_file_name);
@@ -172,15 +172,15 @@ class Users extends CI_Controller {
          'admin', 'user', 'role', 'image_upload', 'avatar', 'exist_email');
         $data = $this->common->set_language_and_data('new_user', $message);
         $this->load->model('floors_model');
-        $data['floors'] = $this->floors_model->get_all_floors();
+        $data['floors'] = Floors_model::get_all_floors();
         $this->load->model('shifts_model');
-        $data['shifts'] = $this->shifts_model->get_all_shifts();
+        $data['shifts'] = Shifts_model::get_all_shifts();
         $this->common->load_view('admin/users/new_user', $data);
     }
 
     public function load_edit_user_view($user_id)
     {
-        $user = $this->users_model->get_user_by('id', $user_id);
+        $user = Users_model::get_user_by('id', $user_id);
         $image_data['file_name'] = $user->avatar_file_name;
         $this->session->set_userdata('upload', $image_data);
         $message = array('title', 'manage_users', 'email', 'password', 'confirm_password',
@@ -188,10 +188,9 @@ class Users extends CI_Controller {
          'admin', 'user', 'role', 'image_upload', 'avatar', 'change_password', 'change_shift', 'yes', 'cancel');
         $data = $this->common->set_language_and_data('edit_user', $message);
         $this->load->model('floors_model');
-        $floors = $this->floors_model->get_all_floors();
-        $data['floors'] = $floors;
+        $data['floors'] = Floors_model::get_all_floors();
         $this->load->model('shifts_model');
-        $data['shifts'] = $this->shifts_model->get_all_shifts();
+        $data['shifts'] = Shifts_model::get_all_shifts();
         $data['user'] = $user;
         $this->common->load_view('admin/users/edit_user', $data);
     }
@@ -202,7 +201,7 @@ class Users extends CI_Controller {
         $data = $this->common->set_language_and_data('users', $message);
         $this->load->library('pagination');
         $config['base_url'] = ($search == NULL) ? base_url().'/admin/users' : base_url().'/admin/users/search';
-        $config['total_rows'] = $this->users_model->get_num_of_users($search);
+        $config['total_rows'] = Users_model::get_num_of_users($search);
         $config['per_page'] = 10;
         $config['use_page_numbers'] = TRUE;
         $config['uri_segment'] = ($search == NULL) ? 3 : 4;
@@ -226,7 +225,7 @@ class Users extends CI_Controller {
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
         $data['page'] = ($search == NULL) ? (($this->uri->segment(3)) ? $this->uri->segment(3) : 0) : (($this->uri->segment(4)) ? $this->uri->segment(4) : 0);
-        $users = $this->users_model->get_all_users($config['per_page'], ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page'], $search);
+        $users = Users_model::get_all_users($config['per_page'], ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page'], $search);
         $data['users'] = $users;
         $this->common->load_view('admin/users/users', $data);
     }
@@ -277,7 +276,7 @@ class Users extends CI_Controller {
 
     public function exist_email($email)
     {
-        if ($this->users_model->is_user_exists($email))
+        if (Users_model::is_user_exists($email))
         {
             $this->lang->load('web_portal/new_user', $this->session->userdata('site_lang'));
             $this->form_validation->set_message('exist_email', $this->lang->line('exist_email'));

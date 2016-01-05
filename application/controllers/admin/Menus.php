@@ -92,11 +92,11 @@ class Menus extends CI_Controller {
         echo json_encode($data);
     }
 
-    public function list_dishes_from_menu($menu_id)
+    public function list_dishes_from_menu($menu_id = NULL)
     {
         $this->common->authenticate();
         $this->load->model('dishes_model');
-        echo json_encode($this->dishes_model->get_dishes_from_menu($menu_id));
+        echo json_encode(Dishes_model::get_dishes_from_menu($menu_id));
     }
 
     public function load_new_menu_view()
@@ -104,8 +104,7 @@ class Menus extends CI_Controller {
         $message = array('title', 'description', 'name', 'dishes', 'dishes_of_menu', 'filtered_by','save');
         $data = $this->common->set_language_and_data('new_menu', $message);
         $this->load->model('categories_model');
-        $categories = $this->categories_model->get_all_categories();
-        $data['categories'] = $categories;
+        $data['categories'] = Categories_model::get_all_categories();
         $this->common->load_view('admin/menus/new_menu', $data);
     }
 
@@ -113,14 +112,12 @@ class Menus extends CI_Controller {
     {
         $message = array('title', 'description', 'name', 'manage_menus','dishes', 'dishes_of_menu', 'filtered_by','edit');
         $data = $this->common->set_language_and_data('edit_menu', $message);
-        $this->load->model('categories_model');
-        $menu = $this->menus_model->get_menu_by_id($menu_id);
+        $menu = Menus_model::get_menu_by_id($menu_id);
         $data['menu'] = $menu;
-        $categories = $this->categories_model->get_all_categories();
-        $data['categories'] = $categories;
+        $this->load->model('categories_model');
+        $data['categories'] = Categories_model::get_all_categories();
         $this->load->model('dishes_model');
-        $dishes_of_menu = $this->dishes_model->get_dishes_from_menu($menu_id);
-        $data['dishes_of_menu'] = $dishes_of_menu;
+        $data['dishes_of_menu'] = Dishes_model::get_dishes_from_menu($menu_id);
         $this->common->load_view('admin/menus/edit_menu', $data);
     }
 
@@ -130,7 +127,7 @@ class Menus extends CI_Controller {
         $data = $this->common->set_language_and_data('menus', $message);
         $this->load->library('pagination');
         $config['base_url'] = ($search == NULL) ? base_url().'/admin/menus' : base_url().'/admin/menus/search';
-        $config['total_rows'] = $this->menus_model->get_num_of_menus($search);
+        $config['total_rows'] = Menus_model::get_num_of_menus($search);
         $config['per_page'] = 10;
         $config['use_page_numbers'] = TRUE;
         $config['uri_segment'] = $config['uri_segment'] = ($search == NULL) ? 3 : 4;
@@ -155,7 +152,7 @@ class Menus extends CI_Controller {
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
         $data['page'] = ($search == NULL) ? (($this->uri->segment(3)) ? $this->uri->segment(3) : 0) : (($this->uri->segment(4)) ? $this->uri->segment(4) : 0);
-        $menus = $this->menus_model->get_all_menus($config['per_page'],  ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page'], $search);
+        $menus = Menus_model::get_all_menus($config['per_page'],  ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page'], $search);
         $data['menus'] = $menus;
         $this->common->load_view('admin/menus/menus', $data);
     }
@@ -187,7 +184,7 @@ class Menus extends CI_Controller {
             'name' => $this->input->post('menu'),
             'description' => $this->input->post('description'));
         $dishes_of_menu = array();
-        $dishes_of_menu = $this->input ->post('dishes_of_menu[]');
+        $dishes_of_menu = $this->input->post('dishes_of_menu[]');
         return $this->menus_model->update_menu($menu_id, $menu, $dishes_of_menu);
     }
 
@@ -195,7 +192,7 @@ class Menus extends CI_Controller {
     {
         $this->common->authenticate();
         $this->load->model('dishes_model');
-        echo json_encode($this->dishes_model->get_dishes_by_category($category_id));
+        echo json_encode(Dishes_model::get_dishes_by_category($category_id));
     }
 
 }

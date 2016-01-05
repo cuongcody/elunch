@@ -67,7 +67,7 @@ class Shifts extends CI_Controller {
     {
         $this->common->authenticate();
         $message = $this->common->get_message('delete_shift', array('delete_success', 'delete_failure'));
-        if ($this->shifts_model->delete_shift($shift_id))
+        if (Shifts_model::delete_shift($shift_id))
         {
             $data = array(
                 'status' => 'success',
@@ -86,7 +86,7 @@ class Shifts extends CI_Controller {
     {
         $message = array('title', 'description', 'shift', 'create_shift', 'start_time', 'end_time', 'edit', 'delete', 'are_you_sure', 'yes', 'cancel');
         $data = $this->common->set_language_and_data('shifts', $message);
-        $shifts = $this->shifts_model->get_all_shifts();
+        $shifts = Shifts_model::get_all_shifts();
         $data['shifts'] = $shifts;
         $this->common->load_view('admin/shifts/shifts', $data);
     }
@@ -128,7 +128,7 @@ class Shifts extends CI_Controller {
     {
         $message = array('title', 'description', 'manage_shifts', 'start_time', 'end_time', 'shift', 'edit');
         $data = $this->common->set_language_and_data('edit_shift', $message);
-        $data['shift'] = $this->shifts_model->get_shift_by_id($shift_id);
+        $data['shift'] = Shifts_model::get_shift_by_id($shift_id);
         $this->common->load_view('admin/shifts/edit_shift', $data);
     }
 
@@ -143,8 +143,8 @@ class Shifts extends CI_Controller {
             'description' => $description,
             'start_time' => $start_time,
             'end_time' => $end_time);
-        if ($request == 'add') return $this->shifts_model->insert_shift($data);
-        else return $this->shifts_model->update_shift($shift_id, $data);
+        if ($request == 'add') return Shifts_model::insert_shift($data);
+        else return Shifts_model::update_shift($shift_id, $data);
     }
 
 }

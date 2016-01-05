@@ -26,7 +26,7 @@ class Meals extends CI_Controller {
             }
             else $this->load_meals_view($from, $to);
         }
-        $this->load_meals_view();
+        else $this->load_meals_view();
     }
 
     public function add()
@@ -57,7 +57,7 @@ class Meals extends CI_Controller {
         $this->common->authenticate();
         $data = array();
         $meal_log = array();
-        $meal_log = $this->meals_model->get_meal_log($meal_date);
+        $meal_log = Meals_model::get_meal_log($meal_date);
         if ($meal_log != NULL)
         {
             if ($meal_log->tracking_log != NULL)
@@ -91,7 +91,6 @@ class Meals extends CI_Controller {
                 }
                 $data['meal_date'] = $meal_date;
                 $data['title'] = 'Daily Lunch Service Report';
-                $this->load->model('tracking_users_model');
                 $view = $this->load->view('admin/meals/meal_report', $data, TRUE);
                 $this->pdf_report($view, $meal_date);
             }
@@ -136,7 +135,7 @@ class Meals extends CI_Controller {
             'lunch_date', 'dishes_of_menu', 'preordered_meal', 'menu', 'image', 'lunch_date', 'save');
         $data = $this->common->set_language_and_data('new_meal', $message);
         $this->load->model('menus_model');
-        $menus = $this->menus_model->get_all_menus();
+        $menus = Menus_model::get_all_menus();
         $data['menus'] = $menus;
         $this->common->load_view('admin/meals/new_meal', $data);
     }
@@ -147,9 +146,9 @@ class Meals extends CI_Controller {
             'lunch_date', 'dishes_of_menu', 'preordered_meal', 'manage_meals', 'menu', 'image', 'edit');
         $data = $this->common->set_language_and_data('edit_meal', $message);
         $this->load->model('menus_model');
-        $menus = $this->menus_model->get_all_menus();
+        $menus = Menus_model::get_all_menus();
         $data['menus'] = $menus;
-        $data['meal'] = $this->meals_model->get_meal_by_id($meal_id);
+        $data['meal'] = Meals_model::get_meal_by_id($meal_id);
         $this->common->load_view('admin/meals/edit_meal', $data);
     }
 
@@ -161,7 +160,7 @@ class Meals extends CI_Controller {
         $data = $this->common->set_language_and_data('meals', $message);
         $this->load->library('pagination');
         $config['base_url'] = base_url('admin/meals');
-        $config['total_rows'] = $this->meals_model->get_num_of_meals($from, $to);
+        $config['total_rows'] = Meals_model::get_num_of_meals($from, $to);
         $config['per_page'] = 10;
         $config['use_page_numbers'] = TRUE;
         $config['uri_segment'] = 3;
@@ -186,7 +185,7 @@ class Meals extends CI_Controller {
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
         $data['page'] = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-        $meals = $this->meals_model->get_meals($config['per_page'],  ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page'], $from, $to);
+        $meals = Meals_model::get_meals($config['per_page'],  ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page'], $from, $to);
         $data['meals'] = $meals;
         $this->common->load_view('admin/meals/meals', $data);
     }
@@ -195,7 +194,7 @@ class Meals extends CI_Controller {
     {
         $this->common->authenticate();
         $this->load->model('menus_model');
-        echo json_encode($this->menus_model->get_dishes_by_menu($menu_id));
+        echo json_encode(Menus_model::get_dishes_by_menu($menu_id));
     }
 
     public function validation($view)
@@ -228,7 +227,7 @@ class Meals extends CI_Controller {
         $lunch_date = $this->input->post('lunch_date');
         $menu_id = $this->input->post('menu');
         $preordered_meal = $this->input->post('preordered_meal');
-        return $this->meals_model->insert_meal($lunch_date, $menu_id, $preordered_meal, $for_vegans);
+        return Meals_model::insert_meal($lunch_date, $menu_id, $preordered_meal, $for_vegans);
     }
 
     public function edit_meal($meal_id)
@@ -236,7 +235,7 @@ class Meals extends CI_Controller {
         $for_vegans = (!empty($this->input->post('for_vegans'))) ? 1 : 0;
         $menu_id = $this->input->post('menu');
         $preordered_meal = $this->input->post('preordered_meal');
-        return $this->meals_model->update_meal($meal_id, $menu_id, $preordered_meal, $for_vegans);
+        return Meals_model::update_meal($meal_id, $menu_id, $preordered_meal, $for_vegans);
     }
 
     public function check_date_format($date) {
@@ -253,7 +252,7 @@ class Meals extends CI_Controller {
     {
         $this->common->authenticate();
         $message = $this->common->get_message('delete_menu', array('delete_success', 'delete_failure'));
-        if ($this->meals_model->delete_meal($meal_id))
+        if (Meals_model::delete_meal($meal_id))
         {
             $data = array(
                 'status' => 'success',
@@ -272,7 +271,7 @@ class Meals extends CI_Controller {
     {
         $this->common->authenticate();
         $message = $this->common->get_message('gen_log_file_meal', array('gen_log_file_success', 'gen_log_file_failure'));
-        if ($this->meals_model->gen_log_file_meal($meal_date))
+        if (Meals_model::gen_log_file_meal($meal_date))
         {
             $data = array(
                 'status' => 'success',

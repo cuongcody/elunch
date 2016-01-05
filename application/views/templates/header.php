@@ -7,6 +7,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Cache-control" content="public">
     <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url('assets/images/logo_webportal.png'); ?>" />
     <title><?php echo $title; ?></title>
 
@@ -18,6 +19,7 @@
     <link href="<?php echo base_url('assets/fonts/css/font-awesome.min.css'); ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/animate.min.css'); ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/toastr.min.css'); ?>" rel="stylesheet"/>
+    <link href="<?php echo base_url('assets/css/jquery.webui-popover.min.css'); ?>" rel="stylesheet"/>
     <!-- Custom styling plus plugins -->
     <link href="<?php echo base_url('assets/css/style.css'); ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/custom.css'); ?>" rel="stylesheet">
@@ -34,6 +36,7 @@
     <script src="<?php echo base_url('assets/js/js.js'); ?>"></script>
     <script src="<?php echo base_url('assets/js/jquery.newsTicker.js'); ?>"></script>
     <script src="<?php echo base_url('assets/js/jquery.modernizr.js'); ?>"></script>
+    <script src="<?php echo base_url('assets/js/jquery.webui-popover.min.js'); ?>"></script>
     <?php
         $this->load->library('common');
         if ($this->common->is_url_exist((base_url('assets/js').'/'.($this->router->fetch_class()).'.js')))

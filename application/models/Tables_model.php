@@ -2,24 +2,31 @@
 
 class Tables_model extends CI_Model{
 
+    private static $db;
+
+    function __construct() {
+        parent::__construct();
+        self::$db = &get_instance()->db;
+    }
+
     /**
      * Get all tables. all normal tables, all vegan tables
      *
      * @param       int  $for_vegans
      * @return      array
      */
-    function get_all_tables($for_vegans = NULL)
+    static function get_all_tables($for_vegans = NULL)
     {
-        $this->db->select('tables.id, tables.name, tables.description, tables.for_vegans, tables.seats,
+        self::$db->select('tables.id, tables.name, tables.description, tables.for_vegans, tables.seats,
             shifts.name AS shift , shifts.start_time, shifts.end_time');
-        $this->db->from('tables');
-        $this->db->join('shifts', 'tables.shift_id = shifts.id');
+        self::$db->from('tables');
+        self::$db->join('shifts', 'tables.shift_id = shifts.id');
         if (!is_null($for_vegans))
         {
             $for_vegans = ($for_vegans == 'true') ? 1 : 0;
-            $this->db->where('for_vegans', $for_vegans);
+            self::$db->where('for_vegans', $for_vegans);
         }
-        return $this->db->get()->result();
+        return self::$db->get()->result();
     }
 
     /**
@@ -29,16 +36,16 @@ class Tables_model extends CI_Model{
      * @param       int  $offset
      * @return      array
      */
-    function get_tables($perpage, $offset, $search = NULL)
+    static function get_tables($perpage, $offset, $search = NULL)
     {
-        $this->db->cache_on();
-        $this->db->select('tables.id, tables.name, tables.description, tables.for_vegans, tables.seats,
+        self::$db->cache_on();
+        self::$db->select('tables.id, tables.name, tables.description, tables.for_vegans, tables.seats,
             shifts.name AS shift , shifts.start_time, shifts.end_time');
-        $this->db->from('tables');
-        $this->db->join('shifts', 'tables.shift_id = shifts.id', 'left');
-        $this->db->like('tables.name', $search);
-        $this->db->limit($perpage, $offset)->order_by('tables.shift_id', 'ASC')->order_by('tables.name', 'ASC');
-        return $this->db->get()->result();
+        self::$db->from('tables');
+        self::$db->join('shifts', 'tables.shift_id = shifts.id', 'left');
+        self::$db->like('tables.name', $search);
+        self::$db->limit($perpage, $offset)->order_by('tables.shift_id', 'ASC')->order_by('tables.name', 'ASC');
+        return self::$db->get()->result();
     }
 
     /**
@@ -47,14 +54,14 @@ class Tables_model extends CI_Model{
      * @param       int  $table_id
      * @return      object
      */
-    function get_table_by($table_id)
+    static function get_table_by($table_id)
     {
-        $this->db->select('tables.id, tables.name, tables.description, tables.for_vegans, tables.seats,
+        self::$db->select('tables.id, tables.name, tables.description, tables.for_vegans, tables.seats,
             shifts.name AS shift , shifts.id AS shift_id, shifts.start_time, shifts.end_time');
-        $this->db->from('tables');
-        $this->db->join('shifts', 'tables.shift_id = shifts.id');
-        $this->db->where('tables.id', $table_id);
-        return $this->db->get()->first_row();
+        self::$db->from('tables');
+        self::$db->join('shifts', 'tables.shift_id = shifts.id');
+        self::$db->where('tables.id', $table_id);
+        return self::$db->get()->first_row();
     }
 
     /**
@@ -62,9 +69,9 @@ class Tables_model extends CI_Model{
      *
      * @return      int
      */
-    function get_num_of_tables($search)
+    static function get_num_of_tables($search)
     {
-        return $this->db->like('tables.name', $search)->get('tables')->num_rows();
+        return self::$db->like('tables.name', $search)->get('tables')->num_rows();
     }
 
     /**
@@ -97,11 +104,11 @@ class Tables_model extends CI_Model{
      * @param       array  $data
      * @return      bool
      */
-    function insert_table($data)
+    static function insert_table($data)
     {
-        $this->db->cache_delete('admin', 'tables');
-        $this->db->cache_delete('admin', 'home');
-        return $this->db->insert('tables', $data);
+        self::$db->cache_delete('admin', 'tables');
+        self::$db->cache_delete('admin', 'home');
+        return self::$db->insert('tables', $data);
     }
 
     /**
@@ -133,9 +140,8 @@ class Tables_model extends CI_Model{
      * @param       int  $day( NORMAL DAY OR VEGAN DAY)
      * @return      array
      */
-    function get_tables_by_shift($shift_id, $for_vegans = NULL, $day = NULL)
+    static function get_tables_by_shift($shift_id, $for_vegans = NULL, $day = NULL)
     {
-        $this->db->cache_on();
         $query = '
             SELECT tables.id, tables.name, tables.description, tables.for_vegans, tables.seats,
             SUM(users.id AND tables_users.vegan_day = ?) AS occupied_seats,
@@ -148,12 +154,12 @@ class Tables_model extends CI_Model{
         if (!is_null($for_vegans))
         {
             $query.='AND tables.for_vegans = ? GROUP BY tables.id';
-            $result = $this->db->query($query, array($day, $shift_id, $for_vegans));
+            $result = self::$db->query($query, array($day, $shift_id, $for_vegans));
         }
         else
         {
             $query.='GROUP BY tables.id';
-            $result = $this->db->query($query, array($day, $shift_id));
+            $result = self::$db->query($query, array($day, $shift_id));
         }
         return $result->result();
     }
@@ -165,12 +171,11 @@ class Tables_model extends CI_Model{
      * @param       int  $day( NORMAL DAY OR VEGAN DAY)
      * @return      int
      */
-    function check_status_of_user_in_table($user_id, $day = NULL)
+    static function check_status_of_user_in_table($user_id, $day = NULL)
     {
 
         $data = array('user_id' => $user_id, 'vegan_day' => $day);
-        $query = $this->db->get_where('tables_users', $data);
-        $this->load->model('users_model');
+        $query = self::$db->get_where('tables_users', $data);
         $num_rows = $query->num_rows();
         if ($num_rows == 0)
         {
@@ -196,7 +201,7 @@ class Tables_model extends CI_Model{
         {
             $this->load->model('users_model');
             $is_vegan_table = $this->is_vegan_table($table_id);
-            $is_user_want_vegan_meal = $this->users_model->is_user_want_vegan_meal($user_id);
+            $is_user_want_vegan_meal = Users_model::is_user_want_vegan_meal($user_id);
             $res = ($is_vegan_table) ? $this->check_status_of_user_in_table($user_id, VEGAN_DAY) : $this->check_status_of_user_in_table($user_id, NORMAL_DAY);
             if ($res == NO_SEAT_IN_TABLE)
             {
@@ -234,7 +239,7 @@ class Tables_model extends CI_Model{
         {
             $this->load->model('users_model');
             $is_vegan_table = $this->is_vegan_table($table_id);
-            $is_user_want_vegan_meal = $this->users_model->is_user_want_vegan_meal($user_id);
+            $is_user_want_vegan_meal = Users_model::is_user_want_vegan_meal($user_id);
             $res = $this->check_status_of_user_in_table($user_id, $day);
             if ($res == NO_SEAT_IN_TABLE)
             {
@@ -267,6 +272,8 @@ class Tables_model extends CI_Model{
      */
     function insert_user_in_table($user_id, $table_id, $day)
     {
+        $this->db->cache_delete('admin', 'tables');
+        $this->db->cache_delete('admin', 'home');
         $data1 = array(
                     'table_id' => $table_id,
                     'user_id' => $user_id,
@@ -325,7 +332,7 @@ class Tables_model extends CI_Model{
         {
             $this->load->model('users_model');
             $is_vegan_table = $this->is_vegan_table($table_id);
-            $is_user_want_vegan_meal = $this->users_model->is_user_want_vegan_meal($user_id);
+            $is_user_want_vegan_meal = Users_model::is_user_want_vegan_meal($user_id);
             $res = ($is_vegan_table) ? $this->check_status_of_user_in_table($user_id, VEGAN_DAY) : $this->check_status_of_user_in_table($user_id, NORMAL_DAY);
             if ($is_user_want_vegan_meal && $is_vegan_table)
             {
@@ -389,6 +396,8 @@ class Tables_model extends CI_Model{
      */
     function delete_user_in_table($user_id, $table_id, $day = NULL)
     {
+        $this->db->cache_delete('admin', 'tables');
+        $this->db->cache_delete('admin', 'home');
         if (is_null($day))
         {
             $data = array(
@@ -419,20 +428,20 @@ class Tables_model extends CI_Model{
      * @param       int  $day( NORMAL DAY OR VEGAN DAY)
      * @return      array
      */
-    function get_users_in_table($table_id, $day = NULL)
+    static function get_users_in_table($table_id, $day = NULL)
     {
-        $this->db->select('users.*, floors.id AS floor_id, floors.name AS floor');
-        $this->db->from('tables_users');
-        $this->db->join('users', 'tables_users.user_id = users.id');
-        $this->db->join('floors', 'users.floor_id = floors.id', 'left');
-        $this->db->where('table_id', $table_id);
+        self::$db->select('users.*, floors.id AS floor_id, floors.name AS floor');
+        self::$db->from('tables_users');
+        self::$db->join('users', 'tables_users.user_id = users.id');
+        self::$db->join('floors', 'users.floor_id = floors.id', 'left');
+        self::$db->where('table_id', $table_id);
         if (!is_null($day) && $day == VEGAN_DAY)
         {
-            $this->db->where('vegan_day', VEGAN_DAY);
+            self::$db->where('vegan_day', VEGAN_DAY);
         }
-        elseif(!is_null($day) && $day == NORMAL_DAY) $this->db->where('vegan_day', NORMAL_DAY);
-        $this->db->order_by('users.first_name', 'ASC');
-        $query = $this->db->get();
+        elseif(!is_null($day) && $day == NORMAL_DAY) self::$db->where('vegan_day', NORMAL_DAY);
+        self::$db->order_by('users.first_name', 'ASC');
+        $query = self::$db->get();
         return $query->result();
     }
 
@@ -539,17 +548,17 @@ class Tables_model extends CI_Model{
      * @param       int  $user_id
      * @return      array
      */
-    function get_shift_and_tables_of_user($user_id)
+    static function get_shift_and_tables_of_user($user_id)
     {
-        $this->db->select('tables.id AS table_id, tables.name AS table_name, tables.for_vegans,
+        self::$db->select('tables.id AS table_id, tables.name AS table_name, tables.for_vegans,
             shifts.id AS shift_id, shifts.name AS shift_name, shifts.start_time, shifts.end_time');
-        $this->db->from('tables_users');
-        $this->db->join('tables', 'tables_users.table_id = tables.id');
-        $this->db->join('shifts', 'tables.shift_id = shifts.id');
-        $this->db->join('users', 'users.id = tables_users.user_id');
-        $this->db->where('users.id', $user_id);
-        $this->db->group_by('tables.id');
-        $query = $this->db->get();
+        self::$db->from('tables_users');
+        self::$db->join('tables', 'tables_users.table_id = tables.id');
+        self::$db->join('shifts', 'tables.shift_id = shifts.id');
+        self::$db->join('users', 'users.id = tables_users.user_id');
+        self::$db->where('users.id', $user_id);
+        self::$db->group_by('tables.id');
+        $query = self::$db->get();
         return $query->result();
     }
 

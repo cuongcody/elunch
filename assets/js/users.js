@@ -18,7 +18,7 @@ $(function() {
             data: {avatar_file_name: avatar_file_name},
             dataType: 'json',
             success: function(res) {
-                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                $(".se-pre-con").fadeOut('slow', function() {
                     if (res.status == 'success')
                     {
                         $('#user_' + user_id).hide('slow', function() {
@@ -34,7 +34,8 @@ $(function() {
     });
 
     $('#change_password').click(function() {
-        $(".se-pre-con").fadeIn('slow');
+        $(".loadingx").fadeIn('slow');
+        $(document).find('button').prop('disabled', true);
         base_url = $('#change_password').data("path");
         var password = $("input[name=password]").val();
         var confirm_password = $("input[name=confirm_password]").val();
@@ -44,25 +45,26 @@ $(function() {
             data: {password: password, confirm_password: confirm_password},
             dataType: 'json',
             success: function(res){
-                $(".se-pre-con").fadeOut('slow/400/fast', function() {
-                    $('.error').remove();
-                    if (res.status == 'failure')
-                    {
-                        $('div.change_password').prepend(
-                            "<div class='error alert alert-warning'>" + res.message + '</div>');
-                    }
-                    else
-                    {
-                        $('#change_password_modal').modal('toggle');
-                        toastr.success(res.message);
-                    }
-                });
+                $(document).find('button').prop('disabled', false);
+                $(".loadingx").fadeOut('slow');
+                $('.error').remove();
+                if (res.status == 'failure')
+                {
+                    $('div.change_password').prepend(
+                        "<div class='error alert alert-warning'>" + res.message + '</div>');
+                }
+                else
+                {
+                    $('#change_password_modal').modal('toggle');
+                    toastr.success(res.message);
+                }
             }
         });
     });
 
     $('#change_shift').click(function() {
-        $(".se-pre-con").fadeIn('slow');
+        $(".loadingx").fadeIn('slow');
+        $(document).find('button').prop('disabled', true);
         base_url = $('#change_shift').data("path");
         var shift = $("select[name=shift]").val();
         $.ajax({
@@ -71,19 +73,19 @@ $(function() {
             data: {shift: shift},
             dataType: 'json',
             success: function(res){
-                $(".se-pre-con").fadeOut('slow/400/fast', function() {
-                    $('.error').remove();
-                    if (res.status == 'failure')
-                    {
-                        $('div.change_shift').prepend(
-                            "<div class='error alert alert-warning'>" + res.message + '</div>');
-                    }
-                    else
-                    {
-                        $('#change_shift_modal').modal('toggle');
-                        toastr.success(res.message);
-                    }
-                });
+                $(document).find('button').prop('disabled', false);
+                $(".loadingx").fadeOut('slow');
+                $('.error').remove();
+                if (res.status == 'failure')
+                {
+                    $('div.change_shift').prepend(
+                        "<div class='error alert alert-warning'>" + res.message + '</div>');
+                }
+                else
+                {
+                    $('#change_shift_modal').modal('toggle');
+                    toastr.success(res.message);
+                }
             }
         });
     });

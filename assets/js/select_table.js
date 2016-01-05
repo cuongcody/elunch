@@ -19,7 +19,7 @@ $(function () {
             dataType: 'json',
             data: {table_id:table_id, user_id:user_id},
             success: function(res) {
-                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                $(".se-pre-con").fadeOut('slow', function() {
                     if (res.status == 'success')
                     {
                         leave_table_class ='leave_table border-danger';
@@ -51,7 +51,7 @@ $(function () {
             dataType: 'json',
             data: {table_id:table_id, user_id:user_id},
             success: function(res) {
-                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                $(".se-pre-con").fadeOut('slow', function() {
                     if (res.status == 'success')
                     {
                         i = $('#table_' + table_id).find('#user_' + user_id).data('index');

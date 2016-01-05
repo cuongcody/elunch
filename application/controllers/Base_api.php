@@ -20,7 +20,7 @@ class Base_api extends REST_Controller{
     function authenticate()
     {
         global $messages_lang;
-        $headers = apache_request_headers();
+        $headers = $this->request_headers();
         $response = array();
         if (isset($headers['Authorization']))
         {
@@ -53,7 +53,7 @@ class Base_api extends REST_Controller{
     function destroy()
     {
         global $messages_lang;
-        $headers = apache_request_headers();
+        $headers = $this->request_headers();
         $response = array();
         if (isset($headers['Authorization']))
         {
@@ -123,4 +123,28 @@ class Base_api extends REST_Controller{
             $this->response($response, 200);
         }
     }
+
+    function request_headers()
+    {
+        if(function_exists("apache_request_headers")) // If apache_request_headers() exists...
+        {
+            if($headers = apache_request_headers()) // And works...
+            {
+                return $headers; // Use it
+            }
+        }
+
+        $headers = array();
+
+        foreach(array_keys($_SERVER) as $skey)
+        {
+            if(substr($skey, 0, 5) == "HTTP_")
+            {
+                $headername = str_replace(" ", "-", ucwords(strtolower(str_replace("_", " ", substr($skey, 0, 5)))));
+                $headers[$headername] = $_SERVER[$skey];
+            }
+        }
+        return $headers;
+    }
+
 }

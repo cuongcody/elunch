@@ -88,14 +88,13 @@ class Dishes extends CI_Controller {
         $message = array('title', 'description', 'name', 'category', 'image', 'save', 'image_upload');
         $data = $this->common->set_language_and_data('new_dish', $message);
         $this->load->model('categories_model');
-        $categories = $this->categories_model->get_all_categories();
-        $data['categories'] = $categories;
+        $data['categories'] = Categories_model::get_all_categories();
         $this->common->load_view('admin/dishes/new_dish', $data);
     }
 
     public function load_favourite_dishes_view()
     {
-        $message = array('title', 'description', 'name', 'lunch_date', 'image', 'votes');
+        $message = array('title', 'description', 'name', 'users_voted', 'avatar', 'first_name', 'lunch_date', 'image', 'votes');
         $data = $this->common->set_language_and_data('favourite_dishes', $message);
         $this->load->model('votes_model');
         $data['dishes'] = $this->votes_model->get_all_dishes_with_votes_number_in_a_week();
@@ -117,14 +116,13 @@ class Dishes extends CI_Controller {
 
     public function load_edit_dish_view($dish_id)
     {
-        $dish = $this->dishes_model->get_dish_by_id($dish_id);
+        $dish = Dishes_model::get_dish_by_id($dish_id);
         $image_data['file_name'] =$dish->image_file_name;
         $this->session->set_userdata('upload', $image_data);
         $message = array('title', 'description', 'name', 'manage_dishes','category', 'image', 'edit', 'image_upload');
         $data = $this->common->set_language_and_data('edit_dish', $message);
         $this->load->model('categories_model');
-        $categories = $this->categories_model->get_all_categories();
-        $data['categories'] = $categories;
+        $data['categories'] = Categories_model::get_all_categories();
         $data['dish'] = (array)$dish;
         $this->common->load_view('admin/dishes/edit_dish', $data);
     }
@@ -137,11 +135,11 @@ class Dishes extends CI_Controller {
         $config['base_url'] = ($dishes_name == NULL && $category == NULL) ? base_url().'/admin/dishes' : base_url().'/admin/dishes/search';
         if ($dishes_name == NULL)
         {
-            $config['total_rows'] = $this->dishes_model->get_num_of_dishes_by_category($category);
+            $config['total_rows'] = Dishes_model::get_num_of_dishes_by_category($category);
         }
         elseif ($dishes_name != NULL)
         {
-            $config['total_rows'] = $this->dishes_model->get_num_of_dishes_by_category($category, $dishes_name);
+            $config['total_rows'] = Dishes_model::get_num_of_dishes_by_category($category, $dishes_name);
         }
         $config['per_page'] = 10;
         $config['use_page_numbers'] = TRUE;
@@ -167,11 +165,10 @@ class Dishes extends CI_Controller {
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
         $data['page'] = ($dishes_name == NULL && $category == NULL) ? (($this->uri->segment(3)) ? $this->uri->segment(3) : 0) : (($this->uri->segment(4)) ? $this->uri->segment(4) : 0);
-        $dishes = $this->dishes_model->get_all_dishes($config['per_page'], ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page'], $dishes_name, $category);
+        $dishes = Dishes_model::get_all_dishes($config['per_page'], ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page'], $dishes_name, $category);
         $data['dishes'] = $dishes;
         $this->load->model('categories_model');
-        $categories = $this->categories_model->get_all_categories();
-        $data['categories'] = $categories;
+        $data['categories'] = Categories_model::get_all_categories();
         $this->common->load_view('admin/dishes/dishes', $data);
     }
 
@@ -179,7 +176,7 @@ class Dishes extends CI_Controller {
     {
         $this->common->authenticate();
         $message = $this->common->get_message('delete_dish', array('delete_success', 'delete_failure'));
-        if ($this->dishes_model->delete_dish($dish_id))
+        if (Dishes_model::delete_dishes(array($dish_id)))
         {
             $image_file_name = $this->input->post('image_file_name');
             $this->common->image_delete(SAVE_IMAGE_OF_DISHES.'/'.$image_file_name);
@@ -192,6 +189,25 @@ class Dishes extends CI_Controller {
             $data = array(
                 'status' => 'failure',
                 'message' => $message['delete_failure']);
+        }
+        echo json_encode($data);
+    }
+
+    public function get_users_vote_for_dishes($dish_id)
+    {
+        $this->common->authenticate();
+        $this->load->model('votes_model');
+        $users = $this->votes_model->get_users_voted_for_dish($dish_id);
+        if ($users != NULL)
+        {
+            $data = array(
+                'status' => 'success',
+                'data' => $users);
+        }
+        else
+        {
+            $data = array(
+                'status' => 'failure');
         }
         echo json_encode($data);
     }
@@ -222,7 +238,7 @@ class Dishes extends CI_Controller {
             'category' => $category,
             'image' => $image,
             'image_file_name' => $image_data['file_name']);
-        $result = $this->dishes_model->insert_dish($dish);
+        $result = Dishes_model::insert_dish($dish);
         return $result;
     }
 
@@ -238,7 +254,7 @@ class Dishes extends CI_Controller {
             'category' => $category,
             'image' => base_url(LINK_TO_IMAGE_OF_DISHES.$image_data['file_name']),
             'image_file_name' => $image_data['file_name']);
-        $result = $this->dishes_model->update_dish($dish_id, $dish);
+        $result = Dishes_model::update_dish($dish_id, $dish);
         return $result;
     }
 

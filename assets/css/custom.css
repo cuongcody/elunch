@@ -115,13 +115,12 @@ body.nav-sm .profile {
 
 .img-circle.profile_img {
     width: 70%;
-    background: #fff;
     margin-left: 15%;
     z-index: 1000;
     position: inherit;
     margin-top: 20px;
-    border: 1px solid rgba(52, 73, 94, 0.44);
-    padding: 4px;
+    border: 2px solid #DFDFDF;
+    padding: 2px;
 }
 
 .profile_info {

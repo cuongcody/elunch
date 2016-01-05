@@ -20,6 +20,50 @@ $(function () {
     $('select[name="day"]').on('change', function() {
       getTablesByShiftAjax();
     });
+    $(document).on('click', 'input[name="submit"]', function(event) {
+        $('.loadingx').fadeIn('slow');
+        $(document).find('input[type="button"]').prop('disabled', true);
+        comment_id = $('.in .post-replies').find('form').data('comment-id');
+        base_url = $("#lastest-comments").data('add-reply-path') + '/' + comment_id;
+        content = $('.in .post-replies').find('.content').val();
+        $.ajax({
+            type:"POST",
+            url: base_url,
+            data: {content: content},
+            dataType: 'json',
+            success: function(res){
+                $('.loadingx').fadeOut('slow');
+                $(document).find('input[type="button"]').prop('disabled', false);
+                $('.error').remove();
+                if (res.status == 'errors')
+                {
+                    $('.in .post-replies').find('form').prepend(
+                        "<div class='error alert alert-warning'>" + res.message + '</div>');
+                }
+                else if (res.status == 'success')
+                {
+                    toastr.success(res.message);
+                    $('.in .replies').find('ul').append("<li>" +
+                                        "<a>" +
+                                            "<span class='image'>" +
+                                                "<img class='img-thumbnail' width=20 height=20 src='" + res.avatar_content_file + "' alt='>" +
+                                            "</span>" +
+                                            "<span>" +
+                                            "<span>" + res.email + "</span>" +
+                                            "</span>" +
+                                            "<span class='message'>" + res.content + "</span>" +
+                                            "<span class='time'>" + res.created_at + "</span>" +
+                                        "</a>" +
+                                    "</li>");
+                    $('.post-replies').find('.content').val('');
+                }
+                else if (res.status == 'failure')
+                {
+                    toastr.error(res.message);
+                }
+            }
+        });
+    });
 });
 
 function getTablesByShiftAjax() {
@@ -240,15 +284,92 @@ function getLastestCommentsAjax()
         success: function(res){
             html = '';
             $.each(res.comments, function(index, value) {
-                html +=  "<li><a><span class='image'>" +
+                html +=  "<li id='comment_" +  value.id + "' class='lastest-comment' data-id='" + value.id + "'><a><span class='image'>" +
                     "<img class='img-thumbnail' src='" + value.avatar_content_file + "' alt=''></span>" +
                     "<span><span>" + value.email + "</span></span>" +
                     "<span class='message'>" + ((value.content.title > 70) ? (value.title.substring(0, 70) + ' ...') : value.title) + "</span>" +
                     "<span class='time'>" + value.created_at + "</span></a>"
             });
             $('#lastest-comments').html(html);
+            if (window.matchMedia('(max-width: 767px)').matches) {
+                $('.lastest-comment').click(function(event) {
+                    window.location.replace($("#lastest-comments").data('comments-path'));
+                });
+            }
+            else {
+                var placement = 'bottom-left';
+                var width = $("#lastest-comments").width() * 2;
+                if ($('.left-side').width() == $('.right-side').width())
+                {
+                    placement = 'top';
+                    width = $("#lastest-comments").width();
+                }
+                $('.lastest-comment').webuiPopover('destroy').webuiPopover({
+                    placement: placement,
+                    content:function() {
+                        comment_id = $(this).data('id');
+                        base_replies_url = $("#lastest-comments").data('replies-path');
+                        var html = "<div class='replies pre-scrollable'><ul class='list-unstyled msg_list'>";
+                        html += $("<div />").append($('#comment_' + comment_id).clone()).html();
+                        html += getRepliesOfComment(base_replies_url, comment_id);
+                        html +="</ul></div>";
+                        html += "<div class='post-replies'>" +
+                                    "<form method='post' data-comment-id=" + comment_id + " >" +
+                                        "<div class='form-group'><textarea class='form-control content' rows=2></textarea></div>" +
+                                        "<div class='form-group'><input type='button' name='submit' value='Send' class='btn btn-primary'><div class='loadingx'></div></div>" +
+                                    "</form></div>";
+                        return html;
+                    },
+                    closeable:true,
+                    padding:true,
+                    animation:'fade',
+                    dismissible:true,
+                    multi:false,
+                    trigger:'hover',
+                    delay: {//show and hide delay time of the popover, works only when trigger is 'hover',the value can be number or object
+                        show: null,
+                        hide: 300
+                    },
+                    cache: false,
+                    width: width
+                });
+            }
         }
     });
+
 }
+
+function getRepliesOfComment(base_url, comment_id)
+{
+    var html="";
+    var div = document.createElement('div');
+    $.ajax({
+        type:"POST",
+        url: base_url + "/" + comment_id,
+        async: false,
+        dataType: 'json',
+        data: {},
+        success: function(res){
+            $.each(res.replies, function(index, value) {
+                $(div).prepend("<li>" +
+                            "<a>" +
+                                "<span class='image'>" +
+                                    "<img class='img-thumbnail' width=20 height=20 src='" + value.avatar_content_file + "' alt='>" +
+                                "</span>" +
+                                "<span>" +
+                                "<span>" + value.email + "</span>" +
+                                "</span>" +
+                                "<span class='message'>" + value.content + "</span>" +
+                                "<span class='time'>" + value.created_at + "</span>" +
+                            "</a>" +
+                        "</li>");
+            });
+            html = $(div).html();
+        }
+    });
+    return html;
+
+}
+
 
 

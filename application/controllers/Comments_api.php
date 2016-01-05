@@ -31,7 +31,7 @@ class Comments_api extends Base_api {
         {
             $date_to = (new DateTime($to))->format('Y-m-d');
             $date_from = (new DateTime($to))->sub(new DateInterval('P'.$days.'D'))->format('Y-m-d');
-            $result = $this->comments_model->get_comments_of_user($user_id, $date_from, $date_to);
+            $result = Comments_model::get_comments_of_user($user_id, $date_from, $date_to);
             $data = array();
             if ($result != NULL)
             {
@@ -55,7 +55,7 @@ class Comments_api extends Base_api {
                     array_push($comments, $comment);
                 }
                 $date_to = date('Y-m-d', strtotime($comments[sizeof($comments) - 1]['created_at']));
-                $is_more_comments = ($this->comments_model->get_comments_of_user($user_id, NULL, $date_to) != NULL) ? TRUE : FALSE;
+                $is_more_comments = (Comments_model::get_comments_of_user($user_id, NULL, $date_to) != NULL) ? TRUE : FALSE;
                 $data['is_more_comments'] = $is_more_comments;
                 $data['current_day'] = $to;
                 $data['date_get_more_comments'] = $date_from;
@@ -67,7 +67,7 @@ class Comments_api extends Base_api {
             else
             {
                 $data['comments'] = NULL;
-                $is_more_comments = ($this->comments_model->get_comments_of_user($user_id, NULL, $date_from) != NULL) ? TRUE : FALSE;
+                $is_more_comments = (Comments_model::get_comments_of_user($user_id, NULL, $date_from) != NULL) ? TRUE : FALSE;
                 $data['is_more_comments'] = $is_more_comments;
                 $response['status'] = $messages_lang['success'];
                 $response['message'] = $messages_lang['get_comments_failure'];

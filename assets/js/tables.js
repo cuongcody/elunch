@@ -20,7 +20,7 @@ $(function() {
             dataType: 'json',
             data: {table_id:table_id, user_id:user_id, day:day},
             success: function(res) {
-                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                $(".se-pre-con").fadeOut('slow', function() {
                     if (res.status == 'success')
                     {
                         toastr.success(res.message);
@@ -57,7 +57,7 @@ $(function() {
             dataType: 'json',
             data: {table_id:table_id, user_id:user_id},
             success: function(res) {
-                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                $(".se-pre-con").fadeOut('slow', function() {
                     if (res.status == 'success')
                     {
                         $('#user_' + user_id).hide('slow', function() {
@@ -89,7 +89,7 @@ $(function() {
             dataType: 'json',
             data: {},
             success: function(res) {
-                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                $(".se-pre-con").fadeOut('slow', function() {
                     if (res.status == 'success')
                     {
                         $('#table_' + table_id).hide('slow', function() {

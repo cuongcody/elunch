@@ -3,14 +3,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Categories_model extends CI_Model {
 
+    private static $db;
+
+    function __construct() {
+        parent::__construct();
+        self::$db = &get_instance()->db;
+    }
+
     /**
      * Get all categories
      *
      * @return      array
      */
-    function get_all_categories()
+    static function get_all_categories()
     {
-        $query = $this->db->order_by('order')->get('categories');
+        $query = self::$db->order_by('order')->get('categories');
         return (array)$query->result();
     }
 
@@ -19,9 +26,9 @@ class Categories_model extends CI_Model {
      *
      * @return      int
      */
-    function get_num_of_categories()
+    static function get_num_of_categories()
     {
-        $query = $this->db->get('categories');
+        $query = self::$db->get('categories');
         return $query->num_rows();
     }
 
@@ -31,9 +38,9 @@ class Categories_model extends CI_Model {
      * @param       int  $category_id
      * @return      object
      */
-    function get_category_by_id($category_id)
+    static function get_category_by_id($category_id)
     {
-        $query = $this->db->get_where('categories', array('id' => $category_id));
+        $query = self::$db->get_where('categories', array('id' => $category_id));
         return $query->first_row();
     }
 
@@ -44,12 +51,12 @@ class Categories_model extends CI_Model {
      * @param       string  $decription
      * @return      bool
      */
-    function insert_category($name, $decription)
+    static function insert_category($name, $decription)
     {
         $data = array(
             'name' => $name,
             'description' => $decription);
-        return $this->db->insert('categories', $data);
+        return self::$db->insert('categories', $data);
     }
 
     /**
@@ -60,15 +67,15 @@ class Categories_model extends CI_Model {
      * @param       string  $decription
      * @return      bool
      */
-    function update_category($category_id, $name, $description)
+    static function update_category($category_id, $name, $description)
     {
-        $this->db->cache_delete('admin', 'dishes');
+        self::$db->cache_delete('admin', 'dishes');
         $data = array(
             'name' => $name,
             'description'=> $description,
             'updated_at' => date('Y-m-d H:i:s'));
-        $this->db->where('id', $category_id);
-        return $this->db->update('categories', $data);
+        self::$db->where('id', $category_id);
+        return self::$db->update('categories', $data);
     }
 
     /**
@@ -94,11 +101,11 @@ class Categories_model extends CI_Model {
             }
             // Delete list of dishes belongs to category
             $this->load->model('dishes_model');
-            if ($this->dishes_model->delete_dishes($dishes_id_belong_to_category))
+            if (Dishes_model::delete_dishes($dishes_id_belong_to_category))
             {
                 $this->load->model('menus_model');
                 // Delete list of dishes in menus have this category
-                $this->menus_model->delete_dishes_in_menu_by_field('dish_id', $dishes_id_belong_to_category);
+                Menus_model::delete_dishes_in_menu_by_field('dish_id', $dishes_id_belong_to_category);
             }
         }
 
@@ -115,10 +122,10 @@ class Categories_model extends CI_Model {
         }
     }
 
-    function order_cats($data)
+    static function order_cats($data)
     {
-        $this->db->cache_delete('admin', 'dishes');
-        return $this->db->update_batch('categories', $data, 'id');
+        self::$db->cache_delete('admin', 'dishes');
+        return self::$db->update_batch('categories', $data, 'id');
     }
 
 }

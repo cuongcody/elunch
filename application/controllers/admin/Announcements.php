@@ -60,12 +60,9 @@ class Announcements extends CI_Controller {
         $this->load->model('tables_model');
         $this->load->model('users_model');
         $this->load->model('shifts_model');
-        $tables = $this->tables_model->get_all_tables();
-        $data['tables'] = $tables;
-        $users = $this->users_model->get_all_users();
-        $data['users'] = $users;
-        $shifts = $this->shifts_model->get_all_shifts();
-        $data['shifts'] = $shifts;
+        $data['tables'] = Tables_model::get_all_tables();
+        $data['users'] = Users_model::get_all_users();
+        $data['shifts'] = Shifts_model::get_all_shifts();
         $data['choose'] = array(ANNOUNCEMENT_ALL_USER, ANNOUNCEMENT_USER, ANNOUNCEMENT_TABLE, ANNOUNCEMENT_SHIFT);
         $this->common->load_view('admin/announcements/new_announcement', $data);
     }
@@ -76,7 +73,7 @@ class Announcements extends CI_Controller {
         $data = $this->common->set_language_and_data('announcements', $message);
         $this->load->library('pagination');
         $config['base_url'] = base_url('admin/announcements');
-        $config['total_rows'] = $this->announcements_model->number_of_announcements();
+        $config['total_rows'] = Announcements_model::number_of_announcements();
         $config['per_page'] = 5;
         $config['use_page_numbers'] = TRUE;
         $config['uri_segment'] = 3;
@@ -100,7 +97,7 @@ class Announcements extends CI_Controller {
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
         $data['page'] = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-        $announcements = $this->announcements_model->get_announcements($config['per_page'],  ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page']);
+        $announcements = Announcements_model::get_announcements($config['per_page'],  ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page']);
         $data['announcements'] = $announcements;
         $this->common->load_view('admin/announcements/announcements', $data);
     }
@@ -108,7 +105,7 @@ class Announcements extends CI_Controller {
     public function get_detail_announcement($announcement_id)
     {
         $this->common->authenticate();
-        $result = $this->announcements_model->get_replies_announcement_by_id($announcement_id);
+        $result = Announcements_model::get_replies_announcement_by_id($announcement_id);
         $data = array();
         $replies = array();
         foreach ($result as $item)
@@ -154,7 +151,7 @@ class Announcements extends CI_Controller {
                     $data['content'] = $content;
                     $data['created_at'] = date('Y-m-d H:i:s');
                     $data['avatar_content_file'] = $this->session->userdata('logged_in')['avatar_content_file'];
-                    $user = $this->announcements_model->get_user_in_announcement($announcement_id);
+                    $user = Announcements_model::get_user_in_announcement($announcement_id);
                     if ($user != NULL)
                     {
                         $announcement = $this->announcements_model->get_announcement_by_id($user->id, $announcement_id);
@@ -202,7 +199,7 @@ class Announcements extends CI_Controller {
     {
         $this->common->authenticate();
         $message = $this->common->get_message('delete_announcement', array('delete_success', 'delete_failure'));
-        if ($this->announcements_model->delete_announcement($announcement_id))
+        if (Announcements_model::delete_announcement($announcement_id))
         {
             $data = array(
                 'status' => 'success',
@@ -241,24 +238,24 @@ class Announcements extends CI_Controller {
         {
             case ANNOUNCEMENT_USER:
                 $data['user'] = $this->input->post('user');
-                $users[] = $this->users_model->get_user_by('id', $data['user']);
+                $users[] = Users_model::get_user_by('id', $data['user']);
                 break;
             case ANNOUNCEMENT_TABLE:
                 $data['table'] = $this->input->post('table');
                 $this->load->model('tables_model');
-                $users =  $this->tables_model->get_users_in_table($data['table']);
+                $users =  Tables_model::get_users_in_table($data['table']);
                 break;
             case ANNOUNCEMENT_SHIFT:
                 $data['shift'] = $this->input->post('shift');
                 $this->load->model('shifts_model');
-                $users = $this->shifts_model->get_users_by_shift($data['shift']);
+                $users = Shifts_model::get_users_by_shift($data['shift']);
                 break;
             default:
                 $data['user'] = 'all';
-                $users = $this->users_model->get_all_users();
+                $users = Users_model::get_all_users();
                 break;
         }
-        list($result, $announcement_id) = $this->announcements_model->insert_announcement($data);
+        list($result, $announcement_id) = Announcements_model::insert_announcement($data);
         if ($result)
         {
             $registation_ids = array();

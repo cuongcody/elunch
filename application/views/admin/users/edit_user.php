@@ -120,6 +120,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $edit_user_lang['cancel'] ?></button>
                 <button type="button" id="change_password" class="btn btn-primary" data-path="<?php echo base_url().'admin/users/change_password/'.$user->id; ?>"><?php echo $edit_user_lang['yes'] ?></button>
+                <div class='loadingx'></div>
             </div>
         </div>
     </div>
@@ -147,6 +148,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $edit_user_lang['cancel'] ?></button>
                 <button type="button" id="change_shift" class="btn btn-primary" data-path="<?php echo base_url().'admin/users/change_shift/'.$user->id; ?>"><?php echo $edit_user_lang['yes'] ?></button>
+                <div class='loadingx'></div>
             </div>
         </div>
     </div>

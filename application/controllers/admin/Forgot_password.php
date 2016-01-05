@@ -110,7 +110,7 @@ class Forgot_password extends CI_Controller {
 
     public function not_exist_email($email)
     {
-        if (!$this->users_model->is_user_exists($email))
+        if (!Users_model::is_user_exists($email))
         {
             $this->lang->load('web_portal/forgot_password', $this->session->userdata('site_lang'));
             $this->form_validation->set_message('not_exist_email', $this->lang->line('not_exist_email'));

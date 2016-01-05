@@ -94,9 +94,9 @@ class Tables extends CI_Controller {
     public function send_mail($table_id)
     {
         $data = array();
-        $data['table'] = $this->tables_model->get_table_by($table_id);
-        $data['users']['normal_day'] = $this->tables_model->get_users_in_table($table_id, NORMAL_DAY);
-        $data['users']['vegan_day'] = $this->tables_model->get_users_in_table($table_id, NORMAL_DAY);
+        $data['table'] = Tables_model::get_table_by($table_id);
+        $data['users']['normal_day'] = Tables_model::get_users_in_table($table_id, NORMAL_DAY);
+        $data['users']['vegan_day'] = Tables_model::get_users_in_table($table_id, NORMAL_DAY);
         $all_users_in_table = array();
         $all_users_in_table = $data['users']['normal_day'];
         foreach ($data['users']['normal_day'] as $user_normal) {
@@ -145,7 +145,7 @@ class Tables extends CI_Controller {
             {
                 case JOIN_TABLE_SUCCESSFULLY:
                     $this->load->model('users_model');
-                    $user = $this->users_model->get_user_by('id', $user_id);
+                    $user = Users_model::get_user_by('id', $user_id);
                     $data = array(
                         'status' => 'success',
                         'message' => $message['add_success'],
@@ -223,26 +223,23 @@ class Tables extends CI_Controller {
         $message = array('title', 'shift', 'search', 'normal_day', 'vegan_day', 'list_tables', 'table', 'arrange', 'for_vegan', 'for_normal','add_user', 'list_of_users', 'avatar', 'name', 'floor', 'vegan', 'move_to', 'leave', 'are_you_sure', 'yes', 'cancel');
         $data = $this->common->set_language_and_data('arrange_tables', $message);
         $this->load->model('shifts_model');
-        $shifts = $this->shifts_model->get_all_shifts();
-        $data['shifts'] = $shifts;
+        $data['shifts'] = Shifts_model::get_all_shifts();
         $for_vegans = ($day == NORMAL_DAY) ? 0 : NULL;
         $tables = array();
         if (!is_null($shift_id))
         {
-            $tables = $this->tables_model->get_tables_by_shift($shift_id, $for_vegans, $day);
+            $tables = Tables_model::get_tables_by_shift($shift_id, $for_vegans, $day);
         }
         else
         {
-            if (!empty($shifts))
+            if (!empty($data['shifts']))
             {
-                $shift_id = $shifts[0]->id;
-                $tables = $this->tables_model->get_tables_by_shift($shift_id, $for_vegans, $day);
+                $shift_id = $data['shifts'][0]->id;
+                $tables = Tables_model::get_tables_by_shift($shift_id, $for_vegans, $day);
             }
         }
         $data['tables'] = $tables;
-        $this->load->model('shifts_model');
-        $users = $this->shifts_model->get_users_by_shift($shift_id);
-        $data['users'] = $users;
+        $data['users'] = Shifts_model::get_users_by_shift($shift_id);
         $data['day'] = $day;
         $this->common->load_view('admin/tables/arrange_tables', $data);
     }
@@ -252,8 +249,7 @@ class Tables extends CI_Controller {
         $message = array('title', 'description', 'table', 'for_vegans', 'shift', 'seats','save');
         $data = $this->common->set_language_and_data('new_table', $message);
         $this->load->model('shifts_model');
-        $shifts = $this->shifts_model->get_all_shifts();
-        $data['shifts'] = $shifts;
+        $data['shifts'] = Shifts_model::get_all_shifts();
         $this->common->load_view('admin/tables/new_table', $data);
     }
 
@@ -262,10 +258,9 @@ class Tables extends CI_Controller {
         $message = array('title', 'description', 'manage_tables', 'table', 'for_vegans', 'list_of_users', 'shift', 'seats', 'image', 'name', 'delete', 'are_you_sure', 'yes', 'cancel', 'floor', 'edit');
         $data = $this->common->set_language_and_data('edit_table', $message);
         $this->load->model('shifts_model');
-        $shifts = $this->shifts_model->get_all_shifts();
-        $data['shifts'] = $shifts;
-        $data['table'] = $this->tables_model->get_table_by($table_id);
-        $data['users'] = $this->tables_model->get_users_in_table($table_id);
+        $data['shifts'] = Shifts_model::get_all_shifts();
+        $data['table'] = Tables_model::get_table_by($table_id);
+        $data['users'] = Tables_model::get_users_in_table($table_id);
         $this->common->load_view('admin/tables/edit_table', $data);
     }
 
@@ -275,7 +270,7 @@ class Tables extends CI_Controller {
         $data = $this->common->set_language_and_data('tables', $message);
         $this->load->library('pagination');
         $config['base_url'] = ($search == NULL) ? base_url().'/admin/tables' : base_url().'/admin/tables/search';
-        $config['total_rows'] = $this->tables_model->get_num_of_tables($search);
+        $config['total_rows'] = Tables_model::get_num_of_tables($search);
         $config['per_page'] = 10;
         $config['use_page_numbers'] = TRUE;
         $config['uri_segment'] = $config['uri_segment'] = ($search == NULL) ? 3 : 4;
@@ -300,7 +295,7 @@ class Tables extends CI_Controller {
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
         $data['page'] = ($search == NULL) ? (($this->uri->segment(3)) ? $this->uri->segment(3) : 0) : (($this->uri->segment(4)) ? $this->uri->segment(4) : 0);
-        $tables = $this->tables_model->get_tables($config['per_page'],  ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page'], $search);
+        $tables = Tables_model::get_tables($config['per_page'],  ($data['page'] == 0 ? $data['page'] : ($data['page'] - 1)) * $config['per_page'], $search);
         $data['tables'] = $tables;
         $this->common->load_view('admin/tables/tables', $data);
     }
@@ -309,7 +304,7 @@ class Tables extends CI_Controller {
     {
         $this->common->authenticate();
         $day = $this->input->get('day');
-        echo json_encode($this->tables_model->get_users_in_table($table_id, $day));
+        echo json_encode(Tables_model::get_users_in_table($table_id, $day));
     }
 
     public function validation()
@@ -332,7 +327,7 @@ class Tables extends CI_Controller {
             'shift_id' => $this->input->post('shift'),
             'for_vegans' => (!empty($this->input->post('for_vegans'))) ? 1 : 0
             );
-        if ($request == 'add') return $this->tables_model->insert_table($table);
+        if ($request == 'add') return Tables_model::insert_table($table);
         else return $this->tables_model->update_table($table_id, $table);
     }
 

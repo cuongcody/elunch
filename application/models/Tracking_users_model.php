@@ -3,14 +3,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Tracking_users_model extends CI_Model {
 
+    private static $db;
+
+    function __construct() {
+        parent::__construct();
+        self::$db = &get_instance()->db;
+    }
+
     /**
      * Get all status
      *
      * @return      array
      */
-    function get_all_status()
+    static function get_all_status()
     {
-        return $this->db->get('status_user')->result();
+        return self::$db->get('status_user')->result();
     }
 
     /**
@@ -53,8 +60,7 @@ class Tracking_users_model extends CI_Model {
             }
             if ($user_ids != NULL)
             {
-                $this->load->model('tracking_users_model');
-                $this->tracking_users_model->update_status_users($user_ids, ABSENT, 0);
+                $this->update_status_users($user_ids, ABSENT, 0);
             }
             $table['users'] = $users;
             array_push($tables, $table);
@@ -94,9 +100,9 @@ class Tracking_users_model extends CI_Model {
      * @param       int  $status
      * @return      bool
      */
-    function insert_status_user($user_id, $status)
+    static function insert_status_user($user_id, $status)
     {
-        return $this->db->insert('tracking_users', array('user_id' => $user_id, 'status_id' => $status, 'updated_at' => date('Y-m-d H:i:s')));
+        return self::$db->insert('tracking_users', array('user_id' => $user_id, 'status_id' => $status, 'updated_at' => date('Y-m-d H:i:s')));
     }
 
     /**
@@ -107,10 +113,10 @@ class Tracking_users_model extends CI_Model {
      * @param       int  $manually_set
      * @return      bool
      */
-    function update_status_users($user_ids, $status, $manually_set)
+    static function update_status_users($user_ids, $status, $manually_set)
     {
-        $this->db->where_in('user_id', $user_ids);
-        return $this->db->update('tracking_users', array('status_id' => $status, 'manually_set' => $manually_set, 'updated_at' => date('Y-m-d H:i:s')));
+        self::$db->where_in('user_id', $user_ids);
+        return self::$db->update('tracking_users', array('status_id' => $status, 'manually_set' => $manually_set, 'updated_at' => date('Y-m-d H:i:s')));
     }
 
 }

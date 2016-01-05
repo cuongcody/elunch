@@ -2,7 +2,7 @@
 <div class="right_col" role="main">
     <div id="elevator_item"><a id="elevator" onclick="return false;" title="Back To Top"></a></div>
     <div class="row">
-        <div class= 'col-xs-12 col-md-8'>
+        <div class= 'left-side col-xs-12 col-md-8'>
             <div class="x_panel">
                 <div class="x_content">
                     <!-- Introduction Row -->
@@ -109,14 +109,14 @@
                 </div>
             </div>
         </div>
-        <div class='col-xs-12 col-md-4'>
+        <div class='right-side col-xs-12 col-md-4'>
             <div class="panel panel-default">
                 <div class="panel-heading"> <span class="glyphicon glyphicon-list-alt"></span> <b><?php echo $home_lang['lastest_comments'] ?></b></div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-xs-12">
                             <i class="fa fa-arrow-up" id="lastest-comments-prev"></i>
-                            <ul id="lastest-comments" class="list-unstyled msg_list" data-path="<?php echo base_url('admin/comments/get_lastest_comments') ?>">
+                            <ul id="lastest-comments" class="list-unstyled msg_list" data-path="<?php echo base_url('admin/comments/get_lastest_comments') ?>" data-comments-path="<?php echo base_url('admin/comments') ?>" data-replies-path="<?php echo base_url('admin/comments/get_detail_comment') ?>" data-add-reply-path="<?php echo base_url('admin/comments/add_reply') ?>" >
                             </ul>
                             <i class="fa fa-arrow-down" id="lastest-comments-next"></i>
                         </div>

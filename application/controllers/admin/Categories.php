@@ -86,7 +86,7 @@ class Categories extends CI_Controller {
     {
         $message = array('title', 'description', 'category', 'create_category', 'edit', 'delete', 'are_you_sure', 'yes', 'cancel');
         $data = $this->common->set_language_and_data('categories', $message);
-        $categories = $this->categories_model->get_all_categories();
+        $categories = Categories_model::get_all_categories();
         $data['categories'] = $categories;
         $this->common->load_view('admin/categories/categories', $data);
     }
@@ -112,7 +112,7 @@ class Categories extends CI_Controller {
     {
         $message = array('title', 'description', 'category', 'manage_categories', 'edit');
         $data = $this->common->set_language_and_data('edit_category', $message);
-        $data['category_item'] = $this->categories_model->get_category_by_id($category_id);
+        $data['category_item'] = Categories_model::get_category_by_id($category_id);
         $this->common->load_view('admin/categories/edit_category', $data);
     }
 
@@ -120,14 +120,14 @@ class Categories extends CI_Controller {
     {
         $category = $this->input->post('category');
         $description = $this->input->post('description');
-        return $this->categories_model->insert_category($category, $description);
+        return Categories_model::insert_category($category, $description);
     }
 
     public function edit_category($category_id)
     {
         $description = $this->input->post('description');
         $category = $this->input->post('category');
-        return $this->categories_model->update_category($category_id, $category, $description);
+        return Categories_model::update_category($category_id, $category, $description);
     }
 
     public function sort_cats()
@@ -135,7 +135,7 @@ class Categories extends CI_Controller {
         $this->common->authenticate();
         $cats = $this->input->post('cats');
         $message = $this->common->get_message('edit_category', array('edit_success', 'edit_failure'));
-        if ($this->categories_model->order_cats($cats))
+        if (Categories_model::order_cats($cats))
         {
             $data = array(
                 'status' => 'success',

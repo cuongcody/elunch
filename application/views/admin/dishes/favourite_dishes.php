@@ -26,7 +26,7 @@
                                 <p>
                                     <strong>
                                         <?php echo $favourite_dishes_lang['votes'] ?>
-                                        <span class="value text-danger"><?php echo $dish->num_votes ?></span>
+                                        <a href="#list_users_modal" class="value text-danger" data-toggle="modal" data-target="#list_users_modal" data-path="<?php echo base_url('admin/dishes/get_users_vote_for_dishes'.'/'.$dish->id) ?>" onclick="false;"><?php echo $dish->num_votes ?></a>
                                     </strong>
                                 </p>
                                 <a href="#detail_text_modal" data-toggle="modal" data-target="#detail_text_modal" data-content="<?php echo $dish->description ?>" data-title="<?php echo $favourite_dishes_lang['title'] ?>" onclick="false;">
@@ -34,7 +34,7 @@
                                 </a>
                             </div>
                             <?php
-                                if (($key+1) % 3 == 0)
+                                if (($key + 1) % 3 == 0)
                                 {
                             ?>
                     </div>
@@ -50,5 +50,27 @@
         <?php
             }
         ?>
+    </div>
+</div>
+<div class="modal fade" id="list_users_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"><?php echo $favourite_dishes_lang['users_voted'] ?></h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped responsive-utilities jambo_table bulk_action">
+                    <thead>
+                        <tr class="heading">
+                            <th class="column-title"><?php echo $favourite_dishes_lang['avatar'] ?></th>
+                            <th class="column-title"><?php echo $favourite_dishes_lang['first_name'] ?></th>
+                        </tr>
+                    </thead>
+                   <tbody class="users">
+                   </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>

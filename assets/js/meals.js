@@ -28,7 +28,7 @@ $(function() {
             dataType: 'json',
             data: {},
             success: function(res) {
-                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                $(".se-pre-con").fadeOut('slow', function() {
                     if (res.status == 'success')
                     {
                         $('#meal_' + meal_id).hide('slow', function() {
@@ -76,7 +76,7 @@ $(function() {
             dataType: 'json',
             data: {},
             success: function(res) {
-                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                $(".se-pre-con").fadeOut('slow', function() {
                     if (res.status == 'success')
                     {
                         $('#meal_' + meal_id).find('.log_file').hide('slow', function() {

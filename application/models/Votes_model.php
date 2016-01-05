@@ -12,7 +12,7 @@ class Votes_model extends CI_Model {
     function get_all_dishes_with_votes_number_in_a_week($day = NULL)
     {
         $this->load->model('dishes_model');
-        $result_dishes = $this->dishes_model->get_all_dishes();
+        $result_dishes = Dishes_model::get_all_dishes();
         $dishes = array();
         $first_day_of_week = $this->find_first_date_of_week($day);
         $query = $this->db->get_where('vote_logs', array('first_day_of_week' => $first_day_of_week));
@@ -63,7 +63,7 @@ class Votes_model extends CI_Model {
         {
             $voted_dish_ids_in_week_arr = (substr_count($voted_dish_ids_in_week, ';') > 0) ? explode(";", $voted_dish_ids_in_week) : array($voted_dish_ids_in_week);
             $this->load->model('dishes_model');
-            $result = $this->dishes_model->get_all_dishes();
+            $result = Dishes_model::get_all_dishes();
             foreach ($result as $dish)
             {
                 // Count dish_id have in voted dish ids in week or not
@@ -119,6 +119,31 @@ class Votes_model extends CI_Model {
             $vote_remaining = MAX_VOTES_FOR_USER - substr_count($votes_in_week, ';');
         }
         return $vote_remaining;
+    }
+
+    /**
+     * Get users have voted for dish in a week
+     *
+     * @param       int  $dish_id
+     * @return      array
+     */
+    function get_users_voted_for_dish($dish_id)
+    {
+        $first_day_of_week = $this->find_first_date_of_week();
+        $votes_logs = $this->db->get_where('vote_logs', array('first_day_of_week' => $first_day_of_week))->result();
+        $user_ids = array();
+        foreach ($votes_logs as $vote_log)
+        {
+            if ($vote_log->votes != NULL)
+            {
+                $votes_of_dishes = explode(";", $vote_log->votes);
+                if (in_array($dish_id, $votes_of_dishes)) $user_ids[] = $vote_log->user_id;
+            }
+        }
+        $this->db->where_in('id', $user_ids);
+        $query = $this->db->get('users');
+        $users = $query->result();
+        return $users;
     }
 
     /**

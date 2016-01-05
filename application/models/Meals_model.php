@@ -3,6 +3,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Meals_model extends CI_Model {
 
+    private static $db;
+
+    function __construct() {
+        parent::__construct();
+        self::$db = &get_instance()->db;
+    }
+
     /**
      * Get all meals based on pagination or date
      *
@@ -12,7 +19,7 @@ class Meals_model extends CI_Model {
      * @param       int  $to
      * @return      array
      */
-    function get_meals($perpage, $offset, $from = NULL, $to = NULL)
+    static function get_meals($perpage, $offset, $from = NULL, $to = NULL)
     {
         $query = "SELECT meals.*, menus.name AS  menu_name , menus.id AS menu_id , IF(ISNULL(meals_log.meal_date ) , 0, meals_log.meal_date) AS check_log
                     FROM  meals
@@ -22,10 +29,10 @@ class Meals_model extends CI_Model {
         {
             $query .= " WHERE meals.meal_date >= ? AND meals.meal_date <= ?
                         GROUP BY meals.id ORDER BY meals.meal_date DESC LIMIT ?, ? ";
-            return $this->db->query($query, array($from, $to, (int)$offset, (int)$perpage))->result();
+            return self::$db->query($query, array($from, $to, (int)$offset, (int)$perpage))->result();
         }
         $query .= " GROUP BY meals.id ORDER BY meals.meal_date DESC LIMIT ?, ? ";
-        return $this->db->query($query, array((int)$offset, (int)$perpage))->result();
+        return self::$db->query($query, array((int)$offset, (int)$perpage))->result();
     }
 
     /**
@@ -34,13 +41,13 @@ class Meals_model extends CI_Model {
      * @param       int  $meal_id
      * @return      object
      */
-    function get_meal_by_id($meal_id)
+    static function get_meal_by_id($meal_id)
     {
-        $this->db->select('meals.*, menus.name AS menu_name, menus.id AS menu_id');
-        $this->db->from('meals');
-        $this->db->join('menus', 'meals.menu_id = menus.id','left');
-        $this->db->where('meals.id', $meal_id);
-        return $this->db->get()->first_row();
+        self::$db->select('meals.*, menus.name AS menu_name, menus.id AS menu_id');
+        self::$db->from('meals');
+        self::$db->join('menus', 'meals.menu_id = menus.id','left');
+        self::$db->where('meals.id', $meal_id);
+        return self::$db->get()->first_row();
     }
 
     /**
@@ -50,14 +57,14 @@ class Meals_model extends CI_Model {
      * @param       date(Y-m-d)  $to
      * @return      int
      */
-    function get_num_of_meals($from = NULL, $to = NULL)
+    static function get_num_of_meals($from = NULL, $to = NULL)
     {
         if (!is_null($from) && !is_null($to))
         {
-            $this->db->where('meals.meal_date >=', $from);
-            $this->db->where('meals.meal_date <=', $to);
+            self::$db->where('meals.meal_date >=', $from);
+            self::$db->where('meals.meal_date <=', $to);
         }
-        return $this->db->get('meals')->num_rows();
+        return self::$db->get('meals')->num_rows();
     }
 
     /**
@@ -68,14 +75,14 @@ class Meals_model extends CI_Model {
      * @param       int  $preordered_meals
      * @return      bool
      */
-    function update_meal($meal_id, $menu_id, $preordered_meals, $for_vegans)
+    static function update_meal($meal_id, $menu_id, $preordered_meals, $for_vegans)
     {
         $data = array(
             'menu_id' => $menu_id,
             'preordered_meals' => $preordered_meals,
             'for_vegans' => $for_vegans);
-        $this->db->where('id', $meal_id);
-        return $this->db->update('meals', $data);
+        self::$db->where('id', $meal_id);
+        return self::$db->update('meals', $data);
     }
 
     /**
@@ -86,14 +93,14 @@ class Meals_model extends CI_Model {
      * @param       int  $preordered_meals
      * @return      bool
      */
-    function insert_meal($meal_date, $menu_id, $preordered_meals, $for_vegans)
+    static function insert_meal($meal_date, $menu_id, $preordered_meals, $for_vegans)
     {
         $data = array(
             'meal_date' => $meal_date,
             'menu_id' => $menu_id,
             'preordered_meals' => $preordered_meals,
             'for_vegans' => $for_vegans);
-        return $this->db->insert('meals', $data);
+        return self::$db->insert('meals', $data);
     }
 
     /**
@@ -102,9 +109,9 @@ class Meals_model extends CI_Model {
      * @param       int  $meal_id
      * @return      bool
      */
-    function delete_meal($meal_id)
+    static function delete_meal($meal_id)
     {
-        return $this->db->delete('meals', array('id' => $meal_id));
+        return self::$db->delete('meals', array('id' => $meal_id));
     }
 
     /**
@@ -113,18 +120,18 @@ class Meals_model extends CI_Model {
      * @param       date(Y-m-d)  $meal_date
      * @return      bool
      */
-    function gen_log_file_meal($meal_date)
+    static function gen_log_file_meal($meal_date)
     {
-        return $this->db->insert('meals_log', array('meal_date' => $meal_date));
+        return self::$db->insert('meals_log', array('meal_date' => $meal_date));
     }
 
-    function get_meal_log($meal_date)
+    static function get_meal_log($meal_date)
     {
-        $this->db->select('meals.*, meals_log.actual_meals, meals_log.note, meals_log.tracking_log, meals_log.created_at AS meal_log_created_at');
-        $this->db->from('meals');
-        $this->db->join('meals_log', 'meals.meal_date = meals_log.meal_date');
-        $this->db->where('meals_log.meal_date', $meal_date);
-        $query = $this->db->get();
+        self::$db->select('meals.*, meals_log.actual_meals, meals_log.note, meals_log.tracking_log, meals_log.created_at AS meal_log_created_at');
+        self::$db->from('meals');
+        self::$db->join('meals_log', 'meals.meal_date = meals_log.meal_date');
+        self::$db->where('meals_log.meal_date', $meal_date);
+        $query = self::$db->get();
         return $query->first_row();
     }
 
@@ -137,9 +144,9 @@ class Meals_model extends CI_Model {
      * @param       string  $note
      * @return      bool
      */
-    function update_meal_log($shift, $tables, $meal_date, $note, $actual_meals)
+    static function update_meal_log($shift, $tables, $meal_date, $note, $actual_meals)
     {
-        $query = $this->db->get_where('meals_log', array('meal_date' => $meal_date));
+        $query = self::$db->get_where('meals_log', array('meal_date' => $meal_date));
         $have_meal_log = $query->num_rows();
         if ($have_meal_log > 0)
         {
@@ -162,8 +169,8 @@ class Meals_model extends CI_Model {
             $data['updated_at'] = date('Y-m-d H:i:s');
             if (!is_null($note)) $data['note'] = $query->first_row()->note."<br>".$note;
             if (!is_null($actual_meals)) $data['actual_meals'] = $actual_meals;
-            $this->db->where('meal_date', $meal_date);
-            return $this->db->update('meals_log', $data);
+            self::$db->where('meal_date', $meal_date);
+            return self::$db->update('meals_log', $data);
         }
         return FALSE;
     }

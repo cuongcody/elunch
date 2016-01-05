@@ -2,6 +2,13 @@
 
 class Users_model extends CI_Model{
 
+    private static $db;
+
+    function __construct() {
+        parent::__construct();
+        self::$db = &get_instance()->db;
+    }
+
     /**
      * Get all users
      *
@@ -9,20 +16,20 @@ class Users_model extends CI_Model{
      * @param       int  $offset
      * @return      array
      */
-    function get_all_users($perpage = NULL, $offset = NULL, $search = NULL)
+    static function get_all_users($perpage = NULL, $offset = NULL, $search = NULL)
     {
-        $this->db->cache_on();
-        $this->db->select('users.*, floors.name AS floor, shifts.name AS shift, shifts.id AS shift_id, shifts.start_time, shifts.end_time');
-        $this->db->from('users');
-        $this->db->join('floors', 'users.floor_id = floors.id');
-        $this->db->join('shifts', 'users.shift_id = shifts.id');
+        self::$db->cache_on();
+        self::$db->select('users.*, floors.name AS floor, shifts.name AS shift, shifts.id AS shift_id, shifts.start_time, shifts.end_time');
+        self::$db->from('users');
+        self::$db->join('floors', 'users.floor_id = floors.id');
+        self::$db->join('shifts', 'users.shift_id = shifts.id');
         if (!is_null($perpage) && !is_null($offset))
         {
-            $this->db->limit($perpage, $offset)->order_by('users.admin', 'DESC');
+            self::$db->limit($perpage, $offset)->order_by('users.admin', 'DESC');
         }
-        $this->db->like('users.first_name', $search);
-        $this->db->order_by('users.email', 'ASC');
-        $query = $this->db->get();
+        self::$db->like('users.first_name', $search);
+        self::$db->order_by('users.email', 'ASC');
+        $query = self::$db->get();
         return $query->result();
     }
 
@@ -31,9 +38,9 @@ class Users_model extends CI_Model{
      *
      * @return      int
      */
-    function get_num_of_users($search = NULL)
+    static function get_num_of_users($search = NULL)
     {
-        return $this->db->like('users.first_name', $search)->get('users')->num_rows();
+        return self::$db->like('users.first_name', $search)->get('users')->num_rows();
     }
 
     /**
@@ -42,10 +49,10 @@ class Users_model extends CI_Model{
      * @param       int  $user_id
      * @return      bool
      */
-    function delete_user($user_id)
+    static function delete_user($user_id)
     {
-        $this->db->cache_delete('admin', 'users');
-        return $this->db->query('DELETE users, tracking_users FROM users
+        self::$db->cache_delete('admin', 'users');
+        return self::$db->query('DELETE users, tracking_users FROM users
             INNER JOIN tracking_users ON users.id = tracking_users.user_id
             WHERE users.id = ?', array($user_id));
     }
@@ -57,14 +64,14 @@ class Users_model extends CI_Model{
      * @param       string  $field_value
      * @return      object
      */
-    function get_user_by($field, $field_value)
+    static function get_user_by($field, $field_value)
     {
-        $this->db->select('users.*, floors.name AS floor, floors.id AS floor_id, , shifts.name AS shift, shifts.id AS shift_id, shifts.start_time, shifts.end_time');
-        $this->db->from('users');
-        $this->db->join('floors', 'users.floor_id = floors.id', 'left');
-        $this->db->join('shifts', 'users.shift_id = shifts.id', 'left');
-        $this->db->where('users.'.$field, $field_value);
-        $query = $this->db->get();
+        self::$db->select('users.*, floors.name AS floor, floors.id AS floor_id, , shifts.name AS shift, shifts.id AS shift_id, shifts.start_time, shifts.end_time');
+        self::$db->from('users');
+        self::$db->join('floors', 'users.floor_id = floors.id', 'left');
+        self::$db->join('shifts', 'users.shift_id = shifts.id', 'left');
+        self::$db->where('users.'.$field, $field_value);
+        $query = self::$db->get();
         return $query->first_row();
     }
 
@@ -75,12 +82,12 @@ class Users_model extends CI_Model{
      * @param       string  $field_value
      * @return      object
      */
-    function get_user_with_no_floor_by($field, $field_value)
+    static function get_user_with_no_floor_by($field, $field_value)
     {
-        $this->db->select('users.*');
-        $this->db->from('users');
-        $this->db->where('users.'.$field, $field_value);
-        $query = $this->db->get();
+        self::$db->select('users.*');
+        self::$db->from('users');
+        self::$db->where('users.'.$field, $field_value);
+        $query = self::$db->get();
         return $query->first_row();
     }
 
@@ -327,21 +334,21 @@ class Users_model extends CI_Model{
      * @param       array  $gcm_regid
      * @return      bool
      */
-    function update_gcm_regid($user_id, $gcm_regid)
+    static function update_gcm_regid($user_id, $gcm_regid)
     {
-        $this->db->trans_begin();
-        $this->db->where('gcm_regid', $gcm_regid);
-        $this->db->update('users', array('gcm_regid' => ''));
-        $this->db->where('id', $user_id);
-        $this->db->update('users', array('gcm_regid' => $gcm_regid));
-        if ($this->db->trans_status() === FALSE)
+        self::$db->trans_begin();
+        self::$db->where('gcm_regid', $gcm_regid);
+        self::$db->update('users', array('gcm_regid' => ''));
+        self::$db->where('id', $user_id);
+        self::$db->update('users', array('gcm_regid' => $gcm_regid));
+        if (self::$db->trans_status() === FALSE)
         {
-            $this->db->trans_rollback();
+            self::$db->trans_rollback();
             return FALSE;
         }
         else
         {
-            $this->db->trans_commit();
+            self::$db->trans_commit();
             return TRUE;
         }
     }
@@ -379,9 +386,9 @@ class Users_model extends CI_Model{
      * @param       int  $email
      * @return      int
      */
-    function is_user_exists($email)
+    static function is_user_exists($email)
     {
-        $query = $this->db->get_where('users', array('email' => $email));
+        $query = self::$db->get_where('users', array('email' => $email));
         return $query->num_rows();
     }
 
@@ -391,9 +398,9 @@ class Users_model extends CI_Model{
      * @param       int  $user_id
      * @return      bool
      */
-    function is_user_want_vegan_meal($user_id)
+    static function is_user_want_vegan_meal($user_id)
     {
-        $query = $this->db->get_where('users',array('id' => $user_id));
+        $query = self::$db->get_where('users',array('id' => $user_id));
         $want_vegan_meal = $query->first_row()->want_vegan_meal;
         if ($want_vegan_meal == 0) return FALSE;
         else return TRUE;

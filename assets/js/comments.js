@@ -29,7 +29,8 @@ $(function() {
     });
 
     $('#add_reply_comment').click(function() {
-        $(".se-pre-con").fadeIn('slow');
+        $(".loadingx").fadeIn('slow');
+        $(document).find('button').prop('disabled', true);
         comment_id = $('input[name="comment_id_choose"]').val();
         if (comment_id != null){
             base_url = $('#add_reply_comment').data("path") + '/' + comment_id;
@@ -40,33 +41,33 @@ $(function() {
                 data: {content: content},
                 dataType: 'json',
                 success: function(res){
-                    $(".se-pre-con").fadeOut('slow/400/fast', function() {
-                        $('.error').remove();
-                        if (res.status == 'errors')
-                        {
-                            $('div.add_reply').prepend(
-                                "<div class='error alert alert-warning'>" + res.message + '</div>');
-                        }
-                        else if (res.status == 'success')
-                        {
-                            $('#add_reply_comment_modal').modal('toggle');
-                            toastr.success(res.message);
-                            $('.msg_list').prepend(
-                            "<li><a><span class='image'>" +
-                            "<img class='img-thumbnail' src='" + res.avatar_content_file + "' alt=''></span>" +
-                            "<span><span>" + res.email + "</span></span>" +
-                            "<span class='message'>" + res.content + "</span>" +
-                            "<span class='time'>" + res.created_at + "</span></a>"
-                            ).show('slow');
-                            new_num_replies = parseInt($("#comment_item_" + comment_id).find('.num_replies').text()) + 1;
+                    $(".loadingx").fadeOut('slow');
+                    $(document).find('button').prop('disabled', false);
+                    $('.error').remove();
+                    if (res.status == 'errors')
+                    {
+                        $('div.add_reply').prepend(
+                            "<div class='error alert alert-warning'>" + res.message + '</div>');
+                    }
+                    else if (res.status == 'success')
+                    {
+                        $('#add_reply_comment_modal').modal('toggle');
+                        toastr.success(res.message);
+                        $('.msg_list').prepend(
+                        "<li><a><span class='image'>" +
+                        "<img class='img-thumbnail' src='" + res.avatar_content_file + "' alt=''></span>" +
+                        "<span><span>" + res.email + "</span></span>" +
+                        "<span class='message'>" + res.content + "</span>" +
+                        "<span class='time'>" + res.created_at + "</span></a>"
+                        ).show('slow');
+                        new_num_replies = parseInt($("#comment_item_" + comment_id).find('.num_replies').text()) + 1;
 
-                            $("#comment_item_" + comment_id).find('.num_replies').text(new_num_replies);
-                        }
-                        else if (res.status == 'failure')
-                        {
-                            toastr.error(res.message);
-                        }
-                    });
+                        $("#comment_item_" + comment_id).find('.num_replies').text(new_num_replies);
+                    }
+                    else if (res.status == 'failure')
+                    {
+                        toastr.error(res.message);
+                    }
                 }
             });
         }
@@ -89,7 +90,7 @@ $(function() {
             dataType: 'json',
             data: {},
             success: function(res) {
-                $(".se-pre-con").fadeOut('slow/400/fast', function() {
+                $(".se-pre-con").fadeOut('slow', function() {
                     if (res.status == 'success')
                     {
                         $('#comment_item_' + comment_id).hide('slow', function() {

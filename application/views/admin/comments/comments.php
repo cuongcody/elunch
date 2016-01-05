@@ -95,6 +95,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $comments_lang['cancel'] ?></button>
                 <button type="button" id="add_reply_comment" class="btn btn-primary" data-path="<?php echo base_url('admin/comments/add_reply') ?>"><?php echo $comments_lang['send'] ?></button>
+                <div class='loadingx'></div>
             </div>
         </div>
     </div>
