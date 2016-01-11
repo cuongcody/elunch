@@ -112,7 +112,7 @@ class Announcements extends CI_Controller {
         {
             $reply = array();
             $reply['id'] = (int)$item->reply_id;
-            $reply['content'] = $item->reply_content;
+            $reply['content'] = nl2br($item->reply_content);
             $reply['email'] = $item->email;
             $reply['avatar_content_file'] = $item->avatar_content_file;
             $reply['created_at'] = $item->reply_created_at;
@@ -148,7 +148,7 @@ class Announcements extends CI_Controller {
                     $data['status'] = 'success';
                     $data['message'] = $message['add_success'];
                     $data['email'] = $this->session->userdata('logged_in')['email'];
-                    $data['content'] = $content;
+                    $data['content'] = nl2br($content);
                     $data['created_at'] = date('Y-m-d H:i:s');
                     $data['avatar_content_file'] = $this->session->userdata('logged_in')['avatar_content_file'];
                     $user = Announcements_model::get_user_in_announcement($announcement_id);
