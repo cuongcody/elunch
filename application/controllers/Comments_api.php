@@ -68,6 +68,7 @@ class Comments_api extends Base_api {
             {
                 $data['comments'] = NULL;
                 $is_more_comments = (Comments_model::get_comments_of_user($user_id, NULL, $date_from) != NULL) ? TRUE : FALSE;
+                 $data['date_get_more_comments'] = $date_from;
                 $data['is_more_comments'] = $is_more_comments;
                 $response['status'] = $messages_lang['success'];
                 $response['message'] = $messages_lang['get_comments_failure'];

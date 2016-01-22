@@ -65,6 +65,7 @@ class Announcements_api extends Base_api {
             else
             {
                 $is_more_announcements = ($this->announcements_model->get_announcements_for_user($user_id, NULL, $date_from) != NULL) ? TRUE : FALSE;
+                $data['date_get_more_announcements'] = $date_from;
                 $data['is_more_announcements'] = $is_more_announcements;
                 $data['messages'] = NULL;
                 $response['status'] = $messages_lang['success'];

@@ -243,4 +243,17 @@ class Common {
         //echo $result;
     }
 
+        /**
+     * Find first date of week
+     *
+     * @param       date(Y-m-d)  $date
+     * @return      string
+     */
+    function find_first_date_of_week($date = NULL)
+    {
+        $date = (is_null($date)) ? new DateTime(date('Y-m-d')) : new DateTime(date($date));
+        $monday = clone $date->modify(('Sunday' == $date->format('l')) ? 'Monday last week' : 'Monday this week');
+        return $monday->format('y-m-d');
+    }
+
 }
