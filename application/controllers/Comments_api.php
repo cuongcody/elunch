@@ -161,7 +161,7 @@ class Comments_api extends Base_api {
             {
                 $comment['replies'] = "";
                 $comment['have_read_replies_comment'] = 0;
-                $comment['created_at'] = date('Y-m-d H:m:s');
+                $comment['created_at'] = date('Y-m-d H:i:s');
                 $response['status'] = $messages_lang['success'];
                 $response['message'] = $messages_lang['add_comment_success'];
                 $response['data'] = $comment;
