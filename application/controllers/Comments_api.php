@@ -207,7 +207,7 @@ class Comments_api extends Base_api {
             $data = array();
             $data['id'] = (int)$reply_id;
             $data['content'] = $content;
-            $data['created_at'] = date('Y-m-d H:m:s');
+            $data['created_at'] = date('Y-m-d H:i:s');
             $response['status'] = $messages_lang['success'];
             $response['message'] = $messages_lang['reply_comment_success'];
             $response['data'] = $data;
