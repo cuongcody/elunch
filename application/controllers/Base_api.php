@@ -8,15 +8,13 @@ class Base_api extends REST_Controller{
 
     function __construct()
     {
-        header('Access-Control-Allow-Origin: *');
-        header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+        parent::__construct();
         $this->output->set_content_type('application/json');
         $this->load->library('common');
         global $messages_lang;
         $messages_lang = $this->common->set_language_for_server_api('base_api',
             array('missing_fields', 'invalid_credential', 'authorized', 'not_authorized',
                 'logout_success', 'logout_failure', 'unexpected_errors'));
-        parent::__construct();
     }
 
     function authenticate()
