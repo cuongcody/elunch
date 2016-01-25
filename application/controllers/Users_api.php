@@ -8,8 +8,6 @@ class Users_api extends Base_api {
         parent::__construct();
         $this->load->library('common');
         $this->load->model('users_model');
-        header('Access-Control-Allow-Origin: *');
-        header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
     }
 
     /**

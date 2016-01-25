@@ -9,6 +9,8 @@ class Base_api extends REST_Controller{
     function __construct()
     {
         parent::__construct();
+        header('Access-Control-Allow-Origin: *');
+        header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
         $this->output->set_content_type('application/json');
         $this->load->library('common');
         global $messages_lang;
