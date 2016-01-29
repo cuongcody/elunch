@@ -52,6 +52,134 @@ class Users_api extends Base_api {
         $this->response($response, 200);
     }
 
+        /**
+     * Get preferences
+     * url: http://localhost/preferences
+     * Method: GET
+     * @return      json
+     */
+    function preferences_get()
+    {
+        $messages_lang = $this->common->set_language_for_server_api('users_api',
+            array('get_user_profile_success', 'get_user_profile_failure'));
+        $response = array();
+        $this->load->model('Preferences_model');
+        $result = $this->Preferences_model->get_all_preferences();
+        if ($result != NULL)
+        {
+            $preferences = array();
+            for ($i = 0; $i < count($result); $i++)
+            {
+                $temp = array();
+                foreach ($result as $key2 => $value2)
+                {
+                    if ($result[$i]->preferences_categories_id == $value2->preferences_categories_id)
+                    {
+                        $value2->id = (int)$value2->id;
+                        $value2->preferences_categories_id = (int)$value2->preferences_categories_id;
+                        array_push($temp, $value2);
+                        $i = $key2;
+                    }
+                }
+                array_push($preferences, $temp);
+            }
+            $response['data'] = $preferences;
+            $response['status'] = $messages_lang['success'];
+            $response['message'] = $messages_lang['get_user_profile_success'];
+        }
+        else
+        {
+            $response['status'] = $messages_lang['failure'];
+            $response['message'] = $messages_lang['get_user_profile_failure'];
+        }
+        // Respond with information about a user
+        $this->response($response, 200);
+    }
+
+    /**
+     * Post preferences
+     * url: http://localhost/preferences
+     * Method: GET
+     * @return      json
+     */
+    function preferences_post()
+    {
+        $messages_lang = $this->common->set_language_for_server_api('users_api',
+            array('edit_user_profile_success', 'edit_user_profile_failure'));
+        $this->verify_required_params(array('user_id'));
+        $user_id = $this->post('user_id');
+        $preferences_ids = array();
+        if ($this->post('preferences_ids') != NULL) $preferences_ids = explode(';', $this->post('preferences_ids'));
+        $response = array();
+        $this->load->model('Preferences_model');
+        $result = $this->Preferences_model->insert_preferences_for_user($user_id, $preferences_ids);
+        if ($result != NULL)
+        {
+            $response['status'] = $messages_lang['success'];
+            $response['message'] = $messages_lang['edit_user_profile_success'];
+        }
+        else
+        {
+            $response['status'] = $messages_lang['failure'];
+            $response['message'] = $messages_lang['edit_user_profile_failure'];
+        }
+        // Respond with information about a user
+        $this->response($response, 200);
+    }
+
+    /**
+     * Get infomation user by id
+     * url: http://localhost/preferences
+     * Method: GET
+     * @param       int  $user_id
+     * @return      json
+     */
+
+    /**
+     * Get preferences user by id
+     * url: http://localhost/user/<user_id>/preferences
+     * Method: GET
+     * @param       int  $user_id
+     * @return      json
+     */
+    function user_preferences_get($user_id)
+    {
+        $messages_lang = $this->common->set_language_for_server_api('users_api',
+            array('get_user_profile_success', 'get_user_profile_failure'));
+        $response = array();
+        $this->load->model('Preferences_model');
+        $result = $this->Preferences_model->get_preferences_of_user($user_id);
+        if ($result != NULL)
+        {
+            $preferences = array();
+            for ($i = 0; $i < count($result); $i++)
+            {
+                $temp = array();
+                foreach ($result as $key2 => $value2)
+                {
+                    if ($result[$i]->preferences_categories_id == $value2->preferences_categories_id)
+                    {
+                        $value2->id = (int)$value2->id;
+                        $value2->preferences_categories_id = (int)$value2->preferences_categories_id;
+                        array_push($temp, $value2);
+                        $i = $key2;
+                    }
+                }
+                array_push($preferences, $temp);
+            }
+            $response['data'] = $preferences;
+            $response['status'] = $messages_lang['success'];
+            $response['message'] = $messages_lang['get_user_profile_success'];
+        }
+        else
+        {
+            $response['status'] = $messages_lang['failure'];
+            $response['message'] = $messages_lang['get_user_profile_failure'];
+        }
+        // Respond with information about a user
+        $this->response($response, 200);
+    }
+
     /**
      * Update infomation user by id
      * url: http://localhost/user/<number_of_user_id>

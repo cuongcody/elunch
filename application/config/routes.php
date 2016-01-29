@@ -64,6 +64,8 @@ $route['shift/(:num)/tables'] = 'tables_api/tables_of_shift/$1';
 $route['tables'] = 'tables_api/tables';
 $route['seat'] = 'tables_api/seat';
 // User profile api
+$route['user/(:num)/preferences'] = 'users_api/user_preferences/$1';
+$route['preferences'] = 'users_api/preferences';
 $route['change_password'] = 'users_api/change_password';
 $route['forgot_password'] = 'users_api/forgot_password';
 $route['user/(:num)/gcm_regid'] = 'users_api/gcm_regid/$1';
