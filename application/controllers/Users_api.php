@@ -60,6 +60,7 @@ class Users_api extends Base_api {
      */
     function preferences_get()
     {
+        $this->authenticate();
         $messages_lang = $this->common->set_language_for_server_api('users_api',
             array('get_user_profile_success', 'get_user_profile_failure'));
         $response = array();
@@ -104,6 +105,7 @@ class Users_api extends Base_api {
      */
     function preferences_post()
     {
+        $this->authenticate();
         $messages_lang = $this->common->set_language_for_server_api('users_api',
             array('edit_user_profile_success', 'edit_user_profile_failure'));
         $this->verify_required_params(array('user_id'));
@@ -144,6 +146,7 @@ class Users_api extends Base_api {
      */
     function user_preferences_get($user_id)
     {
+        $this->authenticate();
         $messages_lang = $this->common->set_language_for_server_api('users_api',
             array('get_user_profile_success', 'get_user_profile_failure'));
         $response = array();
