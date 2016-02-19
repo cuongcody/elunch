@@ -77,6 +77,7 @@ class Users extends CI_Controller {
     public function store_user()
     {
         $want_vegan_meal = (!empty($this->input->post('want_vegan_meal'))) ? 1 : 0;
+        $is_active = (!empty($this->input->post('is_active'))) ? 1 : 0;
         $image_data = $this->session->userdata('upload');
         list($check_register, $result) = $this->users_model->insert_user(array(
             'email' => $this->input->post('email'),
@@ -88,6 +89,7 @@ class Users extends CI_Controller {
             'avatar_file_name' => $image_data['file_name'],
             'avatar_content_file' => base_url(LINK_TO_IMAGE_OF_USERS.$image_data['file_name']),
             'want_vegan_meal' => $want_vegan_meal,
+            'is_active' => $is_active,
             'floor' => $this->input->post('floor'),
             'shift' => $this->input->post('shift')
             ));
@@ -104,6 +106,7 @@ class Users extends CI_Controller {
     public function edit_user($user_id)
     {
         $want_vegan_meal = (!empty($this->input->post('want_vegan_meal'))) ? 1 : 0;
+        $is_active = (!empty($this->input->post('is_active'))) ? 1 : 0;
         $image_data = $this->session->userdata('upload');
         $can_update = $this->users_model->update_user($user_id,
             array(
@@ -114,6 +117,7 @@ class Users extends CI_Controller {
             'avatar_file_name' => $image_data['file_name'],
             'avatar_content_file' => base_url(LINK_TO_IMAGE_OF_USERS.$image_data['file_name']),
             'want_vegan_meal' => $want_vegan_meal,
+            'is_active' => $is_active,
             'floor' => $this->input->post('floor')
             ));
         return $can_update;
@@ -169,7 +173,7 @@ class Users extends CI_Controller {
     {
         $message = array('title', 'email', 'password', 'confirm_password',
          'what_taste', 'save', 'want_vegan_meal', 'first_name', 'last_name', 'floor', 'shift',
-         'admin', 'user', 'role', 'image_upload', 'avatar', 'exist_email');
+         'admin', 'user', 'is_active', 'role', 'image_upload', 'avatar', 'exist_email');
         $data = $this->common->set_language_and_data('new_user', $message);
         $this->load->model('floors_model');
         $data['floors'] = Floors_model::get_all_floors();
@@ -185,7 +189,7 @@ class Users extends CI_Controller {
         $this->session->set_userdata('upload', $image_data);
         $message = array('title', 'manage_users', 'email', 'password', 'confirm_password',
          'what_taste', 'edit', 'want_vegan_meal', 'first_name', 'last_name', 'floor', 'shift',
-         'admin', 'user', 'role', 'image_upload', 'avatar', 'change_password', 'change_shift', 'yes', 'cancel');
+         'admin', 'user', 'is_active', 'role', 'image_upload', 'avatar', 'change_password', 'change_shift', 'yes', 'cancel');
         $data = $this->common->set_language_and_data('edit_user', $message);
         $this->load->model('floors_model');
         $data['floors'] = Floors_model::get_all_floors();
@@ -197,7 +201,7 @@ class Users extends CI_Controller {
 
     public function load_users_view($search)
     {
-        $message = array('title', 'search', 'search_name', 'email', 'first_name', 'last_name', 'what_taste', 'want_vegan_meal', 'floor', 'role', 'user', 'admin', 'create_user', 'edit', 'delete', 'are_you_sure', 'yes', 'cancel');
+        $message = array('title', 'search', 'search_name', 'email', 'first_name', 'last_name', 'what_taste', 'want_vegan_meal', 'floor', 'role', 'user', 'admin', 'is_active', 'create_user', 'edit', 'delete', 'are_you_sure', 'yes', 'cancel');
         $data = $this->common->set_language_and_data('users', $message);
         $this->load->library('pagination');
         $config['base_url'] = ($search == NULL) ? base_url().'/admin/users' : base_url().'/admin/users/search';

@@ -12,6 +12,7 @@
     $lang["want_vegan_meal"] = "Vegetarian";
     $lang["admin"] = "Admin";
     $lang["user"] = "User";
+    $lang["is_active"] = "Actived";
     $lang["avatar"] = "Avatar";
     $lang["role"] = "Role";
     $lang["exist_email"] = "Email existed";

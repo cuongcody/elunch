@@ -11,6 +11,7 @@
     $lang["search_name"] = "Tìm tên";
     $lang["admin"] = "Quản trị hệ thống";
     $lang["user"] = "Người dùng";
+    $lang["is_active"] = "Active";
     $lang["avatar"] = "Ảnh đại diện";
     $lang["role"] = "Vai trò";
     $lang["create_user"] = "Tạo người dùng";

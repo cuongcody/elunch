@@ -43,12 +43,25 @@
                             </div>
                             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#change_password_modal" data-whatever="@mdo"><?php echo $edit_user_lang['change_password'] ?></button>
                             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#change_shift_modal" data-whatever="@mdo"><?php echo $edit_user_lang['change_shift'] ?></button>
-                            <div class="checkbox">
-                                <label>
-                                <?php
-                                    echo ($user->want_vegan_meal == 1) ? form_checkbox( 'want_vegan_meal', 'accept', TRUE) : form_checkbox( 'want_vegan_meal', TRUE);
-                                    echo $edit_user_lang[ 'want_vegan_meal']; ?>
-                                </label>
+                            <div class="form-group col-xs-12">
+                                <div class="col-xs-12 col-sm-6">
+                                    <div class="checkbox">
+                                        <label>
+                                        <?php
+                                            echo ($user->want_vegan_meal == 1) ? form_checkbox( 'want_vegan_meal', 'accept', TRUE) : form_checkbox( 'want_vegan_meal', TRUE);
+                                            echo $edit_user_lang[ 'want_vegan_meal']; ?>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-6">
+                                    <div class="checkbox">
+                                        <label>
+                                        <?php
+                                            echo ($user->is_active == 1) ? form_checkbox( 'is_active', 'accept', TRUE) : form_checkbox( 'is_active', TRUE);
+                                            echo $edit_user_lang[ 'is_active']; ?>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="comment"><?php echo $edit_user_lang[ 'what_taste']; ?></label>

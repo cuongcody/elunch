@@ -54,12 +54,25 @@
                             'placeholder' => $new_user_lang['confirm_password']);
                             echo form_password($data); ?>
                     </div>
-                    <div class="checkbox">
-                        <label>
-                        <?php
-                            echo form_checkbox( 'want_vegan_meal', 'accept', FALSE);
-                            echo $new_user_lang[ 'want_vegan_meal']; ?>
-                        </label>
+                    <div class="form-group col-xs-12">
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="checkbox">
+                                <label>
+                                <?php
+                                    echo form_checkbox( 'want_vegan_meal', 'accept', FALSE);
+                                    echo $new_user_lang[ 'want_vegan_meal']; ?>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="checkbox">
+                                <label>
+                                <?php
+                                    echo form_checkbox( 'is_active', 'accept', FALSE);
+                                    echo $new_user_lang[ 'is_active']; ?>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="comment"><?php echo $new_user_lang['what_taste']; ?></label>

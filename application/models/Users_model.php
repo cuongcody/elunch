@@ -264,6 +264,7 @@ class Users_model extends CI_Model{
                 'avatar_file_name' => $user['avatar_file_name'],
                 'avatar_content_file' => $user['avatar_content_file'],
                 'want_vegan_meal' => $user['want_vegan_meal'],
+                'is_active' => $user['is_active'],
                 'floor_id' => $user['floor'],
                 'shift_id' => $user['shift'],
                 'created_at' => date('Y-m-d H:i:s'));
@@ -303,6 +304,7 @@ class Users_model extends CI_Model{
                 'first_name' => $user_data['first_name'],
                 'last_name' => $user_data['last_name'],
                 'want_vegan_meal' => $user_data['want_vegan_meal'],
+                'is_active' => $user_data['is_active'],
                 'what_taste' => $user_data['what_taste'],
                 'admin' => $user_data['role'],
                 'avatar_file_name' => $user_data['avatar_file_name'],
