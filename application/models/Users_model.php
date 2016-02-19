@@ -316,6 +316,7 @@ class Users_model extends CI_Model{
         ($user_data['want_vegan_meal'] == 0) ? $this->tables_model->update_table_for_user($user_id, TRUE) : $this->tables_model->update_table_for_user($user_id, FALSE);
         $this->db->where('id', $user_id);
         $this->db->update('users', $data);
+        if ($user_data['is_active'] == 0) $this->reset_authentication($user_id);
         if ($this->db->trans_status() === FALSE)
         {
             $this->db->trans_rollback();
@@ -445,6 +446,12 @@ class Users_model extends CI_Model{
             return FALSE;
         }
         return FALSE;
+    }
+
+    function reset_authentication($user_id)
+    {
+        $this->db->where('id', $user_id);
+        $this->db->update('users', array('authentication_token' => ''));
     }
 
     public function send_mail($email, $token)
