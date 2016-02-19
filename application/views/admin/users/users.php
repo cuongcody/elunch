@@ -66,10 +66,10 @@
                                             <input type="checkbox" disabled class="text-center" <?php echo (($user->want_vegan_meal == 1) ? "checked" : "") ?> >
                                         </td>
                                         <td class="active"><?php echo (($user->admin == 0) ? $users_lang['user'] : $users_lang['admin']) ?></td>
-                                        <td class="active"><?php echo anchor('admin/users/edit/'.$user->id, $users_lang['edit'], "class='label btn-loading label-info'") ?></td>
                                         <td class="active">
                                             <input type="checkbox" disabled class="text-center" <?php echo (($user->is_active == 1) ? "checked" : "") ?> >
                                         </td>
+                                        <td class="active"><?php echo anchor('admin/users/edit/'.$user->id, $users_lang['edit'], "class='label btn-loading label-info'") ?></td>
                                         <td class="active">
                                             <a href="#delete_user_modal" class="label label-warning" data-toggle="modal" data-target="#delete_user_modal" data-user-avatar-file-name="<?php echo $user->avatar_file_name ?>" data-user-id="<?php echo $user->id ?>" onclick="false;"><?php echo $users_lang["delete"] ?></a>
                                         </td>

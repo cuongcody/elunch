@@ -11,7 +11,7 @@
     $lang["want_vegan_meal"] = "Ăn chay";
     $lang["admin"] = "Quản trị hệ thống";
     $lang["user"] = "Người dùng";
-    $lang["is_active"] = "Actived";
+    $lang["is_active"] = "Is Active";
     $lang["avatar"] = "Ảnh đại diện";
     $lang["role"] = "Vai trò";
     $lang["english"] = "Tiếng Anh";

@@ -10,7 +10,7 @@
     $lang["search"] = "Search";
     $lang["search_name"] = "Search name";
     $lang["admin"] = "Admin";
-    $lang["is_active"] = "Actived";
+    $lang["is_active"] = "Is Active";
     $lang["user"] = "User";
     $lang["avatar"] = "Avatar";
     $lang["role"] = "Role";

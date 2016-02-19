@@ -267,7 +267,7 @@ class Users_api extends Base_api {
         list($check_login, $result) = $this->users_model->login(array(
             'email' => $this->post('email'),
             'password' => $this->post('password')));
-        if($check_login)
+        if ($check_login && $result->is_active == 1)
         {
             $user['id'] = (int)$result->id;
             $user['authentication_token'] = $this->jwt->encode(array(
