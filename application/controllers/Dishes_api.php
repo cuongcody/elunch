@@ -83,7 +83,7 @@ class Dishes_api extends Base_api {
                     {
                         $dish = array();
                         $dish['id'] = (int)$temp2->dish_id;
-                        $dish['name'] = $temp2->name.(($temp2->for_vegans == 1) ? $messages_lang['vegan_meal'] : '');
+                        $dish['name'] = $temp2->name.(($temp2->for_vegans == 1) ? " (".$messages_lang['vegan_meal'].")" : '');
                         $dish['description'] = $temp2->description;
                         $dish['image'] = $temp2->image;
                         array_push($dishes, $dish);
