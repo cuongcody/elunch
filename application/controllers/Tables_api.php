@@ -46,7 +46,7 @@ class Tables_api extends Base_api {
             {
                 $table = array();
                 $table['id'] = (int)$temp->id;
-                $table['name'] = $temp->name;
+                $table['name'] = $temp->shift.' - '.$temp->name;
                 $table['for_vegans'] = (boolean)$temp->for_vegans;
                 $table['description'] = $temp->description;
                 $table['seats'] = (int)$temp->seats;
