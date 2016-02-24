@@ -136,6 +136,7 @@ function getUsersByTablesAjax() {
                         else status_user = 'border-warning';
                         $('#table_' + el.id).find('.circle_' + i).addClass(status_user);
                         $('#table_' + el.id).find('.circle_' + i).addClass('update-status');
+                        $('#table_' + el.id).find('.circle_' + i).addClass('users');
                         $('#table_' + el.id).find('.circle_' + i).attr('href', '#choose_status_user_modal');
                         $('#table_' + el.id).find('.circle_' + i).attr('id', 'user_' + el.users[i].id);
                         $('#table_' + el.id).find('.circle_' + i).attr('data-toggle', 'modal');

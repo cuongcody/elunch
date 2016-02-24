@@ -13,7 +13,6 @@
     <!-- Bootstrap core CSS -->
 
     <link href="<?php echo base_url('assets/css/bootstrap.min.css'); ?>" rel="stylesheet">
-    <link href="<?php echo base_url('assets/css/style.css'); ?>" rel="stylesheet">
     <style type="text/css">
         .header {
             background: url(<?php echo base_url().'/assets/images/logo.png' ?>);
@@ -37,6 +36,7 @@
         }
         .table-header {
             background-color: #024700; color: #fff;
+            overflow: hidden;
         }
         .border-left {
             border-left: 1px solid #d7d7d7;

@@ -43,7 +43,6 @@ $(function() {
     });
 
     $('.btn-meal-report').click(function() {
-        $(".se-pre-con").fadeIn('slow');
         meal_date = $(this).data('date');
         base_url = $(this).data('path');
         window.location.replace(base_url + '/' + meal_date);
