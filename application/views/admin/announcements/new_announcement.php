@@ -84,7 +84,7 @@
                             if (!empty($tables))
                             {
                                 foreach ($tables as $temp)
-                                { $options[$temp->id] = $temp->name; }
+                                { $options[$temp->id] = $temp->shift. ' - '.$temp->name; }
                                 $select_table = $this->input->post('table');
                                 echo form_dropdown('table', $options, set_value('table', (!empty($select_table) ) ? "$select_table" : $tables[0]->id), 'class= "form-control"');
                             }
