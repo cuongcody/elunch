@@ -240,7 +240,7 @@ class Tables extends CI_Controller {
             }
         }
         $data['tables'] = $tables;
-        $data['users'] = Shifts_model::get_users_by_shift($shift_id);
+        $data['users'] = $this->shifts_model->get_users_by_shift($shift_id);
         $data['day'] = $day;
         $this->common->load_view('admin/tables/arrange_tables', $data);
     }

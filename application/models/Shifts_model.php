@@ -96,17 +96,25 @@ class Shifts_model extends CI_Model {
      * @param       int  $shift_id
      * @return      array
      */
-    static function get_users_by_shift($shift_id)
+    function get_users_by_shift($shift_id)
     {
+        if ($this->check_kind_of_shift($this->get_shift_by_id($shift_id)))
+        {
+            $this->load->model('users_model');
+            return $this->users_model->get_all_users();
+        }
+        else
+        {
+            $this->db->select('users.*, floors.name AS floor, shifts.name AS shift, shifts.id AS shift_id, shifts.start_time, shifts.end_time');
+            $this->db->from('users');
+            $this->db->join('floors', 'users.floor_id = floors.id');
+            $this->db->join('shifts', 'users.shift_id = shifts.id');
+            $this->db->where('shift_id', $shift_id);
+            $this->db->order_by('users.first_name');
+            $query = $this->db->get();
+            return $query->result();
+        }
 
-        self::$db->select('users.*, floors.name AS floor, shifts.name AS shift, shifts.id AS shift_id, shifts.start_time, shifts.end_time');
-        self::$db->from('users');
-        self::$db->join('floors', 'users.floor_id = floors.id');
-        self::$db->join('shifts', 'users.shift_id = shifts.id');
-        self::$db->where('shift_id', $shift_id);
-        self::$db->order_by('users.first_name');
-        $query = self::$db->get();
-        return $query->result();
     }
 
     /**

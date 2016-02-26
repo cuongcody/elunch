@@ -248,7 +248,7 @@ class Announcements extends CI_Controller {
             case ANNOUNCEMENT_SHIFT:
                 $data['shift'] = $this->input->post('shift');
                 $this->load->model('shifts_model');
-                $users = Shifts_model::get_users_by_shift($data['shift']);
+                $users = $this->shifts_model->get_users_by_shift($data['shift']);
                 break;
             default:
                 $data['user'] = 'all';
