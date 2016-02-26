@@ -161,7 +161,6 @@ class Tables_model extends CI_Model{
      */
     function get_tables_by_shift($shift_id, $for_vegans = NULL, $day = NULL)
     {
-        ($day) ? ''
         $this->db->select('tables.id, tables.name, tables.description, tables.for_vegans, tables.seats,
                 SUM(users.id AND tables_users.vegan_day = '.$day.') AS occupied_seats,
                 shifts.name AS shift , shifts.id AS shift_id, shifts.start_time, shifts.end_time');
