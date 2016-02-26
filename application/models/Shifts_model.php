@@ -17,7 +17,7 @@ class Shifts_model extends CI_Model {
      */
     static function get_all_shifts()
     {
-        $query = self::$db->get('shifts');
+        $query = self::$db->order_by('name', 'ASC')->get('shifts');
         return (array)$query->result();
     }
 
