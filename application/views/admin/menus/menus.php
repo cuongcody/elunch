@@ -5,7 +5,7 @@
             <div id="elevator_item"><a id="elevator" onclick="return false;" title="Back To Top"></a></div>
             <div class='row'>
                 <div class= "col-xs-12 col-md-5">
-                    <?php echo anchor('admin/menus/add', $menus_lang['create_menu'], "class='btn btn-loading btn-loading btn-primary'"); ?>
+                    <?php echo anchor('admin/menus/add', $menus_lang['create_menu'], "class='btn btn-primary'"); ?>
                 </div>
                 <div class= "col-xs-12 col-md-offset-2 col-md-5">
                     <?php echo form_open('admin/menus/search'); ?>
@@ -60,7 +60,7 @@
                                         <td class="active">
                                             <a href="#list_dishes_modal" class="label label-success" data-toggle="modal" data-target="#list_dishes_modal" data-path="<?php echo base_url()."admin/menus/list_dishes_from_menu/".$menu->id ?>" onclick="false;"><?php echo $menus_lang["dishes_of_menu"] ?></a>
                                         </td>
-                                        <td class="active"><?php echo anchor('admin/menus/edit/'.$menu->id, $menus_lang['edit'], "class='btn-loading label label-info'") ?></td>
+                                        <td class="active"><?php echo anchor('admin/menus/edit/'.$menu->id, $menus_lang['edit'], "class='label label-info'") ?></td>
                                         <td class="active">
                                             <a href="#delete_menu_modal" class="label label-warning" data-toggle="modal" data-target="#delete_menu_modal" data-menu-id="<?php echo $menu->id?>" onclick="false;"><?php echo $menus_lang["delete"] ?></a></td>
                                     </tr>

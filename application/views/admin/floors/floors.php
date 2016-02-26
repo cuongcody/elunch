@@ -3,7 +3,7 @@
     <div class="row">
         <div class= 'col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10 col-xs-12'>
             <div id="elevator_item"><a id="elevator" onclick="return false;" title="Back To Top"></a></div>
-            <?php echo anchor('admin/floors/add', $floors_lang['create_floor'], "class='btn btn-loading btn-primary'"); ?>
+            <?php echo anchor('admin/floors/add', $floors_lang['create_floor'], "class='btn btn-primary'"); ?>
             <?php if (!empty($_SESSION['message'])) echo "<script type='text/javascript'>announcementMessage('".$_SESSION['message']."')</script>"; ?>
             <div class='table-responsive'>
                 <table class="table table-striped responsive-utilities jambo_table bulk_action">
@@ -33,7 +33,7 @@
                                                 <p class="detail-text"><?php echo (strlen($floor->description) > 30) ? substr($floor->description, 0, 30)."..." : $floor->description ?></p>
                                             </a>
                                         </td>
-                                        <td class="active"><?php echo anchor('admin/floors/edit/'.$floor->id, $floors_lang['edit'], "class='btn-loading label label-info'") ?></td>
+                                        <td class="active"><?php echo anchor('admin/floors/edit/'.$floor->id, $floors_lang['edit'], "class='label label-info'") ?></td>
                                         <td class="active">
                                             <a href="#delete_floor_modal" class="label label-warning" data-toggle="modal" data-target="#delete_floor_modal" data-floor-id="<?php echo $floor->id ?>" onclick="false;"><?php echo $floors_lang["delete"] ?></a>
                                         </td>

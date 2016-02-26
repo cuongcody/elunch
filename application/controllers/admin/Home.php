@@ -41,7 +41,7 @@ class Home extends CI_Controller {
         $for_vegans = ($day == NORMAL_DAY) ? 0 : NULL;
         $this->load->model('tables_model');
         $this->load->model('shifts_model');
-        $tables = Tables_model::get_tables_by_shift($shift_id, $for_vegans, $day);
+        $tables = $this->tables_model->get_tables_by_shift($shift_id, $for_vegans, $day);
         $data['tables'] = $tables;
         $data['shift'] = Shifts_model::get_shift_by_id($shift_id);
         echo json_encode($data);

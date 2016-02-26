@@ -5,7 +5,7 @@
             <div id="elevator_item"><a id="elevator" onclick="return false;" title="Back To Top"></a></div>
             <div class='row'>
                 <div class= "col-xs-12 col-md-5">
-                    <?php echo anchor('admin/dishes/add', $dishes_lang['create_dish'], "class='btn btn-loading btn-primary'"); ?>
+                    <?php echo anchor('admin/dishes/add', $dishes_lang['create_dish'], "class='btn btn-primary'"); ?>
                 </div>
                 <div class= "col-xs-12 col-md-7">
                     <?php echo form_open('admin/dishes/search'); ?>
@@ -79,7 +79,7 @@
                                             </a>
                                         </td>
                                         <td class="active"><?php echo $dish->category ?></td>
-                                        <td class="active"><?php echo anchor('admin/dishes/edit/'.$dish->id, $dishes_lang['edit'], "class='btn-loading label label-info'") ?></td>
+                                        <td class="active"><?php echo anchor('admin/dishes/edit/'.$dish->id, $dishes_lang['edit'], "class='label label-info'") ?></td>
                                         <td class="active">
                                             <a href="#delete_dish_modal" class="label label-warning" data-toggle="modal" data-target="#delete_dish_modal" data-dish-image-file-name="<?php echo $dish->image_file_name ?>" data-dish-id="<?php echo $dish->id ?>" onclick="false;"><?php echo $dishes_lang["delete"] ?></a>
                                         </td>

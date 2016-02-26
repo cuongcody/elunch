@@ -5,7 +5,7 @@
             <div class="row">
                 <div class= "col-xs-12 col-md-5">
                     <div id="elevator_item"><a id="elevator" onclick="return false;" title="Back To Top"></a></div>
-                <?php echo anchor('admin/meals/add', $meals_lang['create_meal'], "class='btn btn-loading btn-primary'"); ?>
+                <?php echo anchor('admin/meals/add', $meals_lang['create_meal'], "class='btn btn-primary'"); ?>
                 </div>
                 <div class= "col-xs-12 col-md-7">
                     <?php echo form_open_multipart( 'admin/meals/'); ?>
@@ -73,7 +73,7 @@
                                         <td class="active">
                                             <input type="checkbox" disabled class="text-center" <?php echo (($meal->for_vegans == 1) ? "checked" : "") ?> >
                                         </td>
-                                        <td class="active"><?php echo anchor('admin/meals/edit/'.$meal->id, $meals_lang['edit'], "class='btn-loading label label-info'") ?></td>
+                                        <td class="active"><?php echo anchor('admin/meals/edit/'.$meal->id, $meals_lang['edit'], "class='label label-info'") ?></td>
                                         <td class="active">
                                             <a href="#delete_meal_modal" class="label label-warning" data-toggle="modal" data-target="#delete_meal_modal" data-meal-id="<?php echo $meal->id ?>" onclick="false;"><?php echo $meals_lang["delete"] ?></a>
                                         </td>

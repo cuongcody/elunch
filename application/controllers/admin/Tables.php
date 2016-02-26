@@ -140,7 +140,7 @@ class Tables extends CI_Controller {
         $message = $this->common->get_message('add_user', array('add_success', 'add_failure', 'have_table'));
         if (is_numeric($user_id) && is_numeric($table_id))
         {
-            $result = $this->tables_model->arrange_to_add_user_in_table($user_id, $table_id, $day);
+            $result = $this->tables_model->set_table_for_user($user_id, $table_id, $day);
             switch ($result)
             {
                 case JOIN_TABLE_SUCCESSFULLY:
@@ -177,10 +177,11 @@ class Tables extends CI_Controller {
         $this->common->authenticate();
         $user_id = $this->input->post('user_id');
         $table_id = $this->input->post('table_id');
+        $day = $this->input->post('day');
         $message = $this->common->get_message('leave_table', array('leave_success', 'leave_failure'));
         if (is_numeric($user_id) && is_numeric($table_id))
         {
-            $result = $this->tables_model->user_leave_table($user_id, $table_id);
+            $result = $this->tables_model->user_leave_table($user_id, $table_id, $day);
             switch ($result)
             {
                 case LEAVE_TABLE_SUCCESSFULLY:
@@ -228,14 +229,14 @@ class Tables extends CI_Controller {
         $tables = array();
         if (!is_null($shift_id))
         {
-            $tables = Tables_model::get_tables_by_shift($shift_id, $for_vegans, $day);
+            $tables = $this->tables_model->get_tables_by_shift($shift_id, $for_vegans, $day);
         }
         else
         {
             if (!empty($data['shifts']))
             {
                 $shift_id = $data['shifts'][0]->id;
-                $tables = Tables_model::get_tables_by_shift($shift_id, $for_vegans, $day);
+                $tables = $this->tables_model->get_tables_by_shift($shift_id, $for_vegans, $day);
             }
         }
         $data['tables'] = $tables;

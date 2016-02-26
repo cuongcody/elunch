@@ -2,7 +2,7 @@
 <div class="right_col" role="main">
     <div class="row">
         <div class= 'col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10 col-xs-12'>
-            <?php echo anchor('admin/access_point/add', $access_point_lang['create_access_point'], "class='btn btn-loading btn-primary'"); ?>
+            <?php echo anchor('admin/access_point/add', $access_point_lang['create_access_point'], "class='btn btn-primary'"); ?>
             <a href="javascript:void(0)" onclick='chooseAccessPoint();' id='push_notification' class='btn btn-success' data-path="<?php echo base_url('admin/access_point/push_notification') ?>"><?php echo $access_point_lang['push_notification'] ?></a>
             <?php if (!empty($_SESSION['message'])) echo "<script type='text/javascript'>announcementMessage('".$_SESSION['message']."')</script>"; ?>
             <div id="elevator_item"><a id="elevator" onclick="return false;" title="Back To Top"></a></div>

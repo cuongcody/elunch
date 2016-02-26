@@ -4,7 +4,7 @@
         <div class="page-title">
             <div class="title_left">
                 <?php if (!empty($_SESSION['message'])) echo "<script type='text/javascript'>announcementMessage('".$_SESSION['message']."')</script>"; ?>
-                <h3><?php echo $announcements_lang['announcement'] ?>  <small><?php echo anchor('admin/announcements/add', $announcements_lang['create_announce'], "class='btn btn-loading btn-primary'"); ?></small></h3>
+                <h3><?php echo $announcements_lang['announcement'] ?>  <small><?php echo anchor('admin/announcements/add', $announcements_lang['create_announce'], "class='btn btn-primary'"); ?></small></h3>
             </div>
             <div class="x_panel">
                 <div class="x_title">

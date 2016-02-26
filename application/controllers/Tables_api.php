@@ -25,19 +25,15 @@ class Tables_api extends Base_api {
             array('get_tables_of_shift_success', 'get_tables_of_shift_failure', 'variables_not_valid'));
         $for_vegans = NULL;
         $day = NULL;
-        if (NULL != $this->input->get('for_vegans'))
+        $for_vegans = strtolower($this->input->get('for_vegans'));
+        $want_vegan_meal = strtolower($this->input->get('want_vegan_meal'));
+        $day = $for_vegans = ($for_vegans == 'true') ? VEGAN_DAY : NORMAL_DAY;
+
+        if ($want_vegan_meal == 'false')
         {
-            $for_vegans = strtolower($this->input->get('for_vegans'));
+            $for_vegans = NORMAL_DAY;
         }
-        if ($for_vegans == 'true')
-        {
-            $day = $for_vegans = VEGAN_DAY;
-        }
-        else if ($for_vegans == 'false')
-        {
-            $day = $for_vegans = NORMAL_DAY;
-        }
-        $result = Tables_model::get_tables_by_shift($shift_id, $for_vegans, $day);
+        $result = $this->tables_model->get_tables_users_have($shift_id, $for_vegans, $day);
         $tables = array();
         $response = array();
         if ($result != NULL)
@@ -102,10 +98,11 @@ class Tables_api extends Base_api {
         $response = array();
         $user_id = $this->post('user_id');
         $table_id = $this->post('table_id');
-        $this->verify_required_params(array('user_id', 'table_id'));
+        $is_vegan_day = ((strtolower($this->post('is_vegan_day')) == 'true')) ? VEGAN_DAY : NORMAL_DAY;
+        $this->verify_required_params(array('user_id', 'table_id', 'is_vegan_day'));
         if (is_numeric($user_id) AND is_numeric($table_id))
         {
-            $result = $this->tables_model->set_table_for_user($user_id, $table_id);
+            $result = $this->tables_model->set_table_for_user($user_id, $table_id, $is_vegan_day);
             switch ($result)
             {
                 case JOIN_TABLE_SUCCESSFULLY:
@@ -118,7 +115,7 @@ class Tables_api extends Base_api {
                     break;
                 case HAVE_SEAT_IN_TABLE:
                     $response['status'] = $messages_lang['failure'];
-                    $response['message'] = $messages_lang['have_table'];
+                    $response['message'] = $is_vegan_day;
                     break;
             }
         }
@@ -146,9 +143,17 @@ class Tables_api extends Base_api {
         $response = array();
         $user_id = $this->input->get('user_id');
         $table_id = $this->input->get('table_id');
+        if (strtolower($this->input->get('is_vegan_day')) == 'true')
+        {
+            $is_vegan_day = VEGAN_DAY;
+        }
+        elseif (strtolower($this->input->get('is_vegan_day')) == 'false')
+        {
+            $is_vegan_day = NORMAL_DAY;
+        }
         if (is_numeric($user_id) AND is_numeric($table_id))
         {
-            $result = $this->tables_model->user_leave_table($user_id, $table_id, NULL);
+            $result = $this->tables_model->user_leave_table($user_id, $table_id, $is_vegan_day);
             switch ($result)
             {
                 case LEAVE_TABLE_SUCCESSFULLY:

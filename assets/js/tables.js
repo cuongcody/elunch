@@ -50,12 +50,13 @@ $(function() {
         $(".se-pre-con").fadeIn('slow');
         var table_id  = $('#leave_table_modal input[name="table_id"]').val();
         var user_id  = $('#leave_table_modal input[name="user_id"]').val();
+        var day  = $('input[name="day"]').val();
         base_url = $(this).data("path");
         jQuery.ajax({
             type: "POST",
             url: base_url,
             dataType: 'json',
-            data: {table_id:table_id, user_id:user_id},
+            data: {table_id:table_id, user_id:user_id, day:day},
             success: function(res) {
                 $(".se-pre-con").fadeOut('slow', function() {
                     if (res.status == 'success')

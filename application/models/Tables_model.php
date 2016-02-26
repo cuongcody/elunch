@@ -140,28 +140,48 @@ class Tables_model extends CI_Model{
      * @param       int  $day( NORMAL DAY OR VEGAN DAY)
      * @return      array
      */
-    static function get_tables_by_shift($shift_id, $for_vegans = NULL, $day = NULL)
+    function get_tables_users_have($shift_id, $for_vegans, $day)
     {
-        $query = '
-            SELECT tables.id, tables.name, tables.description, tables.for_vegans, tables.seats,
-            SUM(users.id AND tables_users.vegan_day = ?) AS occupied_seats,
-            shifts.name AS shift , shifts.id AS shift_id, shifts.start_time, shifts.end_time
-            FROM tables
-            INNER JOIN shifts ON tables.shift_id = shifts.id
-            LEFT JOIN tables_users ON tables_users.table_id = tables.id
-            LEFT JOIN users ON tables_users.user_id = users.id
-            WHERE shifts.id = ? ';
+        $shifts_and_tables = $this->get_tables_by_shift($shift_id, $for_vegans, $day);
+        $this->load->model('shifts_model');
+        $shifts_all_users_can_see = Shifts_model::find_shifts_all_users_can_see();
+        foreach ($shifts_all_users_can_see as $shift)
+        {
+            $shifts_and_tables = array_merge($shifts_and_tables, $this->get_tables_by_shift($shift->id, $for_vegans, $day));
+        }
+        return $shifts_and_tables;
+    }
+    /**
+     * Get tables by shift
+     *
+     * @param       int  $shift_id
+     * @param       int  $for_vegans
+     * @param       int  $day( NORMAL DAY OR VEGAN DAY)
+     * @return      array
+     */
+    function get_tables_by_shift($shift_id, $for_vegans = NULL, $day = NULL)
+    {
+        ($day) ? ''
+        $this->db->select('tables.id, tables.name, tables.description, tables.for_vegans, tables.seats,
+                SUM(users.id AND tables_users.vegan_day = '.$day.') AS occupied_seats,
+                shifts.name AS shift , shifts.id AS shift_id, shifts.start_time, shifts.end_time');
+        $this->db->from('tables');
+        $this->db->join('shifts', 'tables.shift_id = shifts.id');
+        $this->db->join('tables_users', 'tables_users.table_id = tables.id', 'left');
+        $this->db->join('users', 'tables_users.user_id = users.id', 'left');
+        $this->db->where('shifts.id', $shift_id);
         if (!is_null($for_vegans))
         {
-            $query.='AND tables.for_vegans = ? GROUP BY tables.id';
-            $result = self::$db->query($query, array($day, $shift_id, $for_vegans));
+            $this->db->where('tables.for_vegans', $for_vegans);
+            $this->db->group_by('tables.id');
+            $query = $this->db->get();
         }
         else
         {
-            $query.='GROUP BY tables.id';
-            $result = self::$db->query($query, array($day, $shift_id));
+            $this->db->group_by('tables.id');
+            $query = $this->db->get();
         }
-        return $result->result();
+        return $query->result();
     }
 
     /**
@@ -171,9 +191,8 @@ class Tables_model extends CI_Model{
      * @param       int  $day( NORMAL DAY OR VEGAN DAY)
      * @return      int
      */
-    static function check_status_of_user_in_table($user_id, $day = NULL)
+    static function check_status_of_user_in_table($user_id, $day)
     {
-
         $data = array('user_id' => $user_id, 'vegan_day' => $day);
         $query = self::$db->get_where('tables_users', $data);
         $num_rows = $query->num_rows();
@@ -194,45 +213,7 @@ class Tables_model extends CI_Model{
      * @param       int  $table_id
      * @return      int
      */
-    function set_table_for_user($user_id, $table_id)
-    {
-        $result = JOIN_TABLE_FAILED;
-        if ($this->can_set_seat_in_table_for_user($user_id, $table_id))
-        {
-            $this->load->model('users_model');
-            $is_vegan_table = $this->is_vegan_table($table_id);
-            $is_user_want_vegan_meal = Users_model::is_user_want_vegan_meal($user_id);
-            $res = ($is_vegan_table) ? $this->check_status_of_user_in_table($user_id, VEGAN_DAY) : $this->check_status_of_user_in_table($user_id, NORMAL_DAY);
-            if ($res == NO_SEAT_IN_TABLE)
-            {
-                if ($is_user_want_vegan_meal && $is_vegan_table)
-                {
-                    $result = ($this->insert_user_in_table($user_id, $table_id, VEGAN_DAY)) ? JOIN_TABLE_SUCCESSFULLY : JOIN_TABLE_FAILED;
-                }
-                else if ($is_user_want_vegan_meal && !$is_vegan_table)
-                {
-                    $result = ($this->insert_user_in_table($user_id, $table_id, NORMAL_DAY)) ? JOIN_TABLE_SUCCESSFULLY : JOIN_TABLE_FAILED;
-                }
-                else if (!$is_user_want_vegan_meal && !$is_vegan_table)
-                {
-                    $result = ($this->insert_user_in_table($user_id, $table_id, NULL)) ? JOIN_TABLE_SUCCESSFULLY : JOIN_TABLE_FAILED;
-                }
-                else $result = JOIN_TABLE_FAILED;
-            }
-            else $result = HAVE_SEAT_IN_TABLE;
-        }
-        return $result;
-    }
-
-    /**
-     * Admin arrange to add user in table
-     *
-     * @param       int  $user_id
-     * @param       int  $table_id
-     * @param       int  $day
-     * @return      int
-     */
-    function arrange_to_add_user_in_table($user_id, $table_id, $day)
+    function set_table_for_user($user_id, $table_id, $day)
     {
         $result = JOIN_TABLE_FAILED;
         if ($this->can_set_seat_in_table_for_user($user_id, $table_id))
@@ -247,13 +228,13 @@ class Tables_model extends CI_Model{
                 {
                     $result = ($this->insert_user_in_table($user_id, $table_id, VEGAN_DAY)) ? JOIN_TABLE_SUCCESSFULLY : JOIN_TABLE_FAILED;
                 }
-                elseif ($is_user_want_vegan_meal && !$is_vegan_table && $day == NORMAL_DAY)
+                else if ($is_user_want_vegan_meal && !$is_vegan_table && $day == NORMAL_DAY)
                 {
                     $result = ($this->insert_user_in_table($user_id, $table_id, NORMAL_DAY)) ? JOIN_TABLE_SUCCESSFULLY : JOIN_TABLE_FAILED;
                 }
-                elseif (!$is_user_want_vegan_meal && !$is_vegan_table)
+                else if (!$is_user_want_vegan_meal && !$is_vegan_table)
                 {
-                    $result = ($this->insert_user_in_table($user_id, $table_id, NULL)) ? JOIN_TABLE_SUCCESSFULLY : JOIN_TABLE_FAILED;
+                    $result = ($this->insert_user_in_table($user_id, $table_id, $day)) ? JOIN_TABLE_SUCCESSFULLY : JOIN_TABLE_FAILED;
                 }
                 else $result = JOIN_TABLE_FAILED;
             }
@@ -282,12 +263,7 @@ class Tables_model extends CI_Model{
                     'table_id' => $table_id,
                     'user_id' => $user_id,
                     'vegan_day' => VEGAN_DAY);
-        if (is_null($day))
-        {
-            $data = array( $data1, $data2);
-            $query = ($this->is_exist_seat_in_table($table_id, NORMAL_DAY) && $this->is_exist_seat_in_table($table_id, VEGAN_DAY)) ? $this->db->insert_batch('tables_users', $data) : FALSE;
-        }
-        elseif ($day == NORMAL_DAY)
+        if ($day == NORMAL_DAY)
         {
             $query = ($this->is_exist_seat_in_table($table_id, $day)) ? $this->db->insert('tables_users', $data1) : FALSE;
         }
@@ -306,15 +282,25 @@ class Tables_model extends CI_Model{
      * @param       int  $day( NORMAL DAY OR VEGAN DAY)
      * @return      bool
      */
-    function can_set_seat_in_table_for_user($user_id, $table_id, $day = NULL)
+    function can_set_seat_in_table_for_user($user_id, $table_id)
     {
-        $this->db->select('users.shift_id, tables.shift_id');
-        $this->db->from('users');
-        $this->db->join('tables', 'users.shift_id = tables.shift_id');
-        $this->db->where('users.id', $user_id);
-        $this->db->where('tables.id', $table_id);
-        $query = $this->db->get();
-        return ($query->num_rows() > 0);
+        $this->load->model('shifts_model');
+        $shift = Shifts_model::get_shift_by_table_id($table_id);
+        $is_all_users_can_see_this_shift = Shifts_model::check_kind_of_shift($shift);
+        if ($is_all_users_can_see_this_shift)
+        {
+            return TRUE;
+        }
+        else
+        {
+            $this->db->select('users.shift_id, tables.shift_id');
+            $this->db->from('users');
+            $this->db->join('tables', 'users.shift_id = tables.shift_id');
+            $this->db->where('users.id', $user_id);
+            $this->db->where('tables.id', $table_id);
+            $query = $this->db->get();
+            return ($query->num_rows() > 0);
+        }
     }
 
     /**
@@ -325,28 +311,12 @@ class Tables_model extends CI_Model{
      * @param       int  $day( NORMAL DAY OR VEGAN DAY)
      * @return      int
      */
-    function user_leave_table($user_id, $table_id, $day = NULL)
+    function user_leave_table($user_id, $table_id, $day)
     {
         $result = LEAVE_TABLE_FAILED;
         if ($this->is_user_belongs_to_table($user_id, $table_id, $day))
         {
-            $this->load->model('users_model');
-            $is_vegan_table = $this->is_vegan_table($table_id);
-            $is_user_want_vegan_meal = Users_model::is_user_want_vegan_meal($user_id);
-            $res = ($is_vegan_table) ? $this->check_status_of_user_in_table($user_id, VEGAN_DAY) : $this->check_status_of_user_in_table($user_id, NORMAL_DAY);
-            if ($is_user_want_vegan_meal && $is_vegan_table)
-            {
-                $result = ($this->delete_user_in_table($user_id, $table_id, VEGAN_DAY)) ? LEAVE_TABLE_SUCCESSFULLY : LEAVE_TABLE_FAILED;
-            }
-            else if ($is_user_want_vegan_meal && !$is_vegan_table)
-            {
-                $result = ($this->delete_user_in_table($user_id, $table_id, NORMAL_DAY)) ? LEAVE_TABLE_SUCCESSFULLY : LEAVE_TABLE_FAILED;
-            }
-            else if (!$is_user_want_vegan_meal && !$is_vegan_table)
-            {
-                $result = ($this->delete_user_in_table($user_id, $table_id, NULL)) ? LEAVE_TABLE_SUCCESSFULLY : LEAVE_TABLE_FAILED;
-            }
-            else $result = LEAVE_TABLE_FAILED;
+            $result = $this->delete_user_in_table($user_id, $day);
         }
         else $result = NO_SEAT_IN_TABLE;
         return $result;
@@ -394,7 +364,7 @@ class Tables_model extends CI_Model{
      * @param       int  $day( NORMAL DAY OR VEGAN DAY)
      * @return      bool
      */
-    function delete_user_in_table($user_id, $table_id, $day = NULL)
+    function delete_user_in_table($user_id, $day)
     {
         $this->db->cache_delete('admin', 'tables');
         $this->db->cache_delete('admin', 'home');
@@ -406,14 +376,12 @@ class Tables_model extends CI_Model{
         elseif (!is_null($day) && $day == VEGAN_DAY)
         {
             $data = array(
-            'table_id' => $table_id,
             'user_id' => $user_id,
             'vegan_day' => VEGAN_DAY);
         }
         elseif (!is_null($day) && $day == NORMAL_DAY)
         {
             $data = array(
-            'table_id' => $table_id,
             'user_id' => $user_id,
             'vegan_day' => NORMAL_DAY);
         }
@@ -474,40 +442,9 @@ class Tables_model extends CI_Model{
      * @param       int  $request
      * @return      bool
      */
-    function update_table_for_user($user_id, $request)
+    function update_table_for_user($user_id)
     {
-        // User want to change from eat vegan meal to eat normal meal
-        if ($request)
-        {
-            $table_in_normal_day = $this->db->get_where('tables_users', array('user_id' => $user_id, 'vegan_day' => NORMAL_DAY))->first_row();
-            // Have set table
-            if ($table_in_normal_day != NULL)
-            {
-                $have_vegan_table = $this->db->get_where('tables_users', array('user_id' => $user_id, 'vegan_day' => VEGAN_DAY))->num_rows();
-                if ($have_vegan_table > 0)
-                {
-                    if ($this->is_exist_seat_in_table($table_in_normal_day->table_id, VEGAN_DAY))
-                    {
-                        // Replace table normal meal for table vegan meal
-                        $this->db->where('user_id', $user_id);
-                        $this->db->where('vegan_day', VEGAN_DAY);
-                        return $this->db->update('tables_users', array('table_id' => $table_in_normal_day->table_id));
-                    }
-                    else return FALSE;
-                }
-                else
-                {
-                    return ($this->is_exist_seat_in_table($table_in_normal_day->table_id, VEGAN_DAY)) ? $this->db->insert('tables_users', array('user_id'=> $user_id, 'table_id' => $table_in_normal_day->table_id, 'vegan_day' => VEGAN_DAY)) : FALSE;
-                }
-            }
-            else return TRUE;
-        }
-        // User want to change from eat normal meal to eat vegan meal
-        else
-        {
-            //Delete table normal of user in vegan day
-            return $this->db->delete('tables_users', array('user_id' => $user_id, 'vegan_day' => VEGAN_DAY));
-        }
+        return $this->db->delete('tables_users', array('user_id' => $user_id, 'vegan_day' => VEGAN_DAY));
     }
 
     /**
