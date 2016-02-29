@@ -45,6 +45,26 @@ class Shifts_model extends CI_Model {
     }
 
     /**
+     * Get shift by id
+     *
+     * @param       int  $shift_id
+     * @return      object
+     */
+    static function get_shift_with_all_users_can_see()
+    {
+        $shifts = self::get_all_shifts();
+        $shifts_all_users_can_see = null;
+        foreach ($shifts as $shift)
+        {
+            if (self::check_kind_of_shift($shift))
+            {
+                $shifts_all_users_can_see = $shift;
+            }
+        }
+        return $shifts_all_users_can_see;
+    }
+
+    /**
      * Get shift by table id
      *
      * @param       int  $table_id
@@ -69,25 +89,6 @@ class Shifts_model extends CI_Model {
     static function check_kind_of_shift($shift)
     {
         return ($shift->all_users == TRUE);
-    }
-
-    /**
-     * Find shifts with all users can see
-     *
-     * @return      array
-     */
-    static function find_shifts_all_users_can_see()
-    {
-        $shifts = self::get_all_shifts();
-        $shifts_all_users_can_see = array();
-        foreach ($shifts as $shift)
-        {
-            if (self::check_kind_of_shift($shift))
-            {
-                $shifts_all_users_can_see[] = $shift;
-            }
-        }
-        return $shifts_all_users_can_see;
     }
 
     /**

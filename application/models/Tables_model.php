@@ -144,11 +144,8 @@ class Tables_model extends CI_Model{
     {
         $shifts_and_tables = $this->get_tables_by_shift($shift_id, $for_vegans, $day);
         $this->load->model('shifts_model');
-        $shifts_all_users_can_see = Shifts_model::find_shifts_all_users_can_see();
-        foreach ($shifts_all_users_can_see as $shift)
-        {
-            $shifts_and_tables = array_merge($shifts_and_tables, $this->get_tables_by_shift($shift->id, $for_vegans, $day));
-        }
+        $shifts_all_users_can_see = Shifts_model::get_shift_with_all_users_can_see();
+        $shifts_and_tables = array_merge($shifts_and_tables, $this->get_tables_by_shift($shifts_all_users_can_see->id, $for_vegans, $day));
         return $shifts_and_tables;
     }
     /**

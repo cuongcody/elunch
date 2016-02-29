@@ -1,5 +1,5 @@
 <?php
-require_once(APPPATH.'controllers/Base_api.php');
+require(APPPATH.'controllers/Base_api.php');
 
 class Users_api extends Base_api {
 
@@ -32,6 +32,18 @@ class Users_api extends Base_api {
             $user['last_name'] = $result->last_name;
             $user['avatar_content_file'] = $result->avatar_content_file;
             $user['want_vegan_meal'] = (boolean)$result->want_vegan_meal;
+            if ($user['want_vegan_meal'])
+            {
+                $this->load->model('Shifts_model');
+                $shift = Shifts_model::get_shift_with_all_users_can_see();
+                if ($shift)
+                {
+                    $user['shift_vegan_day_id'] = (int)$shift->id;
+                    $user['shift_vegan_day'] = $shift->name;
+                    $user['vegan_day_start_time'] = $shift->start_time;
+                    $user['vegan_day_end_time'] = $shift->end_time;
+                }
+            }
             $user['floor'] = $result->floor;
             $user['shift_id'] = (int)$result->shift_id;
             $user['shift'] = $result->shift;
@@ -52,7 +64,7 @@ class Users_api extends Base_api {
         $this->response($response, 200);
     }
 
-        /**
+    /**
      * Get preferences
      * url: http://localhost/preferences
      * Method: GET
