@@ -20,6 +20,8 @@ $(function () {
     $('select[name="day"]').on('change', function() {
       getTablesByShiftAjax();
     });
+
+
     $(document).on('click', 'input[name="submit"]', function(event) {
         $('.loadingx').fadeIn('slow');
         $(document).find('input[type="button"]').prop('disabled', true);
@@ -83,7 +85,7 @@ function getTablesByShiftAjax() {
             $.each(res.tables, function(index, value) {
                 btn_tables += '<a class="btn ' + ((value.for_vegans == 1) ? 'btn-table-vegan' : 'btn-table-normal') + '" href="#table_' + value.id + '">' + value.name + '</a>';
                 tables += '<div class="col-xs-offset-1 col-xs-8 col-xs-offset-1 col-sm-offset-3 col-sm-6 col-sm-offset-3 col-md-12"><div id="table_' + value.id + '" class="tables orbit-center ' + ((value.for_vegans == 1) ? 'bg-green' : '') + '">' +
-                '<input type="hidden" data-seats="' + value.seats + '" data-name="' + value.name + '" name="table_id" value="' + value.id + '">' +
+                '<div class="btn-all-join">SELECT ALL <i class="fa fa-plus"></i></div><input type="hidden" data-seats="' + value.seats + '" data-name="' + value.name + '" name="table_id" value="' + value.id + '">' +
                 '<h4 class="table-name text-center">' + value.name + '</h4></div></div></hr>';
             });
             $('.btn-tables').html(btn_tables);
@@ -166,6 +168,16 @@ function getUsersByTablesAjax() {
                 var user_id = $(this).find("input[name='user_in_table']").data('user-id');
                 $('#choose_status_user_modal').find('input[name="table_id"]').val(table_id);
                 $('#choose_status_user_modal').find('input[name="user_id"]').val(user_id);
+            });
+
+            $('.btn-all-join').on('click', function() {
+                table_id = $(this).parent().find("input[name='table_id']").val();
+                base_url = $("#choose_status_user_modal").find('input[name="user_id"]').data('path');
+                status = $('.attend').find('strong').data('status');
+                $(this).parent().find('.users').each(function(index, el) {
+                    user_id = $(this).find("input[name='user_in_table']").data('user-id');
+                    updateStatusOfUser(base_url, table_id, user_id, status);
+                });;
             });
         }
     });

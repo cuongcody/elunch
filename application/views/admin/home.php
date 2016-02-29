@@ -160,7 +160,7 @@
                 <input type='hidden' name="user_id" value="" data-path="<?php echo base_url('admin/home/update_status_of_user_from_table') ?>"/>
                 <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                        <div class="alert alert-success alert-dismissible fade in choose-status" role="alert" data-dismiss="modal">
+                        <div class="alert alert-success alert-dismissible fade in choose-status attend" role="alert" data-dismiss="modal">
                             <strong data-status='1'><?php echo $home_lang['attend'] ?></strong>
                         </div>
                     </div>
