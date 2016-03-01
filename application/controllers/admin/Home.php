@@ -124,14 +124,15 @@ class Home extends CI_Controller {
         echo json_encode($data);
     }
 
-    public function update_status_of_user_from_table()
+    public function update_status_of_users_from_table()
     {
         $this->common->authenticate();
-        $user_id = $this->input->post('user_id');
+        $user_ids = $this->input->post('user_ids');
+        if (!is_array($user_ids)) $user_ids = array($user_ids);
         $status = $this->input->post('status');
         $this->load->model('tracking_users_model');
         $message = $this->common->get_message('update_status_user', array('update_status_user_success', 'update_status_user_failure'));
-        if (Tracking_users_model::update_status_users(array($user_id), $status, 1))
+        if (Tracking_users_model::update_status_users($user_ids, $status, 1))
         {
             $data = array(
                 'status' => 'success',

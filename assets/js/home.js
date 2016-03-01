@@ -20,8 +20,6 @@ $(function () {
     $('select[name="day"]').on('change', function() {
       getTablesByShiftAjax();
     });
-
-
     $(document).on('click', 'input[name="submit"]', function(event) {
         $('.loadingx').fadeIn('slow');
         $(document).find('input[type="button"]').prop('disabled', true);
@@ -95,6 +93,18 @@ function getTablesByShiftAjax() {
                 drawSeats($(this).attr('id'), seats,  index);
             });
             getUsersByTablesAjax();
+            $('.btn-all-join').click(function(e) {
+                table_id = $(this).parent().find("input[name='table_id']").val();
+                base_url = $("#choose_status_user_modal").find('input[name="user_id"]').data('path');
+                status = $('.attend').find('strong').data('status');
+                user_ids = new Array();
+                $(this).parent().find('.users').each(function(index, el) {
+                    user_id = $(this).find("input[name='user_in_table']").data('user-id');
+                    user_ids.push(user_id);
+                });
+                console.log(user_ids.length);
+                updateStatusOfUsersInTable(base_url, table_id, user_ids, status);
+            });
         }
     });
 }
@@ -168,16 +178,6 @@ function getUsersByTablesAjax() {
                 var user_id = $(this).find("input[name='user_in_table']").data('user-id');
                 $('#choose_status_user_modal').find('input[name="table_id"]').val(table_id);
                 $('#choose_status_user_modal').find('input[name="user_id"]').val(user_id);
-            });
-
-            $('.btn-all-join').on('click', function() {
-                table_id = $(this).parent().find("input[name='table_id']").val();
-                base_url = $("#choose_status_user_modal").find('input[name="user_id"]').data('path');
-                status = $('.attend').find('strong').data('status');
-                $(this).parent().find('.users').each(function(index, el) {
-                    user_id = $(this).find("input[name='user_in_table']").data('user-id');
-                    updateStatusOfUser(base_url, table_id, user_id, status);
-                });;
             });
         }
     });
@@ -261,7 +261,7 @@ function updateStatusOfUser(base_url, table_id, user_id, status)
         type:"POST",
         url: base_url,
         dataType: 'json',
-        data: {user_id:user_id, status:status},
+        data: {user_ids:user_id, status:status},
         success: function(res){
             if (res.status == 'failure')
             {
@@ -281,6 +281,39 @@ function updateStatusOfUser(base_url, table_id, user_id, status)
                 else {
                     $("#table_" + table_id).find('#user_' + user_id).addClass('border-warning');
                 }
+            }
+        }
+    });
+}
+
+function updateStatusOfUsersInTable(base_url, table_id, user_ids, status)
+{
+    $.ajax({
+        type:"POST",
+        url: base_url,
+        dataType: 'json',
+        data: {user_ids:user_ids, status:status},
+        success: function(res){
+            if (res.status == 'failure')
+            {
+               toastr.error(res.message);
+            }
+            else
+            {
+                for (var i = user_ids.length - 1; i >= 0; i--) {
+                    $("#table_" + table_id).find('#user_' + user_ids[i]).removeClass('border-success border-warning border-danger');
+                    $("#table_" + table_id).find('#user_' + user_ids[i]).find('input[name="user_in_table"]').val(status);
+                    if (status == 1) {
+                        $("#table_" + table_id).find('#user_' + user_ids[i]).addClass('border-success');
+                    }
+                    else if( status == 2) {
+                        $("#table_" + table_id).find('#user_' + user_ids[i]).addClass('border-danger');
+                    }
+                    else {
+                        $("#table_" + table_id).find('#user_' + user_ids[i]).addClass('border-warning');
+                    }
+                };
+                toastr.success(res.message);
             }
         }
     });
@@ -383,6 +416,3 @@ function getRepliesOfComment(base_url, comment_id)
     return html;
 
 }
-
-
-

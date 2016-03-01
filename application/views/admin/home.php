@@ -157,7 +157,7 @@
             </div>
             <div class="modal-body">
                 <input type='hidden' name="table_id" value=""/>
-                <input type='hidden' name="user_id" value="" data-path="<?php echo base_url('admin/home/update_status_of_user_from_table') ?>"/>
+                <input type='hidden' name="user_id" value="" data-path="<?php echo base_url('admin/home/update_status_of_users_from_table') ?>"/>
                 <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                         <div class="alert alert-success alert-dismissible fade in choose-status attend" role="alert" data-dismiss="modal">
