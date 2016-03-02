@@ -115,7 +115,7 @@ class Tables_api extends Base_api {
                     break;
                 case HAVE_SEAT_IN_TABLE:
                     $response['status'] = $messages_lang['failure'];
-                    $response['message'] = $is_vegan_day;
+                    $response['message'] = $messages_lang['have_table'];
                     break;
             }
         }
